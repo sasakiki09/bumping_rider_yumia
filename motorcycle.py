@@ -2,6 +2,10 @@ import pyxel
 
 ScreenSize = [240, 180]
 Title = "Yumia Motor Dash"
+BGIndex = 0
+
+FrontWheel = 0
+RearWheel = 1
 
 class Player:
     def __init__(self, image_index):
@@ -10,24 +14,48 @@ class Player:
         self.image_index = image_index
         self.x = ScreenSize[0] / 2
         self.y = ScreenSize[1] / 2
+        self.rotation = 0
         self.load()
+        self.set_wheels()
 
     def load(self):
-        pyxel.images[self.image_index].load(0, 0, "images/player.png")
+        self.image = pyxel.images[self.image_index]
+        self.image.load(0, 0, "images/player.png")
 
+    def set_wheels(self):
+        y1 = self.height - 1
+        bounds = []
+        last_on_wheel = False
+        for x in range(self.width):
+            on_wheel = (self.image.pget(x, y1) != BGIndex)
+            if on_wheel != last_on_wheel:
+                bounds.append(x)
+        if len(bounds) < 4: raise
+        self.rear_wheel = [bounds[0], bounds[1] - 1]
+        self.front_wheel = [bounds[2], bounds[3] - 1]
+
+    def wheel_is_on_ground(self, wheel):
+        # working 2025.01.05
+        pass
+    
     def show(self):
         x = self.x - self.width / 2
         y = self.y - self.height / 2
         pyxel.blt(x, y, self.image_index,
-                  0, 0, self.width, self.height, 0)
+                  0, 0, self.width, self.height,
+                  BGIndex,
+                  self.rotation)
 
 class App:
     def __init__(self):
         pyxel.init(ScreenSize[0], ScreenSize[1], Title)
         self.player = Player(0)
+        self.tic = 0
         pyxel.run(self.update, self.draw)
 
     def update(self):
+        self.tic += 1
+        self.player.rotation = self.tic % 360
         self.input()
 
     def draw(self):
