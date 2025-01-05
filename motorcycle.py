@@ -11,6 +11,9 @@ class Player:
     def __init__(self, image_index):
         self.width = 48
         self.height = 32
+        self.wheel_radius = 8
+        self.front_wheel_center = [12, 8]
+        self.rear_wheel_center = [8, 8]
         self.image_index = image_index
         self.x = ScreenSize[0] / 2
         self.y = ScreenSize[1] / 2
@@ -34,8 +37,11 @@ class Player:
         self.rear_wheel = [bounds[0], bounds[1] - 1]
         self.front_wheel = [bounds[2], bounds[3] - 1]
 
-    def wheel_is_on_ground(self, wheel):
+    def wheel_is_on_ground(self, wheel, ground):
+        if len(wheel) != 2: raise
         # working 2025.01.05
+        # 回転も考えるのなら車輪の中心と距離で
+        # 判定すべきでは? 
         pass
     
     def show(self):
@@ -45,6 +51,9 @@ class Player:
                   0, 0, self.width, self.height,
                   BGIndex,
                   self.rotation)
+
+class Ground:
+    pass
 
 class App:
     def __init__(self):
