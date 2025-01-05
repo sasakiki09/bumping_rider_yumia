@@ -31,7 +31,7 @@ class App:
         self.input()
 
     def draw(self):
-        pyxel.cls(1)
+        pyxel.cls(13)
         self.player.show()
 
     def input(self):
