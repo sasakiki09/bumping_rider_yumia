@@ -1,11 +1,29 @@
 import pyxel
+import math
+from enum import Enum
 
 ScreenSize = [240, 180]
 Title = "Yumia Motor Dash"
 BGIndex = 0
 
-FrontWheel = 0
-RearWheel = 1
+class WheelType(Enum):
+    Front = 0
+    Rear = 1
+
+class Coordinate(Enum):
+    World = 0
+    Chara = 1
+
+class Location:
+    def __init__(self):
+        self.coordinate = False
+        self.x = False
+        self.y = False
+
+    def __init__(self, coord, x, y):
+        self.coordinate = coord
+        self.x = x
+        self.y = y
 
 class Player:
     def __init__(self, image_index):
@@ -19,30 +37,29 @@ class Player:
         self.y = ScreenSize[1] / 2
         self.rotation = 0
         self.load()
-        self.set_wheels()
 
     def load(self):
         self.image = pyxel.images[self.image_index]
         self.image.load(0, 0, "images/player.png")
 
-    def set_wheels(self):
-        y1 = self.height - 1
-        bounds = []
-        last_on_wheel = False
-        for x in range(self.width):
-            on_wheel = (self.image.pget(x, y1) != BGIndex)
-            if on_wheel != last_on_wheel:
-                bounds.append(x)
-        if len(bounds) < 4: raise
-        self.rear_wheel = [bounds[0], bounds[1] - 1]
-        self.front_wheel = [bounds[2], bounds[3] - 1]
 
+    def rotate(self, position):
+        radian = self.rotation * math.pi / 180
+        sin_a = math.sin(radian)
+        cos_a = math.cos(radian)
+        x1 = cos_a * position[0] - sin_a * position[1]
+        y1 = sin_a * poistion[0] + cos_a * position[1]
+        return [x1, y1]
+        
     def wheel_is_on_ground(self, wheel, ground):
-        if len(wheel) != 2: raise
-        # working 2025.01.05
-        # 回転も考えるのなら車輪の中心と距離で
-        # 判定すべきでは? 
-        pass
+        if wheel == Wheel.Front:
+            wcenter = self.front_wheel_center
+        elif wheel == WheelRear:
+            wcenter = self.rear_wheel_center
+        else:
+            raise
+        r_center = self.rotate(wcenter)
+        #################### working 2025.01.06
     
     def show(self):
         x = self.x - self.width / 2
