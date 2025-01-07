@@ -70,13 +70,22 @@ class Player:
                   self.rotation)
 
 class Ground:
-    pass
+    def __init__(self):
+        self.coords = []
+
+    def __init__(self, coords):
+        self.coords = sorted(coords, key=lambda c: c[0])
+
+    def height(self, x):
+        pass
+    #################### working 2025.01.07
 
 class App:
     def __init__(self):
         pyxel.init(ScreenSize[0], ScreenSize[1], Title)
         self.player = Player(0)
         self.tic = 0
+        self.ground = Ground([[0, 10], [10, 10]])
         pyxel.run(self.update, self.draw)
 
     def update(self):
