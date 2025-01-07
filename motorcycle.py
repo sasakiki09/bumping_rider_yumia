@@ -76,6 +76,19 @@ class Ground:
     def __init__(self, coords):
         self.coords = sorted(coords, key=lambda c: c[0])
 
+    # Find minmum index such that self.coords[index] <= x.
+    def find_index(self, x):
+        # TODO: confirm the algorithm, especially in equality.
+        if not self.last_index: self.last_index = 0
+        index = self.last_index
+        while (index < len(self.coords) and
+               self.coords[index] < x):
+            index += 1
+        while (0 <= index and
+               x < self.coords[index]):
+            index -= 1
+        return index
+        
     def height(self, x):
         pass
     #################### working 2025.01.07
