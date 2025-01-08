@@ -80,40 +80,50 @@ class Player:
 class Ground:
     def __init__(self):
         self.coords = []
+        self.last_index = False
 
     def __init__(self, coords):
-        self.coords = sorted(coords, key=lambda c: c[0])
+        self.coords = sorted(coords, key=lambda c: c.x)
+        if len(self.coords) < 2: raise
+        self.last_index = False
 
     # Find minmum index such that self.coords[index] <= x.
     def find_index(self, x):
         if not self.last_index: self.last_index = 0
         index = self.last_index
-        while (index < len(self.coords) and
+        while (index < len(self.coords) - 1 and
                self.coords[index].x < x):
             index += 1
-        while (0 <= index and
+        while (0 < index and
                x < self.coords[index].x):
             index -= 1
         return index
         
     def height(self, x):
-        index = find_index(x)
+        index = self.find_index(x)
         if index == len(self.coords) - 1:
             return self.coords[index].y
-    #################### working 2025.01.07
+        x0 = self.coords[index].x
+        y0 = self.coords[index].y
+        x1 = self.coords[index + 1].x
+        y1 = self.coords[index + 1].y
+        if not (x0 <= x and x <= x1): raise
+        if x0 == x1: raise
+        return y0 + (y1 - y0) / (x1 - x0) * (x - x0)
 
 class App:
     def __init__(self):
         pyxel.init(ScreenSize[0], ScreenSize[1], Title)
         self.player = Player(0)
         self.tic = 0
-        self.ground = Ground([[0, 10], [10, 10]])
+        self.ground = Ground([Vec2(0.0, 10.0), Vec2(10.0, 15.0)])
         pyxel.run(self.update, self.draw)
 
     def update(self):
         self.tic += 1
         self.player.rotation = self.tic % 360
         self.input()
+        self.test()
 
     def draw(self):
         pyxel.cls(13)
@@ -128,6 +138,11 @@ class App:
             self.player.y -= 1
         if pyxel.btn(pyxel.KEY_DOWN):
             self.player.y += 1
+
+    def test(self):
+        x = self.tic
+        y = self.ground.height(x)
+        print('x: %f, y: %f' % (x, y))
 
 App()
 
