@@ -78,7 +78,6 @@ class Ground:
 
     # Find minmum index such that self.coords[index] <= x.
     def find_index(self, x):
-        # TODO: confirm the algorithm, especially in equality.
         if not self.last_index: self.last_index = 0
         index = self.last_index
         while (index < len(self.coords) and
