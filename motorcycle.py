@@ -14,7 +14,16 @@ class Coordinate(Enum):
     World = 0
     Chara = 1
 
-class Location:
+class Vec2:
+    def __init__(self):
+        self.x = False
+        self.y = False
+    
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+class Location(Vec2):
     def __init__(self):
         self.coordinate = False
         self.x = False
@@ -41,7 +50,6 @@ class Player:
     def load(self):
         self.image = pyxel.images[self.image_index]
         self.image.load(0, 0, "images/player.png")
-
 
     def rotate(self, position):
         radian = self.rotation * math.pi / 180
