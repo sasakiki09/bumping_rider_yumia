@@ -81,15 +81,17 @@ class Ground:
         if not self.last_index: self.last_index = 0
         index = self.last_index
         while (index < len(self.coords) and
-               self.coords[index] < x):
+               self.coords[index].x < x):
             index += 1
         while (0 <= index and
-               x < self.coords[index]):
+               x < self.coords[index].x):
             index -= 1
         return index
         
     def height(self, x):
-        pass
+        index = find_index(x)
+        if index == len(self.coords) - 1:
+            return self.coords[index].y
     #################### working 2025.01.07
 
 class App:
