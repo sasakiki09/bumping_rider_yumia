@@ -58,6 +58,10 @@ class Player:
         x1 = cos_a * position[0] - sin_a * position[1]
         y1 = sin_a * poistion[0] + cos_a * position[1]
         return [x1, y1]
+
+    def wheel_loc(self, wheel, ground):
+        pass
+    #################### working 2025.01.09
         
     def wheel_is_on_ground(self, wheel, ground):
         if wheel == Wheel.Front:
