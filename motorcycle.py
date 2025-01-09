@@ -1,4 +1,5 @@
 import pyxel
+from constants import *
 from physics import *
 
 class App:

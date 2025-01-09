@@ -1,10 +1,7 @@
 import pyxel
+from constants import *
 import math
 from enum import Enum
-
-ScreenSize = [240, 180]
-Title = "Yumia Motor Dash"
-BGIndex = 0
 
 class WheelType(Enum):
     Front = 0
@@ -22,6 +19,9 @@ class Vec2:
     def __init__(self, x, y):
         self.x = x
         self.y = y
+
+    def __add__(self, other):
+        return Vec2(self.x + other.x, self.y + other.y)
 
 class Location(Vec2):
     def __init__(self):
@@ -42,8 +42,7 @@ class Player:
         self.front_wheel_center = [12, 8]
         self.rear_wheel_center = [8, 8]
         self.image_index = image_index
-        self.x = ScreenSize[0] / 2
-        self.y = ScreenSize[1] / 2
+        self.location = Vec2(ScreenSize[0] / 2, ScreenSize[1] / 2)
         self.rotation = 0
         self.load()
 
@@ -59,11 +58,7 @@ class Player:
         y1 = sin_a * poistion[0] + cos_a * position[1]
         return [x1, y1]
 
-    def wheel_loc(self, wheel, ground):
-        pass
-    #################### working 2025.01.09
-        
-    def wheel_is_on_ground(self, wheel, ground):
+    def wheel_center(self, wheel):
         if wheel == Wheel.Front:
             wcenter = self.front_wheel_center
         elif wheel == WheelRear:
@@ -71,6 +66,9 @@ class Player:
         else:
             raise
         r_center = self.rotate(wcenter)
+    
+    def wheel_is_on_ground(self, wheel, ground):
+        
         #################### working 2025.01.06
     
     def show(self):
