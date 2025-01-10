@@ -14,7 +14,6 @@ class App:
         self.tic += 1
         self.player.rotation = self.tic % 360
         self.input()
-        self.test()
 
     def draw(self):
         pyxel.cls(13)
@@ -22,17 +21,12 @@ class App:
 
     def input(self):
         if pyxel.btn(pyxel.KEY_LEFT):
-            self.player.x -= 1
+            self.player.location.x -= 1
         if pyxel.btn(pyxel.KEY_RIGHT):
-            self.player.x += 1
+            self.player.location.x += 1
         if pyxel.btn(pyxel.KEY_UP):
-            self.player.y -= 1
+            self.player.location.y -= 1
         if pyxel.btn(pyxel.KEY_DOWN):
-            self.player.y += 1
-
-    def test(self):
-        x = self.tic
-        y = self.ground.height(x)
-        print('x: %f, y: %f' % (x, y))
+            self.player.location.y += 1
 
 App()

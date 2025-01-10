@@ -9,7 +9,7 @@ class WheelType(Enum):
 
 class Coordinate(Enum):
     World = 0
-    Chara = 1
+    Local = 1
 
 class Vec2:
     def __init__(self):
@@ -50,13 +50,20 @@ class Player:
         self.image = pyxel.images[self.image_index]
         self.image.load(0, 0, "images/player.png")
 
-    def rotate(self, position):
+    def to_local(self, location):
+        pass
+
+    def to_world(self, location):
+        pass
+
+    def rotate(self, location):
+        lpos = self.to_local(location)
         radian = self.rotation * math.pi / 180
         sin_a = math.sin(radian)
         cos_a = math.cos(radian)
-        x1 = cos_a * position[0] - sin_a * position[1]
-        y1 = sin_a * poistion[0] + cos_a * position[1]
-        return [x1, y1]
+        x1 = cos_a * lpos.x - sin_a * lpos.y
+        y1 = sin_a * lpos.x + cos_a * lpos.y
+        return Location(Coordinate.Local, x1, y1)
 
     def wheel_center(self, wheel):
         if wheel == Wheel.Front:
