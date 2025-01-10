@@ -68,12 +68,12 @@ class Player:
         r_center = self.rotate(wcenter)
     
     def wheel_is_on_ground(self, wheel, ground):
-        
+        pass
         #################### working 2025.01.06
     
     def show(self):
-        x = self.x - self.width / 2
-        y = self.y - self.height / 2
+        x = self.location.x - self.width / 2
+        y = self.location.y - self.height / 2
         pyxel.blt(x, y, self.image_index,
                   0, 0, self.width, self.height,
                   BGIndex,
