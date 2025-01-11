@@ -5,7 +5,7 @@ from physics import *
 class App:
     def __init__(self):
         pyxel.init(ScreenSize[0], ScreenSize[1], Title)
-        self.player = Player(0)
+        self.player = Bike(0)
         self.tic = 0
         self.ground = Ground([Vec2(0.0, 10.0), Vec2(10.0, 15.0)])
         pyxel.run(self.update, self.draw)

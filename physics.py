@@ -3,7 +3,7 @@ from constants import *
 import math
 from enum import Enum
 
-class WheelType(Enum):
+class Wheel(Enum):
     Front = 0
     Rear = 1
 
@@ -29,8 +29,8 @@ class Vec2:
     def rotate(self, radian):
         sin_a = math.sin(radian)
         cos_a = math.cos(radian)
-        x1 = cos_a * lpos.x - sin_a * lpos.y
-        y1 = sin_a * lpos.x + cos_a * lpos.y
+        x1 = cos_a * self.x - sin_a * self.y
+        y1 = sin_a * self.x + cos_a * self.y
         return Vec2(x1, y1)
 
 class Location(Vec2):
@@ -44,13 +44,13 @@ class Location(Vec2):
         self.x = x
         self.y = y
 
-class Player:
+class Bike:
     def __init__(self, image_index):
         self.width = 48
         self.height = 32
         self.wheel_radius = 8
-        self.front_wheel_center = [12, 8]
-        self.rear_wheel_center = [8, 8]
+        self.front_wheel_center = Vec2(12, 8)
+        self.rear_wheel_center = Vec2(8, 8)
         self.image_index = image_index
         self.location = Vec2(ScreenSize[0] / 2, ScreenSize[1] / 2)
         self.rotation = 0 # radian
@@ -58,7 +58,10 @@ class Player:
 
     def load(self):
         self.image = pyxel.images[self.image_index]
-        self.image.load(0, 0, "images/player.png")
+        self.image.load(0, 0, "images/bike.png")
+
+    def set_location(self, x, y):
+        self.location = Vec2(x, y)
 
     def to_local(self, location):
         if location.coordinate == Coordinate.Local:
@@ -80,7 +83,7 @@ class Player:
     def wheel_center(self, wheel):
         if wheel == Wheel.Front:
             wcenter = self.front_wheel_center
-        elif wheel == WheelRear:
+        elif wheel == Wheel.Rear:
             wcenter = self.rear_wheel_center
         else:
             raise
@@ -91,7 +94,7 @@ class Player:
         wwcenter = self.to_world(wcenter)
         gh = ground.height(wcenter.x)
         diff = abs(gh - wwcenter.y)
-        return (diff <= wheel_radius)
+        return (diff <= self.wheel_radius)
     
     def show(self):
         x = self.location.x - self.width / 2
@@ -136,8 +139,21 @@ class Ground:
         return y0 + (y1 - y0) / (x1 - x0) * (x - x0)
 
 if __name__ == '__main__':
+    # Pyxel Initialization
+    pyxel.init(100, 100)
+    # Ground Test
     ground = Ground([Vec2(0.0, 1.0), Vec2(10.0, 15.0)])
     for x in range(20):
         y = ground.height(x)
         print('x: %f, y: %f' % (x, y))
-
+    # Bike Test
+    bike = Bike(0)
+    bike.set_location(5.0, 20.0)
+    print('Bike is on ground: %d %d' %
+          (bike.wheel_is_on_ground(Wheel.Front, ground),
+           bike.wheel_is_on_ground(Wheel.Rear, ground)))
+    bike.set_location(5.0, 10.0)
+    print('Bike is on ground: %d %d' %
+          (bike.wheel_is_on_ground(Wheel.Front, ground),
+           bike.wheel_is_on_ground(Wheel.Rear, ground)))
+    
