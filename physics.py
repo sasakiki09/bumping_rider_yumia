@@ -1,5 +1,4 @@
-import pyxel
-from constants import *
+from world import *
 import math
 from enum import Enum
 
@@ -11,28 +10,8 @@ class Coordinate(Enum):
     World = 0
     Local = 1
 
-class Vec2:
-    def __init__(self):
-        self.x = False
-        self.y = False
-    
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-    def __add__(self, other):
-        return Vec2(self.x + other.x, self.y + other.y)
-
-    def __sub__(self, other):
-        return Vec2(self.x - other.x, self.y - other.y)
-
-    def rotate(self, radian):
-        sin_a = math.sin(radian)
-        cos_a = math.cos(radian)
-        x1 = cos_a * self.x - sin_a * self.y
-        y1 = sin_a * self.x + cos_a * self.y
-        return Vec2(x1, y1)
-
+# -x: front, +x: rear
+# -y: down,  +y: up
 class Location(Vec2):
     def __init__(self):
         self.coordinate = False
@@ -44,21 +23,21 @@ class Location(Vec2):
         self.x = x
         self.y = y
 
-class Bike:
-    def __init__(self, image_index):
-        self.width = 48
-        self.height = 32
-        self.wheel_radius = 8
-        self.front_wheel_center = Vec2(12, 8)
-        self.rear_wheel_center = Vec2(8, 8)
-        self.image_index = image_index
-        self.location = Vec2(ScreenSize[0] / 2, ScreenSize[1] / 2)
-        self.rotation = 0 # radian
-        self.load()
+    def __str__(self):
+        return "Location(%s,%f,%f)" % (self.coordinate, self.x, self.y)
 
-    def load(self):
-        self.image = pyxel.images[self.image_index]
-        self.image.load(0, 0, "images/bike.png")
+class Bike:
+    def __init__(self):
+        self.length = 1.5
+        self.location = Vec2(0.0, 0.0)
+        self.velocity = 0.0
+        self.rotation = 0.0 # radian
+        self.rotation_velocity = 0.0
+        self.mass = 100.0 # kg
+        l = self.length
+        self.front_wheel_center = Vec2(-l * 3 / 8, -l / 8)
+        self.rear_wheel_center = Vec2(l * 3 / 8, -l / 8)
+        self.wheel_radius = l / 8
 
     def set_location(self, x, y):
         self.location = Vec2(x, y)
@@ -76,7 +55,7 @@ class Bike:
             return location
         if location.coordinate != Coordinate.Local:
             raise
-        rxy = self.location.rotate(self.rotation)
+        rxy = location.rotate(self.rotation)
         wxy = rxy + self.location
         return Location(Coordinate.World, wxy.x, wxy.y)
 
@@ -92,18 +71,9 @@ class Bike:
     def wheel_is_on_ground(self, wheel, ground):
         wcenter = self.wheel_center(wheel)
         wwcenter = self.to_world(wcenter)
-        gh = ground.height(wcenter.x)
-        diff = abs(gh - wwcenter.y)
-        return (diff <= self.wheel_radius)
+        gh = ground.height(wwcenter.x)
+        return (gh >= wwcenter.y - self.wheel_radius)
     
-    def show(self):
-        x = self.location.x - self.width / 2
-        y = self.location.y - self.height / 2
-        pyxel.blt(x, y, self.image_index,
-                  0, 0, self.width, self.height,
-                  BGIndex,
-                  self.rotation)
-
 class Ground:
     def __init__(self):
         self.coords = []
@@ -134,25 +104,30 @@ class Ground:
         y0 = self.coords[index].y
         x1 = self.coords[index + 1].x
         y1 = self.coords[index + 1].y
-        if not (x0 <= x and x <= x1): raise
+        if not (x0 <= x and x <= x1):
+            print('x0:%f x1:%f x:%f' % (x0, x1, x))
+            raise
         if x0 == x1: raise
         return y0 + (y1 - y0) / (x1 - x0) * (x - x0)
 
 if __name__ == '__main__':
-    # Pyxel Initialization
-    pyxel.init(100, 100)
     # Ground Test
     ground = Ground([Vec2(0.0, 1.0), Vec2(10.0, 15.0)])
     for x in range(20):
         y = ground.height(x)
         print('x: %f, y: %f' % (x, y))
+
     # Bike Test
-    bike = Bike(0)
+    bike = Bike()
     bike.set_location(5.0, 20.0)
     print('Bike is on ground: %d %d' %
           (bike.wheel_is_on_ground(Wheel.Front, ground),
            bike.wheel_is_on_ground(Wheel.Rear, ground)))
-    bike.set_location(5.0, 10.0)
+    bike.set_location(5.0, 8.0)
+    print('Bike is on ground: %d %d' %
+          (bike.wheel_is_on_ground(Wheel.Front, ground),
+           bike.wheel_is_on_ground(Wheel.Rear, ground)))
+    bike.set_location(5.0, 6.0)
     print('Bike is on ground: %d %d' %
           (bike.wheel_is_on_ground(Wheel.Front, ground),
            bike.wheel_is_on_ground(Wheel.Rear, ground)))

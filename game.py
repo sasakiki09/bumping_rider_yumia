@@ -1,6 +1,30 @@
 import pyxel
-from constants import *
+from world import *
 from physics import *
+
+class GameBike:
+    def __init__(self):
+        self.bike = Bike()
+        self.width = 48
+        self.height = 32
+        self.wheel_radius = 8
+        self.front_wheel_center = Vec2(12, 8)
+        self.rear_wheel_center = Vec2(8, 8)
+        self.image_index = image_index
+        self.load()
+
+    def load(self):
+        self.image = pyxel.images[self.image_index]
+        self.image.load(0, 0, "images/bike.png")
+
+    def show(self):
+        return
+        x = self.location.x - self.width / 2
+        y = self.location.y - self.height / 2
+        pyxel.blt(x, y, self.image_index,
+                  0, 0, self.width, self.height,
+                  BGIndex,
+                  self.rotation)
 
 class App:
     def __init__(self):
