@@ -23,6 +23,16 @@ class Vec2:
     def __add__(self, other):
         return Vec2(self.x + other.x, self.y + other.y)
 
+    def __sub__(self, other):
+        return Vec2(self.x - other.x, self.y - other.y)
+
+    def rotate(self, radian):
+        sin_a = math.sin(radian)
+        cos_a = math.cos(radian)
+        x1 = cos_a * lpos.x - sin_a * lpos.y
+        y1 = sin_a * lpos.x + cos_a * lpos.y
+        return Vec2(x1, y1)
+
 class Location(Vec2):
     def __init__(self):
         self.coordinate = False
@@ -43,7 +53,7 @@ class Player:
         self.rear_wheel_center = [8, 8]
         self.image_index = image_index
         self.location = Vec2(ScreenSize[0] / 2, ScreenSize[1] / 2)
-        self.rotation = 0
+        self.rotation = 0 # radian
         self.load()
 
     def load(self):
@@ -51,19 +61,21 @@ class Player:
         self.image.load(0, 0, "images/player.png")
 
     def to_local(self, location):
-        pass
+        if location.coordinate == Coordinate.Local:
+            return location
+        if location.coordinate != Coordinate.World:
+            raise
+        lxy = (location - self.location).rotate(-self.rotation)
+        return Location(Coordinate.Local, lxy.x, lxy.y)
 
     def to_world(self, location):
-        pass
-
-    def rotate(self, location):
-        lpos = self.to_local(location)
-        radian = self.rotation * math.pi / 180
-        sin_a = math.sin(radian)
-        cos_a = math.cos(radian)
-        x1 = cos_a * lpos.x - sin_a * lpos.y
-        y1 = sin_a * lpos.x + cos_a * lpos.y
-        return Location(Coordinate.Local, x1, y1)
+        if location.coordinate == Coordinate.World:
+            return location
+        if location.coordinate != Coordinate.Local:
+            raise
+        rxy = self.location.rotate(self.rotation)
+        wxy = rxy + self.location
+        return Location(Coordinate.World, wxy.x, wxy.y)
 
     def wheel_center(self, wheel):
         if wheel == Wheel.Front:
@@ -72,11 +84,14 @@ class Player:
             wcenter = self.rear_wheel_center
         else:
             raise
-        r_center = self.rotate(wcenter)
+        return Location(Coordinate.Local, wcenter.x, wcenter.y)
     
     def wheel_is_on_ground(self, wheel, ground):
-        pass
-        #################### working 2025.01.06
+        wcenter = self.wheel_center(wheel)
+        wwcenter = self.to_world(wcenter)
+        gh = ground.height(wcenter.x)
+        diff = abs(gh - wwcenter.y)
+        return (diff <= wheel_radius)
     
     def show(self):
         x = self.location.x - self.width / 2
