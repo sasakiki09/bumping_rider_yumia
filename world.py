@@ -52,7 +52,8 @@ class World:
         self.title = "Yumia Bike Dash"
         self.bg_index = 0
         self.origin_world = Vec2(0.0, 0.0)
-        self.origin_screen = self.screen_size.div(2.0)
+        self.origin_screen = Vec2(self.screen_size.x / 4,
+                                  self.screen_size.y * 3 / 4)
 
     def screen_xy(self, world_xy):
         w_diff = world_xy - self.origin_world

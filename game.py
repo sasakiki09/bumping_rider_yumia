@@ -1,6 +1,7 @@
 import pyxel
 from world import *
 from physics import *
+from stages import *
 
 class GameBike:
     def __init__(self, image_index):
@@ -42,8 +43,8 @@ class GameBike:
                   rot)
 
 class GameGround:
-    def __init__(self, coords):
-        self.ground = Ground(coords)
+    def __init__(self):
+        self.ground = stages[0].ground
         self.color = 1
 
     def screen_y(self, screen_x):
@@ -66,7 +67,7 @@ class App:
                    world.title)
         self.bike = GameBike(0)
         self.tic = 0
-        self.ground = GameGround([Vec2(0.0, -2.0), Vec2(10.0, 2.0)])
+        self.ground = GameGround()
         pyxel.run(self.update, self.draw)
 
     def update(self):
