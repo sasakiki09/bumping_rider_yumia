@@ -19,7 +19,9 @@ class GameBike:
 
     def screen_xy(self):
         w_loc = self.bike.get_location()
-        return world.screen_xy(w_loc)
+        s_loc = world.screen_xy(w_loc)
+        return Vec2(s_loc.x - self.width / 2,
+                    s_loc.y - self.height / 2)
 
     def set_rotation(self, rot):
         self.bike.rotation = rot
