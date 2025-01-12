@@ -17,14 +17,27 @@ class GameBike:
         self.image = pyxel.images[self.image_index]
         self.image.load(0, 0, "images/bike.png")
 
+    def screen_xy(self):
+        w_loc = self.bike.get_location()
+        return world.screen_xy(w_loc)
+
+    def set_rotation(self, rot):
+        self.bike.rotation = rot
+
+    def add_xy(self, xy):
+        self.bike.location += xy
+    
+    def rotation_degree(self):
+        rotation = self.bike.rotation
+        return 180.0 / math.pi * rotation
+        
     def show(self):
-        return
-        x = self.location.x - self.width / 2
-        y = self.location.y - self.height / 2
-        pyxel.blt(x, y, self.image_index,
+        s_xy = self.screen_xy()
+        rot = self.rotation_degree()
+        pyxel.blt(s_xy.x, s_xy.y, self.image_index,
                   0, 0, self.width, self.height,
                   world.bg_index,
-                  self.rotation)
+                  rot)
 
 class App:
     def __init__(self):
@@ -38,7 +51,8 @@ class App:
 
     def update(self):
         self.tic += 1
-        self.bike.rotation = self.tic % 360
+        deg = math.pi / 180 * (self.tic % 360)
+        self.bike.set_rotation(deg)
         self.input()
 
     def draw(self):
@@ -47,12 +61,12 @@ class App:
 
     def input(self):
         if pyxel.btn(pyxel.KEY_LEFT):
-            self.bike.location.x -= 1
+            self.bike.add_xy(Vec2(-1, 0))
         if pyxel.btn(pyxel.KEY_RIGHT):
-            self.bike.location.x += 1
+            self.bike.add_xy(Vec2(1, 0))
         if pyxel.btn(pyxel.KEY_UP):
-            self.bike.location.y -= 1
+            self.bike.add_xy(Vec2(0, -1))
         if pyxel.btn(pyxel.KEY_DOWN):
-            self.bike.location.y += 1
+            self.bike.add_xy(Vec2(0, 1))
 
 App()

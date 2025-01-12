@@ -43,4 +43,9 @@ class World:
         self.origin_world = Vec2(0.0, 0.0)
         self.origin_screen = self.screen_size.div(2.0)
 
+    def screen_xy(self, world_xy):
+        w_diff = world_xy - self.origin_world
+        s_diff = w_diff.mul(self.scale)
+        return self.origin_screen + s_diff
+
 world = World()

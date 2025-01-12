@@ -39,6 +39,9 @@ class Bike:
         self.rear_wheel_center = Vec2(l * 3 / 8, -l / 8)
         self.wheel_radius = l / 8
 
+    def get_location(self):
+        return self.location
+
     def set_location(self, x, y):
         self.location = Vec2(x, y)
 
