@@ -30,10 +30,11 @@ class Bike:
     def __init__(self):
         self.length = BikeWorldLen
         self.location = Vec2(0.0, 1.0)
-        self.velocity = 0.0
+        self.velocity = Vec2(0.0, 0.0)
         self.rotation = 0.0 # radian
         self.rotation_velocity = 0.0
         self.mass = 100.0 # kg
+        self.reflection = 0.6
         l = self.length
         self.front_wheel_center = Vec2(-l * 3 / 8, -l / 8)
         self.rear_wheel_center = Vec2(l * 3 / 8, -l / 8)
@@ -76,6 +77,27 @@ class Bike:
         wwcenter = self.to_world(wcenter)
         gh = ground.height(wwcenter.x)
         return (gh >= wwcenter.y - self.wheel_radius)
+
+    def calc_force(self, ground):
+        force = world.gravity.mul(self.mass)
+        rot_acc = 0
+        if self.wheel_is_on_ground(Wheel.Front, ground):
+            self.velocity.y = 0
+            force += world.gravity.mul(-self.reflection * self.mass)
+            rot_acc -= math.pi
+        if self.wheel_is_on_ground(Wheel.Rear, ground):
+            self.velocity.y = 0
+            force += world.gravity.mul(-self.reflection * self.mass)
+            rot_acc += math.pi
+        return [force, rot_acc]
+    
+    def update(self, ground):
+        f_r = self.calc_force(ground)
+        acc = f_r[0].div(self.mass)
+        rot_acc = f_r[1]
+        self.velocity += acc.mul(world.delta_time)
+        self.location += self.velocity
+        print(acc, self.velocity, self.location)
     
 class Ground:
     def __init__(self):

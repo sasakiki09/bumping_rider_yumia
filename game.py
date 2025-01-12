@@ -24,9 +24,6 @@ class GameBike:
         return Vec2(s_loc.x - self.width / 2,
                     s_loc.y - self.height / 2)
 
-    def set_rotation(self, rot):
-        self.bike.rotation = rot
-
     def add_xy(self, xy):
         self.bike.location += xy
     
@@ -41,6 +38,9 @@ class GameBike:
                   0, 0, self.width, self.height,
                   world.bg_index,
                   rot)
+        
+    def update(self, ground):
+        self.bike.update(ground.ground)
 
 class GameGround:
     def __init__(self):
@@ -66,14 +66,13 @@ class App:
                    world.screen_size.y,
                    world.title)
         self.bike = GameBike(0)
-        self.tic = 0
         self.ground = GameGround()
+        world.start()
         pyxel.run(self.update, self.draw)
 
     def update(self):
-        self.tic += 1
-        deg = math.pi / 180 * (self.tic % 360)
-        self.bike.set_rotation(deg)
+        world.update()
+        self.bike.update(self.ground)
         self.input()
 
     def draw(self):
@@ -83,12 +82,12 @@ class App:
 
     def input(self):
         if pyxel.btn(pyxel.KEY_LEFT):
-            self.bike.add_xy(Vec2(-1, 0))
+            self.bike.add_xy(Vec2(-0.1, 0))
         if pyxel.btn(pyxel.KEY_RIGHT):
-            self.bike.add_xy(Vec2(1, 0))
+            self.bike.add_xy(Vec2(0.1, 0))
         if pyxel.btn(pyxel.KEY_UP):
-            self.bike.add_xy(Vec2(0, -1))
+            self.bike.add_xy(Vec2(0, -1.0))
         if pyxel.btn(pyxel.KEY_DOWN):
-            self.bike.add_xy(Vec2(0, 1))
+            self.bike.add_xy(Vec2(0, 1.0))
 
 App()

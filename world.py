@@ -1,4 +1,5 @@
 import math
+import time
 from enum import Enum
 
 BikeWorldLen = 1.5 # [m]
@@ -44,8 +45,7 @@ class Vec2:
 
 class World:
     def __init__(self):
-        self.second = 0
-        self.delta_second = 0
+        self.gravity = Vec2(0.0, -9.8)
         self.scale = Vec2(BikeSpriteWidth / BikeWorldLen,
                           -BikeSpriteWidth / BikeWorldLen)
         self.screen_size = Vec2(240, 180)
@@ -54,6 +54,20 @@ class World:
         self.origin_world = Vec2(0.0, 0.0)
         self.origin_screen = Vec2(self.screen_size.x / 4,
                                   self.screen_size.y * 3 / 4)
+
+    def start(self):
+        self.tic = 0
+        self.start_time = time.time()
+        self.last_time = self.start_time
+        self.elapsed_time = 0.0
+        self.delta_time = 0.0
+
+    def update(self):
+        self.tic += 1
+        now = time.time()
+        self.delta_time = now - self.last_time
+        self.elapsed_time = now - self.start_time
+        self.last_time = now
 
     def screen_xy(self, world_xy):
         w_diff = world_xy - self.origin_world
