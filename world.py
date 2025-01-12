@@ -16,6 +16,12 @@ class Vec2:
     def __sub__(self, other):
         return Vec2(self.x - other.x, self.y - other.y)
 
+    def __mul__(self, other):
+        return Vec2(self.x * other.x, self.y * other.y)
+
+    def __truediv__(self, other):
+        return Vec2(self.x / other.x, self.y / other.y)
+
     def __str__(self):
         return "Vec2(%f,%f)" % (self.x, self.y)
 
@@ -36,7 +42,7 @@ class World:
     def __init__(self):
         self.second = 0
         self.delta_second = 0
-        self.scale = 48 / 170.0
+        self.scale = Vec2(48 / 170.0, -48 / 170.0)
         self.screen_size = Vec2(240, 180)
         self.title = "Yumia Bike Dash"
         self.bg_index = 0
@@ -45,7 +51,12 @@ class World:
 
     def screen_xy(self, world_xy):
         w_diff = world_xy - self.origin_world
-        s_diff = w_diff.mul(self.scale)
+        s_diff = w_diff * self.scale
         return self.origin_screen + s_diff
+
+    def world_xy(self, screen_xy):
+        s_diff = screen_xy - self.origin_screen
+        w_diff = s_diff / self.scale
+        return self.origin_world + w_diff
 
 world = World()

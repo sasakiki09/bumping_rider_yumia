@@ -101,6 +101,8 @@ class Ground:
         
     def height(self, x):
         index = self.find_index(x)
+        if (x < self.coords[0].x or self.coords[-1].x < x):
+            return False
         if index == len(self.coords) - 1:
             return self.coords[index].y
         x0 = self.coords[index].x
