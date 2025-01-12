@@ -1,6 +1,10 @@
 import math
 from enum import Enum
 
+BikeWorldLen = 1.5 # [m]
+BikeSpriteWidth = 48 # [pixel]
+BikeSpriteHeight = 32 # [pixel]
+
 class Vec2:
     def __init__(self):
         self.x = False
@@ -42,7 +46,8 @@ class World:
     def __init__(self):
         self.second = 0
         self.delta_second = 0
-        self.scale = Vec2(48 / 170.0, -48 / 170.0)
+        self.scale = Vec2(BikeSpriteWidth / BikeWorldLen,
+                          -BikeSpriteWidth / BikeWorldLen)
         self.screen_size = Vec2(240, 180)
         self.title = "Yumia Bike Dash"
         self.bg_index = 0

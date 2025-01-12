@@ -5,8 +5,8 @@ from physics import *
 class GameBike:
     def __init__(self, image_index):
         self.bike = Bike()
-        self.width = 48
-        self.height = 32
+        self.width = BikeSpriteWidth
+        self.height = BikeSpriteHeight
         self.wheel_radius = 8
         self.front_wheel_center = Vec2(12, 8)
         self.rear_wheel_center = Vec2(8, 8)
@@ -54,8 +54,8 @@ class GameGround:
     def show(self):
         for x in range(world.screen_size.x):
             y = self.screen_y(x)
-            if y:
-                pyxel.line(x, y, x, world.screen_size.y, self.color)
+            if not y: continue
+            pyxel.line(x, y, x, world.screen_size.y, self.color)
 
 class App:
     def __init__(self):
@@ -64,7 +64,7 @@ class App:
                    world.title)
         self.bike = GameBike(0)
         self.tic = 0
-        self.ground = GameGround([Vec2(0.0, 10.0), Vec2(10.0, 15.0)])
+        self.ground = GameGround([Vec2(0.0, -2.0), Vec2(10.0, 2.0)])
         pyxel.run(self.update, self.draw)
 
     def update(self):

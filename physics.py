@@ -28,7 +28,7 @@ class Location(Vec2):
 
 class Bike:
     def __init__(self):
-        self.length = 1.5
+        self.length = BikeWorldLen
         self.location = Vec2(0.0, 0.0)
         self.velocity = 0.0
         self.rotation = 0.0 # radian
