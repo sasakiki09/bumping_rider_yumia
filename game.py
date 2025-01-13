@@ -3,6 +3,7 @@ from world import *
 from physics import *
 from stages import *
 from input import *
+from status import *
 
 class GameBike:
     def __init__(self, image_index):
@@ -70,6 +71,7 @@ class App:
         self.ground = GameGround()
         world.start()
         self.input = Input()
+        self.status = Status()
         pyxel.run(self.update, self.draw)
 
     def update(self):
@@ -83,5 +85,6 @@ class App:
         self.bike.show()
         self.ground.show()
         self.input.show()
+        self.status.show()
 
 App()
