@@ -29,7 +29,7 @@ class Location(Vec2):
 class Bike:
     def __init__(self):
         self.length = BikeWorldLen
-        self.min_height = 0.05
+        self.min_height = 0.02
         self.reset()
         self.acceleration = 8.0 # m/s^2
         self.max_speed = 28.0 # m/s
@@ -95,20 +95,21 @@ class Bike:
         front_touch = self.wheel_is_on_ground(Wheel.Front, ground)
         rear_touch = self.wheel_is_on_ground(Wheel.Rear, ground)
         dt = world.delta_time
-        self.velocity += world.gravity.mul(dt)
         if (front_touch or rear_touch):
             self.velocity.y *= self.reflection
+        elif not (front_touch and rear_touch):
+            self.velocity += world.gravity.mul(dt)
         rot_acc = math.pi / 3
-        if front_touch:
+        if front_touch and not btn_b:
             self.rotation_velocity -= rot_acc * dt
-        if rear_touch:
+        if rear_touch and not btn_a:
             self.rotation_velocity += rot_acc * dt
         if btn_a and self.velocity.x < self.max_speed and rear_touch:
             self.velocity.x += self.acceleration * dt
-            self.rotation_velocity += rot_acc * dt
+            self.rotation_velocity += rot_acc * 2 *  dt
         if btn_b and self.velocity.x > 0.0 and front_touch:
             self.velocity.x -= self.acceleration * 2 * dt
-            self.rotation_velocity -= rot_acc * 2 * dt
+            self.rotation_velocity -= rot_acc * 4 * dt
         if self.velocity.x < 0.0:
             self.velocity.x = 0.0
         if self.velocity.x > self.max_speed:
