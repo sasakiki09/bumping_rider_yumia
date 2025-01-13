@@ -18,8 +18,17 @@ class Button:
         yd = (self.ButtonSize[1] - self.TextSize[1]) / 2
         pyxel.text(self.x0 + xd, self.y0 + yd, self.label, 1)
 
+    def pressed(self):
+        if not pyxel.btn(pyxel.MOUSE_BUTTON_LEFT):
+            return False
+        return (self.x0 <= pyxel.mouse_x and
+                pyxel.mouse_x <= self.x0 + self.ButtonSize[0] and
+                self.y0 <= pyxel.mouse_y and
+                pyxel.mouse_y <= self.y0 + self.ButtonSize[1])
+
 class Input:
     def __init__(self):
+        pyxel.mouse(True)
         self.init_buttons()
         self.a_pressed = False
         self.b_pressed = False
@@ -41,13 +50,11 @@ class Input:
         if (pyxel.btn(pyxel.GAMEPAD1_BUTTON_B) or
             pyxel.btn(pyxel.KEY_B)):
             self.b_pressed = True
+        if self.button_a.pressed():
+            self.a_pressed = True
+        if self.button_b.pressed():
+            self.b_pressed = True
 
     def show(self):
         self.button_a.show()
         self.button_b.show()
-
-    def a_pressed(self):
-        return self.a_pressed
-
-    def b_pressed(self):
-        return self.b_pressed

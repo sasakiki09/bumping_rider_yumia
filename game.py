@@ -76,6 +76,7 @@ class App:
         world.update()
         self.bike.update(self.ground)
         self.input.update()
+        print(self.input.a_pressed, self.input.b_pressed)
 
     def draw(self):
         pyxel.cls(13)
