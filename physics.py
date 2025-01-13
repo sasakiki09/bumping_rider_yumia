@@ -104,8 +104,8 @@ class Bike:
             self.velocity.x += self.acceleration * dt
             self.rotation_velocity += rot_acc * dt
         if btn_b and self.velocity.x > 0.0 and front_touch:
-            self.velocity.x -= self.acceleration * dt
-            self.rotation_velocity -= rot_acc * dt
+            self.velocity.x -= self.acceleration * 2 * dt
+            self.rotation_velocity -= rot_acc * 2 * dt
         if self.velocity.x < 0.0:
             self.velocity.x = 0.0
         if self.velocity.x > self.max_speed:

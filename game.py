@@ -42,9 +42,13 @@ class GameBike:
         self.bike.update(ground.ground, btn_a, btn_b)
 
 class GameGround:
+    ColorIndex0 = 1
+    ColorIndex1 = 2
+    
     def __init__(self):
         self.ground = stages[0].ground
-        self.color = 1
+        self.color0 = 1
+        self.color1 = 2
 
     def screen_y(self, screen_x):
         w_xy = world.world_xy(Vec2(screen_x, 0))
@@ -53,11 +57,20 @@ class GameGround:
         s_xy = world.screen_xy(Vec2(w_xy.x, w_y))
         return s_xy.y
 
+    def color_index(self, screen_x):
+        w_x = world.world_xy(Vec2(screen_x, 0)).x
+        x = int(w_x) % 10
+        if x < 5:
+            return self.ColorIndex0
+        else:
+            return self.ColorIndex1
+
     def show(self):
         for x in range(world.screen_size.x):
             y = self.screen_y(x)
             if not y: continue
-            pyxel.line(x, y, x, world.screen_size.y, self.color)
+            col = self.color_index(x)
+            pyxel.line(x, y, x, world.screen_size.y, col)
 
 class App:
     def __init__(self):
