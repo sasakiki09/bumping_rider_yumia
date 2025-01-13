@@ -5,6 +5,7 @@ from physics import *
 from stages import *
 from background import *
 from input import *
+from face import *
 from status import *
 
 class GameBike:
@@ -85,6 +86,7 @@ class App:
         self.ground = GameGround()
         world.start()
         self.input = Input()
+        self.face = Face(1)
         self.status = Status()
         pyxel.run(self.update, self.draw)
 
@@ -104,6 +106,7 @@ class App:
         self.bike.show()
         self.ground.show()
         self.input.show()
+        self.face.show()
         self.status.show()
 
 App()
