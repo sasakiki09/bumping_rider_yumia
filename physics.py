@@ -33,6 +33,8 @@ class Bike:
         self.velocity = Vec2(0.0, 0.0)
         self.rotation = 0.0 # radian
         self.rotation_velocity = 0.0
+        self.acceleration = 8.0 # m/s^2
+        self.max_speed = 28.0 # m/s
         self.mass = 100.0 # kg
         self.reflection = -0.3
         l = self.length
@@ -71,29 +73,51 @@ class Bike:
         else:
             raise
         return Location(Coordinate.Local, wcenter.x, wcenter.y)
-    
-    def wheel_is_on_ground(self, wheel, ground):
+
+    def wheel_height(self, wheel, ground):
         wcenter = self.wheel_center(wheel)
         wwcenter = self.to_world(wcenter)
         gh = ground.height(wwcenter.x)
-        return (gh >= wwcenter.y - self.wheel_radius)
+        return (wwcenter.y - self.wheel_radius) - gh
+    
+    def wheel_is_on_ground(self, wheel, ground):
+        return (self.wheel_height(wheel, ground) <= 0.0)
 
-    def update_velocity(self, ground):
+    def height_from_ground(self, ground):
+        h_f = self.wheel_height(Wheel.Front, ground)
+        h_r = self.wheel_height(Wheel.Rear, ground)
+        return min(h_f, h_r)
+
+    def update_velocity(self, ground, btn_a, btn_b):
         front_touch = self.wheel_is_on_ground(Wheel.Front, ground)
         rear_touch = self.wheel_is_on_ground(Wheel.Rear, ground)
-        self.velocity += world.gravity.mul(world.delta_time)
+        dt = world.delta_time
+        self.velocity += world.gravity.mul(dt)
         if (front_touch or rear_touch):
             self.velocity.y *= self.reflection
         rot_acc = math.pi / 3
         if front_touch:
-            self.rotation_velocity -= rot_acc * world.delta_time
+            self.rotation_velocity -= rot_acc * dt
         if rear_touch:
-            self.rotation_velocity += rot_acc * world.delta_time
+            self.rotation_velocity += rot_acc * dt
+        if btn_a and self.velocity.x < self.max_speed:
+            self.velocity.x += self.acceleration * dt
+            self.rotation_velocity += rot_acc * dt
+        if btn_b and self.velocity.x > 0.0:
+            self.velocity.x -= self.acceleration * dt
+            self.rotation_velocity -= rot_acc * dt
+        if self.velocity.x < 0.0:
+            self.velocity.x = 0.0
+        if self.velocity.x > self.max_speed:
+            self.velocity.x = self.max_speed
 
-    def update(self, ground):
-        self.update_velocity(ground)
+    def update(self, ground, btn_a, btn_b):
+        self.update_velocity(ground, btn_a, btn_b)
         self.location += self.velocity.mul(world.delta_time)
         self.rotation += self.rotation_velocity * world.delta_time
+        h = self.height_from_ground(ground)
+        if h < 0.0:
+            self.location.y += -h
     
 class Ground:
     def __init__(self):

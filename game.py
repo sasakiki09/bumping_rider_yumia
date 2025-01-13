@@ -41,8 +41,8 @@ class GameBike:
                   world.bg_index,
                   rot)
         
-    def update(self, ground):
-        self.bike.update(ground.ground)
+    def update(self, ground, btn_a, btn_b):
+        self.bike.update(ground.ground, btn_a, btn_b)
 
 class GameGround:
     def __init__(self):
@@ -76,8 +76,10 @@ class App:
 
     def update(self):
         world.update()
-        self.bike.update(self.ground)
         self.input.update()
+        btn_a = self.input.a_pressed
+        btn_b = self.input.b_pressed
+        self.bike.update(self.ground, btn_a, btn_b)
         self.status.update()
 
     def draw(self):
