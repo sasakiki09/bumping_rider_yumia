@@ -11,8 +11,10 @@ class Status:
         self.distance = 29.5 # dummy value for now
         self.best_time = 5.2 # dummy value for now
 
-    def update(self):
+    def update(self, bike, ground):
         self.time = world.elapsed_time
+        self.speed = bike.velocity.x
+        self.distance = ground.goal_x() - bike.location.x
 
     def show(self):
         x = self.x0

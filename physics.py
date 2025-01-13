@@ -100,10 +100,10 @@ class Bike:
             self.rotation_velocity -= rot_acc * dt
         if rear_touch:
             self.rotation_velocity += rot_acc * dt
-        if btn_a and self.velocity.x < self.max_speed:
+        if btn_a and self.velocity.x < self.max_speed and rear_touch:
             self.velocity.x += self.acceleration * dt
             self.rotation_velocity += rot_acc * dt
-        if btn_b and self.velocity.x > 0.0:
+        if btn_b and self.velocity.x > 0.0 and front_touch:
             self.velocity.x -= self.acceleration * dt
             self.rotation_velocity -= rot_acc * dt
         if self.velocity.x < 0.0:
@@ -156,6 +156,9 @@ class Ground:
             raise
         if x0 == x1: raise
         return y0 + (y1 - y0) / (x1 - x0) * (x - x0)
+
+    def goal_x(self):
+        return self.coords[-1].x
 
 if __name__ == '__main__':
     # Ground Test

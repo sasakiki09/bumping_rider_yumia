@@ -80,7 +80,7 @@ class App:
         btn_a = self.input.a_pressed
         btn_b = self.input.b_pressed
         self.bike.update(self.ground, btn_a, btn_b)
-        self.status.update()
+        self.status.update(self.bike.bike, self.ground.ground)
 
     def draw(self):
         pyxel.cls(13)
