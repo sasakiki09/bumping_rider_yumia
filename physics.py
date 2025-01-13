@@ -29,10 +29,10 @@ class Location(Vec2):
 class Bike:
     def __init__(self):
         self.length = BikeWorldLen
+        self.min_height = 0.05
         self.reset()
         self.acceleration = 8.0 # m/s^2
         self.max_speed = 28.0 # m/s
-        self.mass = 100.0 # kg
         self.reflection = -0.3
         l = self.length
         self.front_wheel_center = Vec2(-l * 3 / 8, -l / 8)
@@ -84,7 +84,7 @@ class Bike:
         return (wwcenter.y - self.wheel_radius) - gh
     
     def wheel_is_on_ground(self, wheel, ground):
-        return (self.wheel_height(wheel, ground) <= 0.0)
+        return (self.wheel_height(wheel, ground) <= self.min_height)
 
     def height_from_ground(self, ground):
         h_f = self.wheel_height(Wheel.Front, ground)
@@ -116,9 +116,9 @@ class Bike:
 
     def update(self, ground, btn_a, btn_b):
         self.update_velocity(ground, btn_a, btn_b)
+        h = self.height_from_ground(ground)
         self.location += self.velocity.mul(world.delta_time)
         self.rotation += self.rotation_velocity * world.delta_time
-        h = self.height_from_ground(ground)
         if h < 0.0:
             self.location.y += -h
     

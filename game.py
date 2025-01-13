@@ -90,10 +90,16 @@ class App:
         self.status = Status()
         pyxel.run(self.update, self.draw)
 
+    def bike_x_diff(self):
+        diff_max = world.origin_screen.x
+        v_max = self.bike.bike.max_speed
+        v = self.bike.bike.velocity.x
+        return v / v_max * diff_max / world.scale.x
+
     def update(self):
         self.background.color_index = self.color_palette.sky
         bike = self.bike.bike
-        ox = bike.location.x + bike.velocity.x * 0.2
+        ox = bike.location.x + self.bike_x_diff()
         world.update(Vec2(ox, 0))
         self.input.update()
         btn_a = self.input.a_pressed
