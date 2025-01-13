@@ -1,7 +1,9 @@
 import pyxel
+from color_palette import *
 from world import *
 from physics import *
 from stages import *
+from background import *
 from input import *
 from status import *
 
@@ -42,8 +44,8 @@ class GameBike:
         self.bike.update(ground.ground, btn_a, btn_b)
 
 class GameGround:
-    ColorIndex0 = 1
-    ColorIndex1 = 2
+    ColorIndex0 = 9
+    ColorIndex1 = 10
     
     def __init__(self):
         self.ground = stages[0].ground
@@ -77,6 +79,8 @@ class App:
         pyxel.init(world.screen_size.x,
                    world.screen_size.y,
                    world.title)
+        self.color_palette = ColorPalette()
+        self.background = Background()
         self.bike = GameBike(0)
         self.ground = GameGround()
         world.start()
@@ -85,6 +89,7 @@ class App:
         pyxel.run(self.update, self.draw)
 
     def update(self):
+        self.background.color_index = self.color_palette.sky
         bike = self.bike.bike
         ox = bike.location.x + bike.velocity.x * 0.2
         world.update(Vec2(ox, 0))
@@ -95,7 +100,7 @@ class App:
         self.status.update(self.bike.bike, self.ground.ground)
 
     def draw(self):
-        pyxel.cls(13)
+        self.background.show()
         self.bike.show()
         self.ground.show()
         self.input.show()
