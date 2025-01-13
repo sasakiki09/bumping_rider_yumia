@@ -26,9 +26,6 @@ class GameBike:
         return Vec2(s_loc.x - self.width / 2,
                     s_loc.y - self.height / 2)
 
-    def add_xy(self, xy):
-        self.bike.location += xy
-    
     def rotation_degree(self):
         rotation = self.bike.rotation
         return 180.0 / math.pi * rotation
@@ -75,7 +72,9 @@ class App:
         pyxel.run(self.update, self.draw)
 
     def update(self):
-        world.update()
+        bike = self.bike.bike
+        ox = bike.location.x + bike.velocity.x * 0.2
+        world.update(Vec2(ox, 0))
         self.input.update()
         btn_a = self.input.a_pressed
         btn_b = self.input.b_pressed

@@ -62,12 +62,13 @@ class World:
         self.elapsed_time = 0.0
         self.delta_time = 0.0
 
-    def update(self):
+    def update(self, world_origin):
         self.tic += 1
         now = time.time()
         self.delta_time = now - self.last_time
         self.elapsed_time = now - self.start_time
         self.last_time = now
+        self.origin_world = world_origin
 
     def screen_xy(self, world_xy):
         w_diff = world_xy - self.origin_world
