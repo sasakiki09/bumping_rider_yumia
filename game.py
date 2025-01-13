@@ -2,6 +2,7 @@ import pyxel
 from world import *
 from physics import *
 from stages import *
+from input import *
 
 class GameBike:
     def __init__(self, image_index):
@@ -68,26 +69,18 @@ class App:
         self.bike = GameBike(0)
         self.ground = GameGround()
         world.start()
+        self.input = Input()
         pyxel.run(self.update, self.draw)
 
     def update(self):
         world.update()
         self.bike.update(self.ground)
-        self.input()
+        self.input.update()
 
     def draw(self):
         pyxel.cls(13)
         self.bike.show()
         self.ground.show()
-
-    def input(self):
-        if pyxel.btn(pyxel.KEY_LEFT):
-            self.bike.add_xy(Vec2(-0.1, 0))
-        if pyxel.btn(pyxel.KEY_RIGHT):
-            self.bike.add_xy(Vec2(0.1, 0))
-        if pyxel.btn(pyxel.KEY_UP):
-            self.bike.add_xy(Vec2(0, -1.0))
-        if pyxel.btn(pyxel.KEY_DOWN):
-            self.bike.add_xy(Vec2(0, 1.0))
+        self.input.show()
 
 App()

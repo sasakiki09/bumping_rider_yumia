@@ -84,7 +84,7 @@ class Bike:
         self.velocity += world.gravity.mul(world.delta_time)
         if (front_touch or rear_touch):
             self.velocity.y *= self.reflection
-        rot_acc = math.pi / 2
+        rot_acc = math.pi / 3
         if front_touch:
             self.rotation_velocity -= rot_acc * world.delta_time
         if rear_touch:
