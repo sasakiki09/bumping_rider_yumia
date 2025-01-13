@@ -100,6 +100,8 @@ class App:
         btn_b = self.input.b_pressed
         self.bike.update(self.ground, btn_a, btn_b)
         self.status.update(self.bike.bike, self.ground.ground)
+        if self.input.reset_pressed:
+            self.reset()
 
     def draw(self):
         self.background.show()
@@ -108,5 +110,9 @@ class App:
         self.input.show()
         self.face.show()
         self.status.show()
+
+    def reset(self):
+        world.start()
+        self.bike.bike.reset()
 
 App()

@@ -14,7 +14,6 @@ class Face:
         margin = 5
         x = world.screen_size.x - self.width - self.width / self.scale - margin
         y = margin + self.height / self.scale
-        print(x, y)
         pyxel.blt(x, y, self.image_index,
                   0, 0, self.width, self.height,
                   world.bg_index, 0, self.scale)

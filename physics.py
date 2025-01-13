@@ -29,10 +29,7 @@ class Location(Vec2):
 class Bike:
     def __init__(self):
         self.length = BikeWorldLen
-        self.location = Vec2(0.0, 2.0)
-        self.velocity = Vec2(0.0, 0.0)
-        self.rotation = 0.0 # radian
-        self.rotation_velocity = 0.0
+        self.reset()
         self.acceleration = 8.0 # m/s^2
         self.max_speed = 28.0 # m/s
         self.mass = 100.0 # kg
@@ -42,6 +39,12 @@ class Bike:
         self.rear_wheel_center = Vec2(l * 3 / 8, -l / 8)
         self.wheel_radius = l / 5
 
+    def reset(self):
+        self.location = Vec2(0.0, 2.0)
+        self.velocity = Vec2(0.0, 0.0)
+        self.rotation = 0.0 # radian
+        self.rotation_velocity = 0.0
+        
     def get_location(self):
         return self.location
 
