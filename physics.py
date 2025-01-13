@@ -34,11 +34,11 @@ class Bike:
         self.rotation = 0.0 # radian
         self.rotation_velocity = 0.0
         self.mass = 100.0 # kg
-        self.reflection = 0.6
+        self.reflection = -0.2
         l = self.length
         self.front_wheel_center = Vec2(-l * 3 / 8, -l / 8)
         self.rear_wheel_center = Vec2(l * 3 / 8, -l / 8)
-        self.wheel_radius = l / 8
+        self.wheel_radius = l / 5
 
     def get_location(self):
         return self.location
@@ -78,26 +78,22 @@ class Bike:
         gh = ground.height(wwcenter.x)
         return (gh >= wwcenter.y - self.wheel_radius)
 
-    def calc_force(self, ground):
-        force = world.gravity.mul(self.mass)
-        rot_acc = 0
-        if self.wheel_is_on_ground(Wheel.Front, ground):
-            self.velocity.y = 0
-            force += world.gravity.mul(-self.reflection * self.mass)
-            rot_acc -= math.pi
-        if self.wheel_is_on_ground(Wheel.Rear, ground):
-            self.velocity.y = 0
-            force += world.gravity.mul(-self.reflection * self.mass)
-            rot_acc += math.pi
-        return [force, rot_acc]
-    
+    def update_velocity(self, ground):
+        front_touch = self.wheel_is_on_ground(Wheel.Front, ground)
+        rear_touch = self.wheel_is_on_ground(Wheel.Rear, ground)
+        self.velocity += world.gravity.mul(world.delta_time)
+        if (front_touch or rear_touch):
+            self.velocity.y *= self.reflection
+        rot_acc = math.pi / 2
+        if front_touch:
+            self.rotation_velocity -= rot_acc * world.delta_time
+        if rear_touch:
+            self.rotation_velocity += rot_acc * world.delta_time
+
     def update(self, ground):
-        f_r = self.calc_force(ground)
-        acc = f_r[0].div(self.mass)
-        rot_acc = f_r[1]
-        self.velocity += acc.mul(world.delta_time)
-        self.location += self.velocity
-        print(acc, self.velocity, self.location)
+        self.update_velocity(ground)
+        self.location += self.velocity.mul(world.delta_time)
+        self.rotation += self.rotation_velocity * world.delta_time
     
 class Ground:
     def __init__(self):
