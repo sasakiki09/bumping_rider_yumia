@@ -110,10 +110,8 @@ class Bike:
         if btn_b and self.velocity.x > 0.0 and front_touch:
             self.velocity.x -= self.acceleration * 2 * dt
             self.rotation_velocity -= rot_acc * 4 * dt
-        if self.velocity.x < 0.0:
-            self.velocity.x = 0.0
-        if self.velocity.x > self.max_speed:
-            self.velocity.x = self.max_speed
+        self.velocity.x = max(0.0, self.velocity.x)
+        self.velocity.x = min(self.max_speed, self.velocity.x)
 
     def update(self, ground, btn_a, btn_b):
         self.update_velocity(ground, btn_a, btn_b)
