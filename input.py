@@ -56,7 +56,8 @@ class Input:
             self.a_pressed = True
         if self.button_b.pressed():
             self.b_pressed = True
-        if (pyxel.btn(pyxel.KEY_R)):
+        if (pyxel.btn(pyxel.GAMEPAD1_BUTTON_X) or
+            pyxel.btn(pyxel.KEY_R)):
             self.reset_pressed = True
 
     def show(self):
