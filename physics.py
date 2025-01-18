@@ -33,6 +33,7 @@ class Bike:
         self.reset()
         self.acceleration = 8.0 # m/s^2
         self.max_speed = 28.0 # m/s
+        self.speed_decay = 0.02
         self.reflection = 0.3
         l = self.length
         self.front_wheel_center = Vec2(l * 3 / 8, -l / 8)
@@ -94,6 +95,7 @@ class Bike:
         return min(h_f, h_r)
 
     def update_velocity(self, ground, btn_a, btn_b):
+        self.velocity.x -= self.speed_decay
         f_h = self.wheel_height(Wheel.Front, ground)
         r_h = self.wheel_height(Wheel.Rear, ground)
         f_touch = (f_h <= self.min_height)

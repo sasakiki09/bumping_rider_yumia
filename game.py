@@ -114,6 +114,7 @@ class App:
         btn_b = self.input.b_pressed
         self.bike.update(self.ground, btn_a, btn_b)
         self.status.update(self.bike.bike, self.ground.ground)
+        self.result.update(False, False)
         if self.input.reset_pressed:
             self.reset()
 
@@ -146,7 +147,6 @@ class App:
     def reset(self):
         world.start()
         self.bike.bike.reset()
-        self.failed = False
-        self.result_time = False
+        self.status.update_best_time()
 
 App()
