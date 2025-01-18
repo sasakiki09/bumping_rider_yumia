@@ -5,7 +5,7 @@ class Face:
     def __init__(self, image_index):
         self.image_index = image_index
         self.image = pyxel.images[image_index]
-        self.image.load(0, 0, "images/face.png")
+        self.image.load(0, 0, "images/faces.png")
         self.width = 64
         self.height = 64
         self.scale = 2
