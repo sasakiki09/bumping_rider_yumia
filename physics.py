@@ -54,6 +54,9 @@ class Bike:
     def set_location(self, x, y):
         self.location = Vec2(x, y)
 
+    def speed_ratio(self):
+        return (self.velocity.x / self.max_speed)
+
     def to_local(self, location):
         if location.coordinate == Coordinate.Local:
             return location

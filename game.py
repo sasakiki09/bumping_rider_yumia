@@ -8,6 +8,7 @@ from input import *
 from face import *
 from status import *
 from result import *
+from sound import *
 
 class GameBike:
     def __init__(self, image_index):
@@ -93,6 +94,7 @@ class App:
         self.face = Face(1)
         self.status = Status()
         self.result = Result()
+        self.sound = Sound()
         pyxel.run(self.update, self.draw)
 
     def bike_x_diff(self):
@@ -132,8 +134,10 @@ class App:
             result_time = False
         if failed or result_time:
             self.update_result(failed, result_time)
+            self.sound.update(False)
         else:
             self.update_in_game()
+            self.sound.update(self.bike.bike.speed_ratio())
 
     def draw(self):
         self.background.show()
