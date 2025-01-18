@@ -7,6 +7,7 @@ from background import *
 from input import *
 from face import *
 from status import *
+from result import *
 
 class GameBike:
     def __init__(self, image_index):
@@ -43,6 +44,9 @@ class GameBike:
         
     def update(self, ground, btn_a, btn_b):
         self.bike.update(ground.ground, btn_a, btn_b)
+
+    def failed(self):
+        return self.bike.failed()
 
 class GameGround:
     ColorIndex0 = 9
@@ -88,6 +92,7 @@ class App:
         self.input = Input()
         self.face = Face(1)
         self.status = Status()
+        self.result = Result()
         pyxel.run(self.update, self.draw)
 
     def bike_x_diff(self):
@@ -96,18 +101,38 @@ class App:
         v = self.bike.bike.velocity.x
         return v / v_max * diff_max / world.scale.x
 
-    def update(self):
+    def goal_distance(self):
+        return self.ground.ground.goal_x() - self.bike.bike.location.x
+
+    def update_in_game(self):
         self.background.color_index = self.color_palette.sky
         bike = self.bike.bike
         ox = bike.location.x + self.bike_x_diff()
         world.update(Vec2(ox, 0))
-        self.input.update()
+        self.input.update(True)
         btn_a = self.input.a_pressed
         btn_b = self.input.b_pressed
         self.bike.update(self.ground, btn_a, btn_b)
         self.status.update(self.bike.bike, self.ground.ground)
         if self.input.reset_pressed:
             self.reset()
+
+    def update_result(self, failed, result_time):
+        self.input.update(False)
+        if self.input.x_pressed:
+            self.reset()
+        self.result.update(failed, result_time)
+
+    def update(self):
+        failed = self.bike.failed()
+        if self.goal_distance() <= 0:
+            result_time = world.elapsed_time
+        else:
+            result_time = False
+        if failed or result_time:
+            self.update_result(failed, result_time)
+        else:
+            self.update_in_game()
 
     def draw(self):
         self.background.show()
@@ -116,9 +141,12 @@ class App:
         self.input.show()
         self.face.show()
         self.status.show()
+        self.result.show()
 
     def reset(self):
         world.start()
         self.bike.bike.reset()
+        self.failed = False
+        self.result_time = False
 
 App()

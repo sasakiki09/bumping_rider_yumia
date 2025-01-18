@@ -30,8 +30,10 @@ class Input:
     def __init__(self):
         pyxel.mouse(True)
         self.init_buttons()
+        self.in_game = True
         self.a_pressed = False
         self.b_pressed = False
+        self.x_pressed = False
         self.reset_pressed = False
 
     def init_buttons(self):
@@ -41,10 +43,14 @@ class Input:
         self.button_b = Button(x0, y0, "B")
         x0 = world.screen_size.x - margin - Button.ButtonSize[0]
         self.button_a = Button(x0, y0, "A")
+        x0 = (world.screen_size.x - Button.ButtonSize[0]) / 2
+        self.button_x = Button(x0, y0, "X")
         
-    def update(self):
+    def update(self, in_game):
+        self.in_game = in_game
         self.a_pressed = False
         self.b_pressed = False
+        self.x_pressed = False
         self.reset_pressed = False
         if (pyxel.btn(pyxel.GAMEPAD1_BUTTON_A) or
             pyxel.btn(pyxel.KEY_A)):
@@ -52,14 +58,22 @@ class Input:
         if (pyxel.btn(pyxel.GAMEPAD1_BUTTON_B) or
             pyxel.btn(pyxel.KEY_B)):
             self.b_pressed = True
+        if (pyxel.btn(pyxel.GAMEPAD1_BUTTON_X) or
+            pyxel.btn(pyxel.KEY_X)):
+            self.x_pressed = True
         if self.button_a.pressed():
             self.a_pressed = True
         if self.button_b.pressed():
             self.b_pressed = True
-        if (pyxel.btn(pyxel.GAMEPAD1_BUTTON_X) or
+        if self.button_x.pressed():
+            self.x_pressed = True
+        if (pyxel.btn(pyxel.GAMEPAD1_BUTTON_START) or
             pyxel.btn(pyxel.KEY_R)):
             self.reset_pressed = True
 
     def show(self):
-        self.button_a.show()
-        self.button_b.show()
+        if self.in_game:
+            self.button_a.show()
+            self.button_b.show()
+        else:
+            self.button_x.show()

@@ -44,6 +44,7 @@ class Bike:
         self.velocity = Vec2(0.0, 0.0)
         self.rotation = 0.0 # radian
         self.rotation_velocity = 0.0
+        self.touched = False
         self.last_touched = False
         
     def get_location(self):
@@ -104,6 +105,7 @@ class Bike:
             else:
                 r_touch = True
         dt = world.delta_time
+        self.touched = (f_touch or r_touch)
         if (f_touch or r_touch):
             self.velocity.y = self.reflection * abs(self.velocity.y)
         elif not (f_touch and r_touch):
@@ -133,6 +135,9 @@ class Bike:
         if h < 0.0:
             self.location.y += -h
             self.last_touched = True
+
+    def failed(self):
+        return (self.touched and math.cos(self.rotation) <= 0)
     
 class Ground:
     def __init__(self):
