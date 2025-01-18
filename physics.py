@@ -33,10 +33,10 @@ class Bike:
         self.reset()
         self.acceleration = 8.0 # m/s^2
         self.max_speed = 28.0 # m/s
-        self.reflection = -0.3
+        self.reflection = 0.3
         l = self.length
-        self.front_wheel_center = Vec2(-l * 3 / 8, -l / 8)
-        self.rear_wheel_center = Vec2(l * 3 / 8, -l / 8)
+        self.front_wheel_center = Vec2(l * 3 / 8, -l / 8)
+        self.rear_wheel_center = Vec2(-l * 3 / 8, -l / 8)
         self.wheel_radius = l / 5
 
     def reset(self):
@@ -44,6 +44,7 @@ class Bike:
         self.velocity = Vec2(0.0, 0.0)
         self.rotation = 0.0 # radian
         self.rotation_velocity = 0.0
+        self.last_touched = False
         
     def get_location(self):
         return self.location
@@ -92,24 +93,35 @@ class Bike:
         return min(h_f, h_r)
 
     def update_velocity(self, ground, btn_a, btn_b):
-        front_touch = self.wheel_is_on_ground(Wheel.Front, ground)
-        rear_touch = self.wheel_is_on_ground(Wheel.Rear, ground)
+        f_h = self.wheel_height(Wheel.Front, ground)
+        r_h = self.wheel_height(Wheel.Rear, ground)
+        f_touch = (f_h <= self.min_height)
+        r_touch = (r_h <= self.min_height)
+        if self.last_touched and not (f_touch or r_touch):
+            self.last_touched = False
+            if f_h < r_h:
+                f_touch = True
+            else:
+                r_touch = True
         dt = world.delta_time
-        if (front_touch or rear_touch):
-            self.velocity.y *= self.reflection
-        elif not (front_touch and rear_touch):
+        if (f_touch or r_touch):
+            self.velocity.y = self.reflection * abs(self.velocity.y)
+        elif not (f_touch and r_touch):
             self.velocity += world.gravity.mul(dt)
         rot_acc = math.pi / 3
-        if front_touch and not btn_b:
-            self.rotation_velocity -= rot_acc * dt
-        if rear_touch and not btn_a:
+        if f_touch and not btn_b:
             self.rotation_velocity += rot_acc * dt
-        if btn_a and self.velocity.x < self.max_speed and rear_touch:
-            self.velocity.x += self.acceleration * dt
-            self.rotation_velocity += rot_acc * 2 *  dt
-        if btn_b and self.velocity.x > 0.0 and front_touch:
-            self.velocity.x -= self.acceleration * 2 * dt
-            self.rotation_velocity -= rot_acc * 4 * dt
+        if r_touch and not btn_a:
+            self.rotation_velocity -= rot_acc * dt
+        if btn_a and self.velocity.x < self.max_speed and r_touch:
+            self.velocity.x += self.acceleration * dt * math.cos(self.rotation)
+            self.rotation_velocity += rot_acc *  dt
+        if btn_b and self.velocity.x > 0.0:
+            self.rotation_velocity -= rot_acc * dt
+            if f_touch:
+                self.velocity.x -= self.acceleration * dt
+            else:
+                self.velocity.x -= self.acceleration * dt * 0.3
         self.velocity.x = max(0.0, self.velocity.x)
         self.velocity.x = min(self.max_speed, self.velocity.x)
 
@@ -120,6 +132,7 @@ class Bike:
         self.rotation += self.rotation_velocity * world.delta_time
         if h < 0.0:
             self.location.y += -h
+            self.last_touched = True
     
 class Ground:
     def __init__(self):
