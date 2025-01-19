@@ -102,7 +102,7 @@ class App:
                    world.screen_size.y,
                    world.title)
         self.color_palette = ColorPalette()
-        self.background = Background()
+        self.background = Background(TimePeriod.Day, seed = 0)
         self.bike = GameBike(image_index = 0)
         self.ground = GameGround()
         world.start()
@@ -137,7 +137,7 @@ class App:
                 self.face.update(FaceIndex.Cry)
 
     def update_in_game(self):
-        self.background.color_index = self.color_palette.sky
+        self.background.update(world.origin_world.x)
         bike = self.bike.bike
         ox = bike.location.x + self.bike_x_diff()
         world.update(Vec2(ox, 0))
