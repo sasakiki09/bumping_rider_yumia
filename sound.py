@@ -8,7 +8,7 @@ class Sound:
         s.speed = 2
         s.set_tones("P")
         s.set_effects("F")
-        s.set_volumes("5")
+        s.set_volumes("7")
 
     def note_str(self, ratio):
         base_ss = [

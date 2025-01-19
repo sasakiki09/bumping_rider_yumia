@@ -168,9 +168,9 @@ class App:
         else:
             result_time = False
         if failed or result_time:
+            self.music.stop()
             self.update_result(failed, result_time)
             self.sound.update(False)
-            self.music.stop()
         else:
             self.update_in_game()
             self.sound.update(self.bike.bike.speed_ratio())
