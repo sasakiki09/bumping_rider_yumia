@@ -24,11 +24,13 @@ class Status:
     def show(self):
         x = self.x0
         y = self.y0
-        pyxel.text(x, y, '    Time: {:5.2f}'.format(self.time), 1)
+        pyxel.text(x, y, 'STAGE: {:}'.format(world.stage_index + 1), 1)
+        y += self.y_diff * 2
+        pyxel.text(x, y, '    Time: {:>7.2f}'.format(self.time), 1)
         y += self.y_diff
-        pyxel.text(x, y, '   Speed: {:5.2f}'.format(self.speed), 1)
+        pyxel.text(x, y, '   Speed: {:>7.2f}'.format(self.speed), 1)
         y += self.y_diff
-        pyxel.text(x, y, 'Distance: {:5.2f}'.format(self.distance), 1)
+        pyxel.text(x, y, 'Distance: {:>7.2f}'.format(self.distance), 1)
         if self.best_time:
             y += self.y_diff * 2
-            pyxel.text(x, y, 'Best Time: {:5.2f}'.format(self.best_time), 1)
+            pyxel.text(x, y, 'Best Time: {:7.2f}'.format(self.best_time), 1)

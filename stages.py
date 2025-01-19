@@ -19,8 +19,15 @@ class Stage:
 stages = []
 
 # stage 1
-xys = [ -3.0, 0.0,
-        5.0, 1.0,
-        20.0, 0.0,
-        100.0, 1.0]
-stages.append(Stage(xys))
+stages.append(Stage([ -3.0, 0.0,
+                      5.0, 1.0,
+                      20.0, 0.0,
+                      100.0, 1.0]))
+
+# stage 2
+stages.append(Stage([ -3, 0,
+                      10, 1,
+                      20, 5,
+                      20.1, 0,
+                      50, 2,
+                      100, 2]))

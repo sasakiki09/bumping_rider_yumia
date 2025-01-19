@@ -1,5 +1,6 @@
 import pyxel
 from world import *
+from stages import *
 
 class Result:
     def __init__(self):
@@ -29,10 +30,13 @@ class Result:
         x0 = self.center.x - w / 2
         y0 = self.center.y - h / 2
         pyxel.text(x0, y0, "Goal {:5.2f}".format(self.result_time), 14)
-        w = self.w * 16
+        str = "Press X for Next"
+        if world.stage_index + 1 == len(stages):
+            str = "Press X for 1st Stage"
+        w = self.w * len(str)
         x0 = self.center.x - w / 2
         y0 += self.h * 2
-        pyxel.text(x0, y0, "Press X for Next", 14)
+        pyxel.text(x0, y0, str, 14)
 
     def show(self):
         if self.failed:

@@ -46,7 +46,7 @@ class GameBike:
                   rot)
         
     def update(self, ground, btn_a, btn_b):
-        self.bike.update(ground.ground, btn_a, btn_b)
+        self.bike.update(ground, btn_a, btn_b)
 
     def failed(self):
         return self.bike.failed()
@@ -67,13 +67,15 @@ class GameGround:
     ColorIndex1 = 10
     
     def __init__(self):
-        self.ground = stages[0].ground
         self.color0 = 1
         self.color1 = 2
 
+    def ground(self):
+        return stages[world.stage_index].ground
+
     def screen_y(self, screen_x):
         w_xy = world.world_xy(Vec2(screen_x, 0))
-        w_y = self.ground.height(w_xy.x)
+        w_y = self.ground().height(w_xy.x)
         if not w_y: return False
         s_xy = world.screen_xy(Vec2(w_xy.x, w_y))
         return s_xy.y
@@ -110,6 +112,9 @@ class App:
         self.sound = Sound()
         pyxel.run(self.update, self.draw)
 
+    def stage(self):
+        return stages[world.stage_index]
+
     def bike_x_diff(self):
         diff_max = world.origin_screen.x
         v_max = self.bike.bike.max_speed
@@ -117,7 +122,7 @@ class App:
         return v / v_max * diff_max / world.scale.x
 
     def goal_distance(self):
-        return self.ground.ground.goal_x() - self.bike.bike.location.x
+        return self.stage().ground.goal_x() - self.bike.bike.location.x
 
     def update_face(self, in_game, succeeded):
         if in_game:
@@ -136,8 +141,8 @@ class App:
         self.input.update(True)
         btn_a = self.input.a_pressed
         btn_b = self.input.b_pressed
-        self.bike.update(self.ground, btn_a, btn_b)
-        self.status.update(self.bike.bike, self.ground.ground)
+        self.bike.update(self.stage().ground, btn_a, btn_b)
+        self.status.update(self.bike.bike, self.stage().ground)
         self.update_face(True, False)
         self.result.update(False, False)
         if self.input.reset_pressed:
@@ -145,10 +150,13 @@ class App:
 
     def update_result(self, failed, result_time):
         self.input.update(False)
-        if self.input.x_pressed:
-            self.reset()
         self.result.update(failed, result_time)
         self.update_face(False, not failed)
+        if self.input.x_pressed:
+            if result_time:
+                s_i = (world.stage_index + 1) % len(stages)
+                world.stage_index = s_i
+            self.reset()
 
     def update(self):
         failed = self.bike.failed()
