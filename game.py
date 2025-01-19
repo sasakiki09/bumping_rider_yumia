@@ -1,4 +1,5 @@
 import pyxel
+import random
 from color_palette import *
 from world import *
 from physics import *
@@ -19,6 +20,7 @@ class GameBike:
         self.front_wheel_center = Vec2(12, 8)
         self.rear_wheel_center = Vec2(8, 8)
         self.image_index = image_index
+        self.next_blink_tic = 20
         self.load()
 
     def load(self):
@@ -52,7 +54,10 @@ class GameBike:
     def face_index(self):
         if abs(math.sin(self.bike.rotation)) > 0.65:
             return FaceIndex.Astonish
-        if world.tic % 20 == 0 or world.tic % 20 == 1:
+        if world.tic % self.next_blink_tic == 0:
+            return FaceIndex.Blink
+        elif world.tic % self.next_blink_tic == 1:
+            self.next_blink_tic = random.randint(10, 30)
             return FaceIndex.Blink
         else:
             return FaceIndex.Normal
