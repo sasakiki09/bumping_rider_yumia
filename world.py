@@ -1,6 +1,5 @@
 import math
 import time
-from enum import Enum
 
 BikeWorldLen = 1.5 # [m]
 BikeSpriteWidth = 48 # [pixel]

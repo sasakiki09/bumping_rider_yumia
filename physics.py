@@ -1,14 +1,14 @@
 from world import *
 import math
-from enum import Enum
+from enum import Enum, auto
 
 class Wheel(Enum):
-    Front = 0
-    Rear = 1
+    Front = auto()
+    Rear = auto()
 
 class Coordinate(Enum):
-    World = 0
-    Local = 1
+    World = auto()
+    Local = auto()
 
 # -x: front, +x: rear
 # -y: down,  +y: up

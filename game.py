@@ -49,6 +49,14 @@ class GameBike:
     def failed(self):
         return self.bike.failed()
 
+    def face_index(self):
+        if abs(math.sin(self.bike.rotation)) > 0.65:
+            return FaceIndex.Astonish
+        if world.tic % 20 == 0 or world.tic % 20 == 1:
+            return FaceIndex.Blink
+        else:
+            return FaceIndex.Normal
+
 class GameGround:
     ColorIndex0 = 9
     ColorIndex1 = 10
@@ -87,11 +95,11 @@ class App:
                    world.title)
         self.color_palette = ColorPalette()
         self.background = Background()
-        self.bike = GameBike(0)
+        self.bike = GameBike(image_index = 0)
         self.ground = GameGround()
         world.start()
         self.input = Input()
-        self.face = Face(1)
+        self.face = Face(image_index = 1)
         self.status = Status()
         self.result = Result()
         self.sound = Sound()
@@ -106,6 +114,15 @@ class App:
     def goal_distance(self):
         return self.ground.ground.goal_x() - self.bike.bike.location.x
 
+    def update_face(self, in_game, succeeded):
+        if in_game:
+            self.face.update(self.bike.face_index())
+        else:
+            if succeeded:
+                self.face.update(FaceIndex.Smile)
+            else:
+                self.face.update(FaceIndex.Cry)
+
     def update_in_game(self):
         self.background.color_index = self.color_palette.sky
         bike = self.bike.bike
@@ -116,6 +133,7 @@ class App:
         btn_b = self.input.b_pressed
         self.bike.update(self.ground, btn_a, btn_b)
         self.status.update(self.bike.bike, self.ground.ground)
+        self.update_face(True, False)
         self.result.update(False, False)
         if self.input.reset_pressed:
             self.reset()
@@ -125,6 +143,7 @@ class App:
         if self.input.x_pressed:
             self.reset()
         self.result.update(failed, result_time)
+        self.update_face(False, not failed)
 
     def update(self):
         failed = self.bike.failed()
