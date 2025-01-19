@@ -1,9 +1,9 @@
 import pyxel
 
 class Sound:
-    def __init__(self):
+    def __init__(self, sound_index):
         self.channel = 0
-        self.sound_index = 0
+        self.sound_index = sound_index
         s = pyxel.sounds[self.sound_index]
         s.speed = 2
         s.set_tones("P")
@@ -36,6 +36,6 @@ class Sound:
         if ratio:
             s = pyxel.sounds[self.sound_index]
             s.set_notes(self.note_str(ratio) + "R")
-            pyxel.play(self.channel, [0, 1], loop=True)
+            pyxel.play(self.channel, 0, loop=True)
         else:
             pyxel.stop(self.channel)

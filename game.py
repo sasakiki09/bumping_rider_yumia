@@ -10,6 +10,7 @@ from face import *
 from status import *
 from result import *
 from sound import *
+from music import *
 
 class GameBike:
     def __init__(self, image_index):
@@ -109,7 +110,9 @@ class App:
         self.face = Face(image_index = 1)
         self.status = Status()
         self.result = Result()
-        self.sound = Sound()
+        self.sound = Sound(sound_index = 0)
+        self.music = Music(sound_index = 1)
+        self.reset()
         pyxel.run(self.update, self.draw)
 
     def stage(self):
@@ -167,6 +170,7 @@ class App:
         if failed or result_time:
             self.update_result(failed, result_time)
             self.sound.update(False)
+            self.music.stop()
         else:
             self.update_in_game()
             self.sound.update(self.bike.bike.speed_ratio())
@@ -184,5 +188,6 @@ class App:
         world.start()
         self.bike.bike.reset()
         self.status.update_best_time()
+        self.music.play()
 
 App()
