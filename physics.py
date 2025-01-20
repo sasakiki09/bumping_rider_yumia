@@ -154,20 +154,8 @@ class Ground:
         if len(self.coords) < 2: raise
         self.last_index = False
 
-    # Find minmum index such that self.coords[index] <= x.
-    def find_index(self, x):
-        if not self.last_index: self.last_index = 0
-        index = self.last_index
-        while (index < len(self.coords) - 1 and
-               self.coords[index].x < x):
-            index += 1
-        while (0 < index and
-               x < self.coords[index].x):
-            index -= 1
-        return index
-        
     def height(self, x):
-        index = self.find_index(x)
+        index = Vec2.find_index(self.coords, x, self.last_index)
         if (x < self.coords[0].x or self.coords[-1].x < x):
             return False
         if index == len(self.coords) - 1:

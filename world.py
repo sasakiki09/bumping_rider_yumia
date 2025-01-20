@@ -1,46 +1,10 @@
 import math
 import time
+from utilities import *
 
 BikeWorldLen = 1.5 # [m]
 BikeSpriteWidth = 48 # [pixel]
 BikeSpriteHeight = 32 # [pixel]
-
-class Vec2:
-    def __init__(self):
-        self.x = False
-        self.y = False
-    
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-    def __add__(self, other):
-        return Vec2(self.x + other.x, self.y + other.y)
-
-    def __sub__(self, other):
-        return Vec2(self.x - other.x, self.y - other.y)
-
-    def __mul__(self, other):
-        return Vec2(self.x * other.x, self.y * other.y)
-
-    def __truediv__(self, other):
-        return Vec2(self.x / other.x, self.y / other.y)
-
-    def __str__(self):
-        return "Vec2(%f,%f)" % (self.x, self.y)
-
-    def mul(self, other):
-        return Vec2(self.x * other, self.y * other)
-    
-    def div(self, other):
-        return Vec2(self.x / other, self.y / other)
-
-    def rotate(self, radian):
-        sin_a = math.sin(radian)
-        cos_a = math.cos(radian)
-        x1 = cos_a * self.x - sin_a * self.y
-        y1 = sin_a * self.x + cos_a * self.y
-        return Vec2(x1, y1)
 
 class World:
     def __init__(self):

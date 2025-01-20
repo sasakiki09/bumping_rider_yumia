@@ -51,21 +51,9 @@ class Background:
     def update(self, origin_world_x):
         self.origin_world_x = origin_world_x
 
-    # Find minmum index such that xys[index] <= x.
-    def find_index(self, xys, x):
-        if not self.last_index: self.last_index = 0
-        index = self.last_index
-        while (index < len(xys) - 1 and
-               xys[index].x < x):
-            index += 1
-        while (0 < index and
-               x < xys[index].x):
-            index -= 1
-        return index
-        
     def calc_y(self, xys, x, scale):
         x = x % scale
-        i0 = self.find_index(xys, x)
+        i0 = Vec2.find_index(xys, x, self.last_index)
         i1 = (i0 + 1) % len(xys)
         x0 = xys[i0].x % scale
         y0 = xys[i0].y
