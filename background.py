@@ -27,11 +27,19 @@ class Background:
             return 6
 
     def gen_stars(self):
-        pass
+        min_y = 0.6
+        max_y = 1.0
+        count = 20
+        xys = []
+        for _ in range(count):
+            x = random.uniform(0.0, 1.0)
+            y = random.uniform(min_y, max_y)
+            xys.append(Vec2(x, y))
+        self.stars_xys = xys
 
     def gen_mountains(self):
-        min_h = 0.2
-        max_h = 0.9
+        min_y = 0.2
+        max_y = 0.9
         max_x_interval = 0.2
         self.mountains_scale = 3.0
         last_x = 0.0
@@ -41,12 +49,28 @@ class Background:
             y = last_y + (random.random() - 0.5) * max_x_interval
             y = min(max(y, 0.0), 1.0)
             x = last_x + random.random() * max_x_interval
-            xys.append(Vec2(x, min_h + y * (max_h - min_h)))
+            xys.append(Vec2(x, min_y + y * (max_y - min_y)))
             last_x = x
         self.mountains_xys = xys
 
     def gen_clouds(self):
-        pass
+        min_y = 0.7
+        max_y = 1.0
+        min_w = 0.3
+        max_w = 0.5
+        min_h = 0.05
+        max_h = 0.1
+        count = 20
+        self.clouds_scale = 5
+        xys = []
+        for _ in range(count):
+            x = random.uniform(0.0, self.clouds_scale)
+            y = random.uniform(min_y, max_y)
+            v = Vec2(x, y)
+            v.w = random.uniform(min_w, max_w)
+            v.h = random.uniform(min_h, max_h)
+            xys.append(v)
+        self.clouds_xys = xys
 
     def update(self, origin_world_x):
         self.origin_world_x = origin_world_x
@@ -80,7 +104,17 @@ class Background:
             pyxel.line(sx, sy, sx, sh - 1, color)
         
     def show_clouds(self):
-        pass
+        color = 7
+        scale = self.clouds_scale
+        origin_sx = self.origin_world_x * world.scale.x
+        sw = world.screen_size.x
+        sh = world.screen_size.y
+        for v in self.clouds_xys:
+            sx = v.x * sw - origin_sx / scale
+            sy = (1 - v.y) * sh
+            sw = v.w * sw
+            sh = v.h * sh
+            pyxel.rect(sx, sy, sw, sh, color)
 
     def show(self):
         pyxel.cls(self.color_index)
