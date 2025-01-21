@@ -107,15 +107,19 @@ class Background:
     def show_clouds(self):
         color = 7
         scale = self.clouds_scale
-        sw = world.screen_size.x
-        sh = world.screen_size.y
-        origin_x = self.origin_world_x * world.scale.x / sw
+        s_w = world.screen_size.x
+        s_h = world.screen_size.y
+        origin_x = self.origin_world_x * world.scale.x / s_w
+        speed = 1.0 / 3.0
         for v in self.clouds_xys:
-            sx = (v.x - origin_x) / 2 * sw
-            sy = (1 - v.y) * sh
-            scw = v.w * sw
-            sch = v.h * sh
-            pyxel.rect(sx, sy, scw, sch, color)
+            x = v.x - origin_x
+            while x * speed + v.w < 0.0:
+                x += scale
+            sx = x * speed * s_w
+            sy = (1 - v.y) * s_h
+            sw = v.w * s_w
+            sh = v.h * s_h
+            pyxel.rect(sx, sy, sw, sh, color)
 
     def show(self):
         pyxel.cls(self.color_index)
