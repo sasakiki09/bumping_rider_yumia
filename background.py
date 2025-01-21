@@ -27,7 +27,7 @@ class Background:
             return 6
 
     def gen_stars(self):
-        min_y = 0.6
+        min_y = 0.3
         max_y = 1.0
         count = 20
         xys = []
@@ -89,7 +89,13 @@ class Background:
     def show_stars(self):
         if self.time_period != TimePeriod.Night:
             return
-        #################### TODO: implement
+        color = 10
+        s_w = world.screen_size.x
+        s_h = world.screen_size.y
+        for v in self.stars_xys:
+            sx = v.x * s_w
+            sy = v.y * s_h
+            pyxel.pset(sx, sy, color)
 
     def show_mountains(self):
         color = 3
