@@ -94,15 +94,15 @@ class Background:
     def show_mountains(self):
         color = 3
         scale = self.mountains_scale
-        origin_x = self.origin_world_x / world.scale.x
-        sw = world.screen_size.x
-        sh = world.screen_size.y
-        for sx in range(sw):
+        s_w = world.screen_size.x
+        s_h = world.screen_size.y
+        origin_x = self.origin_world_x * world.scale.x / s_w
+        for sx in range(s_w):
             y = self.calc_y(self.mountains_xys,
-                            sx / sw + origin_x / scale,
+                            sx / s_w + origin_x / scale,
                             scale)
-            sy = (1 - y) * sh
-            pyxel.line(sx, sy, sx, sh - 1, color)
+            sy = (1 - y) * s_h
+            pyxel.line(sx, sy, sx, s_h - 1, color)
         
     def show_clouds(self):
         color = 7
