@@ -58,8 +58,8 @@ class Background:
         max_y = 1.0
         min_w = 0.3
         max_w = 0.5
-        min_h = 0.05
-        max_h = 0.1
+        min_h = 0.02
+        max_h = 0.04
         count = 20
         self.clouds_scale = 5
         xys = []
@@ -67,6 +67,7 @@ class Background:
             x = random.uniform(0.0, self.clouds_scale)
             y = random.uniform(min_y, max_y)
             v = Vec2(x, y)
+            print(v)
             v.w = random.uniform(min_w, max_w)
             v.h = random.uniform(min_h, max_h)
             xys.append(v)
@@ -106,15 +107,15 @@ class Background:
     def show_clouds(self):
         color = 7
         scale = self.clouds_scale
-        origin_sx = self.origin_world_x * world.scale.x
         sw = world.screen_size.x
         sh = world.screen_size.y
+        origin_x = self.origin_world_x * world.scale.x / sw
         for v in self.clouds_xys:
-            sx = v.x * sw - origin_sx / scale
+            sx = (v.x - origin_x) / 2 * sw
             sy = (1 - v.y) * sh
-            sw = v.w * sw
-            sh = v.h * sh
-            pyxel.rect(sx, sy, sw, sh, color)
+            scw = v.w * sw
+            sch = v.h * sh
+            pyxel.rect(sx, sy, scw, sch, color)
 
     def show(self):
         pyxel.cls(self.color_index)
