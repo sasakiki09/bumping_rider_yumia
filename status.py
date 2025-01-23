@@ -1,15 +1,17 @@
 import pyxel
+import PyxelUniversalFont as puf
 from world import *
 
 class Status:
     def __init__(self):
         self.x0 = 10
         self.y0 = 10
-        self.y_diff = 7
+        self.y_diff = 9
         self.time = False
         self.speed = 0.0
         self.distance = 29.5
         self.best_time = False
+        self.writer = puf.Writer("misaki_gothic2.ttf")
 
     def update(self, bike, ground):
         self.time = world.elapsed_time
@@ -24,13 +26,14 @@ class Status:
     def show(self):
         x = self.x0
         y = self.y0
-        pyxel.text(x, y, 'STAGE: {:}'.format(world.stage_index + 1), 1)
+        w = self.writer
+        w.draw(x, y, 'STAGE: {:}'.format(world.stage_index + 1), 8, 1)
         y += self.y_diff * 2
-        pyxel.text(x, y, '    Time: {:>7.2f}'.format(self.time), 1)
+        w.draw(x, y, '    Time: {:>7.2f}'.format(self.time), 8, 1)
         y += self.y_diff
-        pyxel.text(x, y, '   Speed: {:>7.2f}'.format(self.speed), 1)
+        w.draw(x, y, '   Speed: {:>7.2f}'.format(self.speed), 8, 1)
         y += self.y_diff
-        pyxel.text(x, y, 'Distance: {:>7.2f}'.format(self.distance), 1)
+        w.draw(x, y, 'Distance: {:>7.2f}'.format(self.distance), 8, 1)
         if self.best_time:
             y += self.y_diff * 2
-            pyxel.text(x, y, 'Best Time: {:7.2f}'.format(self.best_time), 1)
+            w.draw(x, y, 'Best Time: {:7.2f}'.format(self.best_time), 8, 1)
