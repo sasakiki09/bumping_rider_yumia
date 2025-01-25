@@ -38,7 +38,7 @@ class Result:
         self.text(x0, y0, str)
 
     def show_goal(self):
-        str = "Goal {:5.2f}".format(self.result_time)
+        str = "Goal: {:5.2f} sec.".format(self.result_time)
         w = self.w * len(str)
         h = self.h
         x0 = self.center.x - w / 2

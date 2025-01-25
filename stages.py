@@ -2,10 +2,18 @@ import math
 from world import *
 from physics import *
 
-class Stage:
-    def __init__(self, xy_array):
-        self.ground = self.gen_ground(xy_array)
+class TimePeriod(Enum):
+    Morning = auto()
+    Day = auto()
+    Evening = auto()
+    Night = auto()
 
+class Stage:
+    def __init__(self, xy_array, time_period, seed):
+        self.ground = self.gen_ground(xy_array)
+        self.time_period = time_period
+        self.seed = seed
+        
     def gen_ground(self, xy_array):
         l = len(xy_array)
         if l % 2 != 0: raise
@@ -22,7 +30,9 @@ stages = []
 stages.append(Stage([ -3.0, 0.0,
                       5.0, 1.0,
                       20.0, 0.0,
-                      100.0, 1.0]))
+                      100.0, 1.0],
+                    TimePeriod.Day,
+                    0))
 
 # stage 2
 stages.append(Stage([ -3, 0,
@@ -30,4 +40,6 @@ stages.append(Stage([ -3, 0,
                       20, 5,
                       20.1, 0,
                       50, 2,
-                      100, 2]))
+                      100, 2],
+                    TimePeriod.Night,
+                    1))

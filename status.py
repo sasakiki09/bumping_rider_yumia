@@ -10,7 +10,6 @@ class Status:
         self.speed = 0.0
         self.distance = 0.0
         self.best_time = None
-        self.font = pyxel.Font("fonts/VictoriaBold-8.bdf")
         self.color = 1
         self.bg_color = 7
 
@@ -25,9 +24,9 @@ class Status:
         self.best_time = min(self.best_time, self.time)
 
     def text(self, x, y, str):
-        pyxel.text(x + 2, y + 1, str, self.bg_color, self.font)
-        pyxel.text(x + 1, y + 1, str, self.bg_color, self.font)
-        pyxel.text(x, y, str, self.color, self.font)
+        pyxel.text(x + 2, y + 1, str, self.bg_color)
+        pyxel.text(x + 1, y + 1, str, self.bg_color)
+        pyxel.text(x, y, str, self.color)
 
     def show(self):
         x = self.x0

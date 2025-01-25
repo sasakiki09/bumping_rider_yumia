@@ -106,7 +106,6 @@ class App:
                    world.title)
         self.color_palette = ColorPalette(
             [self.BikesImagePath, self.FacesImagePath])
-        self.background = Background(TimePeriod.Day, seed = 0)
         self.bike = GameBike(image_index = 0, path = self.BikesImagePath)
         self.ground = GameGround()
         world.start()
@@ -190,6 +189,7 @@ class App:
 
     def reset(self):
         world.start()
+        self.background = Background()
         self.bike.bike.reset()
         self.status.update_best_time()
         self.music.play()

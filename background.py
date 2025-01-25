@@ -2,34 +2,29 @@ import pyxel
 import random
 from enum import Enum, auto
 from world import *
-
-class TimePeriod(Enum):
-    Morning = auto()
-    Day = auto()
-    Evening = auto()
-    Night = auto()
+from stages import *
 
 class Background:
-    def __init__(self, time_period, seed):
-        random.seed(seed)
-        self.time_period = time_period
-        self.color_index = self.color_index()
+    def __init__(self):
+        stage = stages[world.stage_index]
+        self.time_period = stage.time_period
+        random.seed(stage.seed)
         self.origin_world_x = 0.0
         self.last_index = False
         self.gen_stars()
         self.gen_mountains()
         self.gen_clouds()
-
-    def color_index(self):
+    
+    def bg_color(self):
         if (self.time_period == TimePeriod.Night):
-            return 13
+            return 0
         else:
             return 6
 
     def gen_stars(self):
         min_y = 0.3
         max_y = 1.0
-        count = 20
+        count = 200
         xys = []
         for _ in range(count):
             x = random.uniform(0.0, 1.0)
@@ -88,12 +83,12 @@ class Background:
     def show_stars(self):
         if self.time_period != TimePeriod.Night:
             return
-        color = 10
         s_w = world.screen_size.x
         s_h = world.screen_size.y
+        color = 7
         for v in self.stars_xys:
             sx = v.x * s_w
-            sy = v.y * s_h
+            sy = (1.0 - v.y) * s_h
             pyxel.pset(sx, sy, color)
 
     def show_mountains(self):
@@ -127,7 +122,7 @@ class Background:
             pyxel.rect(sx, sy, sw, sh, color)
 
     def show(self):
-        pyxel.cls(self.color_index)
+        pyxel.cls(self.bg_color())
         self.show_stars()
         self.show_mountains()
         self.show_clouds()
