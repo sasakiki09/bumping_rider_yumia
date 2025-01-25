@@ -1,16 +1,26 @@
 import pyxel
+from PIL import Image
 
 class ColorPalette:
-    def __init__(self):
+    MaxColors = 200
+    
+    def __init__(self, paths):
         self.initial_colors = pyxel.colors.to_list()
         colors = pyxel.colors.to_list()
         self.sky = len(colors)
         colors.append(0x4fefff)
-        colors.extend(self.face_colors())
+        colors.extend(self.from_images(paths))
         pyxel.colors.from_list(colors)
 
-    def face_colors(self):
-        return [0xe8b796, 0xb86f50, 0xf6757a, 0x181425,
-                0x5a6988, 0x3a4466, 0xc0cbdc, 0xa22633,
-                0xb86f50, 0xf3e761, 0xffffff]
-                  
+    def from_images(self, paths):
+        cols = []
+        for path in paths:
+            image = Image.open(path)
+            cols.extend(image.getcolors(maxcolors = self.MaxColors))
+        cols = set(cols)
+        if len(cols) > self.MaxColors: raise
+        pal_cols = []
+        for col in cols:
+            r, g, b, _ = col[1]
+            pal_cols.append(r * 65536 + g * 256 + b)
+        return pal_cols

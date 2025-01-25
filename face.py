@@ -14,10 +14,10 @@ class Face:
     Size = Vec2(64, 64)
     Scale = 2
     
-    def __init__(self, image_index):
+    def __init__(self, image_index, path):
         self.image_index = image_index
         self.image = pyxel.images[image_index]
-        self.image.load(0, 0, "images/faces.png")
+        self.image.load(0, 0, path)
         self.reset()
 
     def reset(self):

@@ -13,7 +13,7 @@ from sound import *
 from music import *
 
 class GameBike:
-    def __init__(self, image_index):
+    def __init__(self, image_index, path):
         self.bike = Bike()
         self.width = BikeSpriteWidth
         self.height = BikeSpriteHeight
@@ -22,11 +22,11 @@ class GameBike:
         self.rear_wheel_center = Vec2(8, 8)
         self.image_index = image_index
         self.next_blink_tic = 20
-        self.load()
+        self.load(path)
 
-    def load(self):
+    def load(self, path):
         self.image = pyxel.images[self.image_index]
-        self.image.load(0, 0, "images/bike.png")
+        self.image.load(0, 0, path)
 
     def screen_xy(self):
         w_loc = self.bike.get_location()
@@ -97,17 +97,21 @@ class GameGround:
             pyxel.line(x, y, x, world.screen_size.y, col)
 
 class App:
+    BikesImagePath = 'images/bike.png'
+    FacesImagePath = 'images/faces.png'
+    
     def __init__(self):
         pyxel.init(world.screen_size.x,
                    world.screen_size.y,
                    world.title)
-        self.color_palette = ColorPalette()
+        self.color_palette = ColorPalette(
+            [self.BikesImagePath, self.FacesImagePath])
         self.background = Background(TimePeriod.Day, seed = 0)
-        self.bike = GameBike(image_index = 0)
+        self.bike = GameBike(image_index = 0, path = self.BikesImagePath)
         self.ground = GameGround()
         world.start()
         self.input = Input()
-        self.face = Face(image_index = 1)
+        self.face = Face(image_index = 1, path = self.FacesImagePath)
         self.status = Status()
         self.result = Result()
         self.sound = Sound(sound_index = 0)

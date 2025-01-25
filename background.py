@@ -67,7 +67,6 @@ class Background:
             x = random.uniform(0.0, self.clouds_scale)
             y = random.uniform(min_y, max_y)
             v = Vec2(x, y)
-            print(v)
             v.w = random.uniform(min_w, max_w)
             v.h = random.uniform(min_h, max_h)
             xys.append(v)
