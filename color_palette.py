@@ -5,6 +5,8 @@ class ColorPalette:
     MaxColors = 200
     DaySky = 0
     NightSky = 0
+    StatusBg = 0
+    StatusFg = 0
     
     def __init__(self, paths):
         self.initial_colors = pyxel.colors.to_list()
@@ -13,6 +15,10 @@ class ColorPalette:
         colors.append(0x4fefff)
         ColorPalette.NightSky = len(colors)
         colors.append(0x19194f)
+        ColorPalette.StatusBg = len(colors)
+        colors.append(0xa7fbff)
+        ColorPalette.StatusFg = len(colors)
+        colors.append(0xd25e7f)
         colors.extend(self.from_images(paths))
         pyxel.colors.from_list(colors)
 

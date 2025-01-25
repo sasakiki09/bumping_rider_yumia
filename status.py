@@ -1,5 +1,6 @@
 import pyxel
 from world import *
+from color_palette import ColorPalette
 
 class Status:
     def __init__(self):
@@ -10,8 +11,12 @@ class Status:
         self.speed = 0.0
         self.distance = 0.0
         self.best_time = None
-        self.color = 1
-        self.bg_color = 7
+
+    def fg_color(self):
+        return ColorPalette.StatusFg
+
+    def bg_color(self):
+        return ColorPalette.StatusBg
 
     def update(self, bike, ground):
         self.time = world.elapsed_time
@@ -24,11 +29,11 @@ class Status:
         self.best_time = min(self.best_time, self.time)
 
     def text(self, x, y, str):
-        pyxel.text(x, y - 1, str, self.bg_color)
-        pyxel.text(x - 1, y + 1, str, self.bg_color)
-        pyxel.text(x + 2, y + 1, str, self.bg_color)
-        pyxel.text(x + 1, y + 1, str, self.bg_color)
-        pyxel.text(x, y, str, self.color)
+        pyxel.text(x, y - 1, str, self.bg_color())
+        pyxel.text(x - 1, y + 1, str, self.bg_color())
+        pyxel.text(x + 2, y + 1, str, self.bg_color())
+        pyxel.text(x + 1, y + 1, str, self.bg_color())
+        pyxel.text(x, y, str, self.fg_color())
 
     def show(self):
         x = self.x0
