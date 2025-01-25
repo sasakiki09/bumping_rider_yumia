@@ -10,4 +10,4 @@ A tiny game made with Pyxel.
 
 ## Font
 
-[Chibit](https://welina.xyz/font/bitmap/chibit/#google_vignette)
+[VictoriaBold](https://opengameart.org/content/a-package-of-8-bit-fonts-for-grafx2-and-linux)

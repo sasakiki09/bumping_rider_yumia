@@ -1,5 +1,4 @@
 import pyxel
-import PyxelUniversalFont as puf
 from world import *
 from stages import *
 
@@ -7,42 +6,51 @@ class Result:
     def __init__(self):
         self.center = world.screen_size.div(2.0)
         self.w = 8
-        self.h = 12
+        self.h = 8
         self.reset()
-        self.writer = puf.Writer("IPA_Gothic.ttf")
+        self.font = pyxel.Font("fonts/VictoriaBold-8.bdf")
+        self.color = 8
+        self.bg_color = 7
 
     def reset(self):
         self.failed = False
         self.result_time = False
 
+    def text(self, x, y, str):
+        for dy in [-1, 0, 1]:
+            for dx in [-1, 0, 1, 2]:
+                if dx == 0 and dy == 0: continue
+                pyxel.text(x + dx, y + dy, str, self.bg_color, self.font)
+        pyxel.text(x, y, str, self.color, self.font)
+        pyxel.text(x + 1, y, str, self.color, self.font)
+        
     def show_failed(self):
-        w = self.w * 6
+        str = "FAILED"
+        w = self.w * len(str)
         h = self.h
         x0 = self.center.x - w / 2
         y0 = self.center.y - h / 2
-        self.writer.draw(x0, y0, "FAILED", self.h, 8)
-        self.writer.draw(x0 + 1, y0, "FAILED", self.h, 8)
-        w = self.w * 17
+        self.text(x0, y0, str)
+        str = "Press X to Retry"
+        w = self.w * len(str)
         x0 = self.center.x - w / 2
         y0 += self.h * 2
-        self.writer.draw(x0, y0, "Press X to Retry", self.h, 8)
-        self.writer.draw(x0 + 1, y0, "Press X to Retry", self.h, 8)
+        self.text(x0, y0, str)
 
     def show_goal(self):
-        w = self.w * 13
+        str = "Goal {:5.2f}".format(self.result_time)
+        w = self.w * len(str)
         h = self.h
         x0 = self.center.x - w / 2
         y0 = self.center.y - h / 2
-        self.writer.draw(x0, y0, "Goal {:5.2f}".format(self.result_time), self.h, 14)
-        self.writer.draw(x0 + 1, y0, "Goal {:5.2f}".format(self.result_time), self.h, 14)
+        self.text(x0, y0, str)
         str = "Press X for Next"
         if world.stage_index + 1 == len(stages):
             str = "Press X for 1st Stage"
         w = self.w * len(str)
         x0 = self.center.x - w / 2
         y0 += self.h * 2
-        self.writer.draw(x0, y0, str, self.h, 14)
-        self.writer.draw(x0 + 1, y0, str, self.h, 14)
+        self.text(x0, y0, str)
 
     def show(self):
         if self.failed:
