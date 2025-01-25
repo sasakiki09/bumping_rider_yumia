@@ -15,12 +15,27 @@ class Background:
         self.gen_stars()
         self.gen_mountains()
         self.gen_clouds()
-    
+
+    def is_day(self):
+        return self.time_period == TimePeriod.Day
+        
     def bg_color(self):
-        if (self.time_period == TimePeriod.Night):
-            return ColorPalette.NightSky
-        else:
+        if self.is_day():
             return ColorPalette.DaySky
+        else:
+            return ColorPalette.NightSky
+
+    def mountain_color(self):
+        if self.is_day():
+            return ColorPalette.DayMountain
+        else:
+            return ColorPalette.NightMountain
+
+    def cloud_color(self):
+        if self.is_day():
+            return ColorPalette.DayCloud
+        else:
+            return ColorPalette.NightCloud
 
     def gen_stars(self):
         min_y = 0.3
@@ -86,14 +101,13 @@ class Background:
             return
         s_w = world.screen_size.x
         s_h = world.screen_size.y
-        color = 7
+        color = ColorPalette.Star
         for v in self.stars_xys:
             sx = v.x * s_w
             sy = (1.0 - v.y) * s_h
             pyxel.pset(sx, sy, color)
 
     def show_mountains(self):
-        color = 3
         scale = self.mountains_scale
         s_w = world.screen_size.x
         s_h = world.screen_size.y
@@ -103,7 +117,7 @@ class Background:
                             sx / s_w + origin_x / scale,
                             scale)
             sy = (1 - y) * s_h
-            pyxel.line(sx, sy, sx, s_h - 1, color)
+            pyxel.line(sx, sy, sx, s_h - 1, self.mountain_color())
         
     def show_clouds(self):
         color = 7
@@ -120,7 +134,7 @@ class Background:
             sy = (1 - v.y) * s_h
             sw = v.w * s_w
             sh = v.h * s_h
-            pyxel.rect(sx, sy, sw, sh, color)
+            pyxel.rect(sx, sy, sw, sh, self.cloud_color())
 
     def show(self):
         pyxel.cls(self.bg_color())

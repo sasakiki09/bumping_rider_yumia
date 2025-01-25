@@ -3,9 +3,7 @@ from world import *
 from physics import *
 
 class TimePeriod(Enum):
-    Morning = auto()
     Day = auto()
-    Evening = auto()
     Night = auto()
 
 class Stage:

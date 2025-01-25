@@ -7,6 +7,13 @@ class ColorPalette:
     NightSky = 0
     StatusBg = 0
     StatusFg = 0
+    Star = 0
+    DayMountain = 0
+    NightMountain = 0
+    DayCloud = 0
+    NightCloud = 0
+    Ground0 = 0
+    Ground1 = 0
     
     def __init__(self, paths):
         self.initial_colors = pyxel.colors.to_list()
@@ -19,6 +26,20 @@ class ColorPalette:
         colors.append(0xa7fbff)
         ColorPalette.StatusFg = len(colors)
         colors.append(0xd25e7f)
+        ColorPalette.Star = len(colors)
+        colors.append(0xedf3ba)
+        ColorPalette.DayMountain = len(colors)
+        colors.append(0x42a581)
+        ColorPalette.NightMountain = len(colors)
+        colors.append(0x3e6758)
+        ColorPalette.DayCloud = len(colors)
+        colors.append(0xd3e3f2)
+        ColorPalette.NightCloud = len(colors)
+        colors.append(0x83909f)
+        ColorPalette.Ground0 = len(colors)
+        colors.append(0xc7b272)
+        ColorPalette.Ground1 = len(colors)
+        colors.append(0x8f7320)
         colors.extend(self.from_images(paths))
         pyxel.colors.from_list(colors)
 

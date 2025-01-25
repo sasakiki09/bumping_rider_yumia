@@ -64,13 +64,6 @@ class GameBike:
             return FaceIndex.Normal
 
 class GameGround:
-    ColorIndex0 = 9
-    ColorIndex1 = 10
-    
-    def __init__(self):
-        self.color0 = 1
-        self.color1 = 2
-
     def ground(self):
         return stages[world.stage_index].ground
 
@@ -85,9 +78,9 @@ class GameGround:
         w_x = world.world_xy(Vec2(screen_x, 0)).x
         x = int(w_x) % 10
         if x < 5:
-            return self.ColorIndex0
+            return ColorPalette.Ground0
         else:
-            return self.ColorIndex1
+            return ColorPalette.Ground1
 
     def show(self):
         for x in range(world.screen_size.x):

@@ -172,26 +172,3 @@ class Ground:
 
     def goal_x(self):
         return self.coords[-1].x
-
-if __name__ == '__main__':
-    # Ground Test
-    ground = Ground([Vec2(0.0, 1.0), Vec2(10.0, 15.0)])
-    for x in range(20):
-        y = ground.height(x)
-        print('x: %f, y: %f' % (x, y))
-
-    # Bike Test
-    bike = Bike()
-    bike.set_location(5.0, 20.0)
-    print('Bike is on ground: %d %d' %
-          (bike.wheel_is_on_ground(Wheel.Front, ground),
-           bike.wheel_is_on_ground(Wheel.Rear, ground)))
-    bike.set_location(5.0, 8.0)
-    print('Bike is on ground: %d %d' %
-          (bike.wheel_is_on_ground(Wheel.Front, ground),
-           bike.wheel_is_on_ground(Wheel.Rear, ground)))
-    bike.set_location(5.0, 6.0)
-    print('Bike is on ground: %d %d' %
-          (bike.wheel_is_on_ground(Wheel.Front, ground),
-           bike.wheel_is_on_ground(Wheel.Rear, ground)))
-    
