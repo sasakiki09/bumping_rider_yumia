@@ -3,12 +3,16 @@ from PIL import Image
 
 class ColorPalette:
     MaxColors = 200
+    DaySky = 0
+    NightSky = 0
     
     def __init__(self, paths):
         self.initial_colors = pyxel.colors.to_list()
         colors = pyxel.colors.to_list()
-        self.sky = len(colors)
+        ColorPalette.DaySky = len(colors)
         colors.append(0x4fefff)
+        ColorPalette.NightSky = len(colors)
+        colors.append(0x19194f)
         colors.extend(self.from_images(paths))
         pyxel.colors.from_list(colors)
 

@@ -24,6 +24,8 @@ class Status:
         self.best_time = min(self.best_time, self.time)
 
     def text(self, x, y, str):
+        pyxel.text(x, y - 1, str, self.bg_color)
+        pyxel.text(x - 1, y + 1, str, self.bg_color)
         pyxel.text(x + 2, y + 1, str, self.bg_color)
         pyxel.text(x + 1, y + 1, str, self.bg_color)
         pyxel.text(x, y, str, self.color)

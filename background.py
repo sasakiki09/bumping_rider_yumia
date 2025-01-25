@@ -3,6 +3,7 @@ import random
 from enum import Enum, auto
 from world import *
 from stages import *
+from color_palette import ColorPalette
 
 class Background:
     def __init__(self):
@@ -17,9 +18,9 @@ class Background:
     
     def bg_color(self):
         if (self.time_period == TimePeriod.Night):
-            return 0
+            return ColorPalette.NightSky
         else:
-            return 6
+            return ColorPalette.DaySky
 
     def gen_stars(self):
         min_y = 0.3
