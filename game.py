@@ -153,6 +153,7 @@ class App:
         self.update_face(False, not failed)
         if self.input.x_pressed:
             if result_time:
+                stages[world.stage_index].update_best_time(result_time)
                 s_i = (world.stage_index + 1) % len(stages)
                 world.stage_index = s_i
             self.reset()
@@ -184,7 +185,6 @@ class App:
         world.start()
         self.background = Background()
         self.bike.bike.reset()
-        self.status.update_best_time()
         self.music.play()
 
 App()

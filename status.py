@@ -1,5 +1,6 @@
 import pyxel
 from world import *
+from stages import *
 from color_palette import ColorPalette
 
 class Status:
@@ -10,7 +11,6 @@ class Status:
         self.time = False
         self.speed = 0.0
         self.distance = 0.0
-        self.best_time = None
 
     def fg_color(self):
         return ColorPalette.StatusFg
@@ -22,11 +22,6 @@ class Status:
         self.time = world.elapsed_time
         self.speed = bike.velocity.x
         self.distance = ground.goal_x() - bike.location.x
-
-    def update_best_time(self):
-        if self.best_time == None:
-            self.best_time = self.time
-        self.best_time = min(self.best_time, self.time)
 
     def text(self, x, y, str):
         pyxel.text(x, y - 1, str, self.bg_color())
@@ -45,6 +40,7 @@ class Status:
         self.text(x, y, '   Speed: {:>7.2f}'.format(self.speed))
         y += self.y_diff
         self.text(x, y, 'Distance: {:>7.2f}'.format(self.distance))
-        if self.best_time:
+        best_time = stages[world.stage_index].best_time
+        if best_time:
             y += self.y_diff * 1.5
-            self.text(x, y, 'Best Time: {:7.2f}'.format(self.best_time))
+            self.text(x, y, 'Best Time: {:7.2f}'.format(best_time))

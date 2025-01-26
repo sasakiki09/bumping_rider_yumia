@@ -11,6 +11,7 @@ class Stage:
         self.ground = self.gen_ground(xy_array)
         self.time_period = time_period
         self.seed = seed
+        self.best_time = None
         
     def gen_ground(self, xy_array):
         l = len(xy_array)
@@ -21,6 +22,12 @@ class Stage:
             y = xy_array[index * 2 + 1]
             vec2_array.append(Vec2(x, y))
         return Ground(vec2_array)
+
+    def update_best_time(self, time):
+        if self.best_time == None:
+            self.best_time = time
+        else:
+            self.best_time = min(self.best_time, time)
 
 stages = []
 
