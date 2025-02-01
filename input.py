@@ -2,14 +2,14 @@ import pyxel
 from world import *
 
 class Button:
-    TextSize = [8, 8]
-    ButtonSize = [20, 20]
+    TextSize = [8, 16]
+    ButtonSize = [40, 40]
 
     def __init__(self, x, y, lable):
         self.x0 = x
         self.y0 = y
         self.label = lable
-        self.font = pyxel.Font("fonts/VictoriaBold-8.bdf")
+        self.font = pyxel.Font("fonts/spleen-8x16.bdf")
 
     def show(self):
         pyxel.rect(self.x0, self.y0,
@@ -18,6 +18,7 @@ class Button:
         xd = (self.ButtonSize[0] - self.TextSize[0]) / 2
         yd = (self.ButtonSize[1] - self.TextSize[1]) / 2
         pyxel.text(self.x0 + xd, self.y0 + yd, self.label, 1, self.font)
+        pyxel.text(self.x0 + xd + 1, self.y0 + yd, self.label, 1, self.font)
 
     def pressed(self):
         if not pyxel.btn(pyxel.MOUSE_BUTTON_LEFT):

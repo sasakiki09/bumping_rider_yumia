@@ -3,16 +3,16 @@ import time
 from utilities import *
 
 BikeWorldLen = 1.5 # [m]
-BikeSpriteWidth = 48 # [pixel]
-BikeSpriteHeight = 32 # [pixel]
+BikeSpriteWidth = 96 # [pixel]
+BikeSpriteHeight = 64 # [pixel]
 
 class World:
     def __init__(self):
         self.gravity = Vec2(0.0, -9.8)
         self.scale = Vec2(BikeSpriteWidth / BikeWorldLen,
                           -BikeSpriteWidth / BikeWorldLen)
-        self.screen_size = Vec2(240, 180)
-        self.title = "Yumia Bike Dash"
+        self.screen_size = Vec2(480, 360)
+        self.title = "Motocycle Y-"
         self.bg_index = 0
         self.origin_world = Vec2(0.0, 0.0)
         self.origin_screen = Vec2(self.screen_size.x * 0.2,

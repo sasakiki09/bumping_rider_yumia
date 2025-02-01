@@ -7,7 +7,8 @@ class Status:
     def __init__(self):
         self.x0 = 5
         self.y0 = 5
-        self.y_diff = 8
+        self.y_diff = 10
+        self.font = pyxel.Font("fonts/VictoriaBold-8.bdf")
         self.time = False
         self.speed = 0.0
         self.distance = 0.0
@@ -24,11 +25,11 @@ class Status:
         self.distance = ground.goal_x() - bike.location.x
 
     def text(self, x, y, str):
-        pyxel.text(x, y - 1, str, self.bg_color())
-        pyxel.text(x - 1, y + 1, str, self.bg_color())
-        pyxel.text(x + 2, y + 1, str, self.bg_color())
-        pyxel.text(x + 1, y + 1, str, self.bg_color())
-        pyxel.text(x, y, str, self.fg_color())
+        pyxel.text(x, y - 1, str, self.bg_color(), self.font)
+        pyxel.text(x - 1, y + 1, str, self.bg_color(), self.font)
+        pyxel.text(x + 2, y + 1, str, self.bg_color(), self.font)
+        pyxel.text(x + 1, y + 1, str, self.bg_color(), self.font)
+        pyxel.text(x, y, str, self.fg_color(), self.font)
 
     def show(self):
         x = self.x0

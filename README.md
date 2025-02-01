@@ -11,3 +11,5 @@ A tiny game made with Pyxel.
 ## Font
 
 [VictoriaBold](https://opengameart.org/content/a-package-of-8-bit-fonts-for-grafx2-and-linux)
+
+[Spleen](https://github.com/fcambus/spleen)

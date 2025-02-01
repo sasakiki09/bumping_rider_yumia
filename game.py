@@ -17,9 +17,6 @@ class GameBike:
         self.bike = Bike()
         self.width = BikeSpriteWidth
         self.height = BikeSpriteHeight
-        self.wheel_radius = 8
-        self.front_wheel_center = Vec2(12, 8)
-        self.rear_wheel_center = Vec2(8, 8)
         self.image_index = image_index
         self.next_blink_tic = 20
         self.load(path)
@@ -90,7 +87,8 @@ class GameGround:
             pyxel.line(x, y, x, world.screen_size.y, col)
 
 class App:
-    BikesImagePath = 'images/bike.png'
+#    BikesImagePath = 'images/bike.png'
+    BikesImagePath = 'images/Bike02.png'
     FacesImagePath = 'images/faces.png'
     
     def __init__(self):

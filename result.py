@@ -6,9 +6,9 @@ class Result:
     def __init__(self):
         self.center = world.screen_size.div(2.0)
         self.w = 8
-        self.h = 8
+        self.h = 16
         self.reset()
-        self.font = pyxel.Font("fonts/VictoriaBold-8.bdf")
+        self.font = pyxel.Font("fonts/spleen-8x16.bdf")
         self.color = 8
         self.bg_color = 7
 
