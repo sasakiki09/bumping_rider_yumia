@@ -50,7 +50,6 @@ class GameBike:
         r = BikeWorldLen / 6
         l = math.pi * 2 * r
         ratio = (self.bike.location.x % l) / l
-        print(r, l, ratio)
         return -180.0 * ratio
         
     def show(self):
