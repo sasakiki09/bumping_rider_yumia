@@ -12,6 +12,10 @@ from result import *
 from sound import *
 from music import *
 
+class CharaBodyIndex(Enum):
+    Normal = auto()
+    Succeeded = auto()
+
 class GameBike:
     def __init__(self, image_index, path):
         self.bike = Bike()
@@ -19,8 +23,10 @@ class GameBike:
         self.height = BikeSpriteHeight
         self.image_index = image_index
         self.next_blink_tic = 20
+        self.chara_body_index = CharaBodyIndex.Normal
         self.load(path)
         self.set_sprite_ranges()
+        
 
     def load(self, path):
         self.image = pyxel.images[self.image_index]
@@ -30,9 +36,11 @@ class GameBike:
         w = BikeSpriteWidth
         h = BikeSpriteHeight
         self.bike_body_range = Range2(0, 0, w, h)
-        self.chara_body_range = Range2(0, h, w, h)
+        self.chara_body_range_0 = Range2(w, 0, w, h)
+        self.chara_body_range_1 = Range2(w, h, w, h)
+        self.chara_body_range_steer = Range2(w, h * 2, w, h)
         r = BikeSpriteHeight / 4
-        self.tire_range = Range2(w, r * 2, r * 2, r * 2)
+        self.tire_range = Range2(w * 2, 0, r * 2, r * 2)
         self.front_tire_center = Vec2(w / 2 - r, r)
         self.rear_tire_center = Vec2(-w / 2 + r, r)
 
@@ -51,6 +59,14 @@ class GameBike:
         l = math.pi * 2 * r
         ratio = (self.bike.location.x % l) / l
         return -180.0 * ratio
+
+    def chara_body_range(self):
+        if self.chara_body_index == CharaBodyIndex.Succeeded:
+            return self.chara_body_range_steer
+        if self.bike.rotation_velocity < 0:
+            return self.chara_body_range_0
+        else:
+            return self.chara_body_range_1
         
     def show(self):
         s_xy = self.screen_xy()
@@ -74,15 +90,18 @@ class GameBike:
                   r.x, r.y, r.w, r.h,
                   world.bg_index,
                   rot)
-        r = self.chara_body_range
+        r = self.chara_body_range()
         pyxel.blt(s_xy.x, s_xy.y, self.image_index,
                   r.x, r.y, r.w, r.h,
                   world.bg_index,
                   rot)
         
-        
     def update(self, ground, btn_a, btn_b):
         self.bike.update(ground, btn_a, btn_b)
+        self.chara_body_index = CharaBodyIndex.Normal
+
+    def update_chara_body_index(self, index):
+        self.chara_body_index = index
 
     def failed(self):
         return self.bike.failed()
@@ -184,6 +203,7 @@ class App:
 
     def update_result(self, failed, result_time):
         self.input.update(False)
+        self.bike.update_chara_body_index(CharaBodyIndex.Succeeded)
         self.result.update(failed, result_time)
         self.update_face(False, not failed)
         if self.input.x_pressed:

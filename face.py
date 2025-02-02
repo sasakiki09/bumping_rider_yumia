@@ -44,5 +44,3 @@ class Face:
                       spr_loc.x, spr_loc.y,
                       self.Size.x, self.Size.y,
                       world.bg_index, 0, self.Scale)
-                  
-    
