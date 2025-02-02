@@ -3,6 +3,8 @@
 
 A tiny game made with Pyxel.
 
+![](images/screenshot_00.jpg)
+
 ## Library
 
 - [Pyxel](https://github.com/kitao/pyxel/blob/main/README.md)
