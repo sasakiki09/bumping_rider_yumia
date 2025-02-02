@@ -12,7 +12,7 @@ class FaceIndex(IntEnum):
 
 class Face:
     Size = Vec2(85, 85)
-    Scale = 2
+    Scale = 3
     
     def __init__(self, image_index, path):
         self.image_index = image_index
@@ -36,9 +36,8 @@ class Face:
         self.index = index
 
     def show(self):
-        margin = 5
-        x = world.screen_size.x - self.Size.x - self.Size.x / self.Scale - margin
-        y = margin + self.Size.y / self.Scale
+        x = world.screen_size.x - self.Size.x * self.Scale / 2 - self.Size.x / 2 + 15
+        y = self.Size.y * self.Scale / 2 - self.Size.y / 2 + 10
         spr_loc = self.sprite_location()
         if spr_loc:
             pyxel.blt(x, y, self.image_index,
