@@ -48,12 +48,6 @@ class Bike:
         self.touched = False
         self.last_touched = False
         
-    def get_location(self):
-        return self.location
-
-    def set_location(self, x, y):
-        self.location = Vec2(x, y)
-
     def speed_ratio(self):
         return (self.velocity.x / self.max_speed)
 

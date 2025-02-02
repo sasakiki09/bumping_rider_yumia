@@ -20,13 +20,24 @@ class GameBike:
         self.image_index = image_index
         self.next_blink_tic = 20
         self.load(path)
+        self.set_sprite_ranges()
 
     def load(self, path):
         self.image = pyxel.images[self.image_index]
         self.image.load(0, 0, path)
 
+    def set_sprite_ranges(self):
+        w = BikeSpriteWidth
+        h = BikeSpriteHeight
+        self.bike_body_range = Range2(0, 0, w, h)
+        self.chara_body_range = Range2(0, h, w, h)
+        r = BikeSpriteHeight / 4
+        self.tire_range = Range2(w, r * 2, r * 2, r * 2)
+        self.front_tire_center = Vec2(w / 2 - r, r)
+        self.rear_tire_center = Vec2(-w / 2 + r, r)
+
     def screen_xy(self):
-        w_loc = self.bike.get_location()
+        w_loc = self.bike.location
         s_loc = world.screen_xy(w_loc)
         return Vec2(s_loc.x - self.width / 2,
                     s_loc.y - self.height / 2)
@@ -34,14 +45,42 @@ class GameBike:
     def rotation_degree(self):
         rotation = self.bike.rotation
         return 180.0 / math.pi * rotation
+
+    def tire_rotation_degree(self):
+        r = BikeWorldLen / 6
+        l = math.pi * 2 * r
+        ratio = (self.bike.location.x % l) / l
+        print(r, l, ratio)
+        return -180.0 * ratio
         
     def show(self):
         s_xy = self.screen_xy()
         rot = self.rotation_degree()
+        r = self.tire_range
+        f_rel = self.front_tire_center.rotate(-self.bike.rotation)
+        f_xy = s_xy + f_rel + self.front_tire_center
+        tire_rot = self.tire_rotation_degree()
+        pyxel.blt(f_xy.x, f_xy.y, self.image_index,
+                  r.x, r.y, r.w, r.h,
+                  world.bg_index,
+                  tire_rot)
+        r_rel = self.rear_tire_center.rotate(-self.bike.rotation)
+        r_xy = s_xy + r_rel + self.front_tire_center
+        pyxel.blt(r_xy.x, r_xy.y, self.image_index,
+                  r.x, r.y, r.w, r.h,
+                  world.bg_index,
+                  tire_rot)
+        r = self.bike_body_range
         pyxel.blt(s_xy.x, s_xy.y, self.image_index,
-                  0, 0, self.width, self.height,
+                  r.x, r.y, r.w, r.h,
                   world.bg_index,
                   rot)
+        r = self.chara_body_range
+        pyxel.blt(s_xy.x, s_xy.y, self.image_index,
+                  r.x, r.y, r.w, r.h,
+                  world.bg_index,
+                  rot)
+        
         
     def update(self, ground, btn_a, btn_b):
         self.bike.update(ground, btn_a, btn_b)
@@ -87,8 +126,7 @@ class GameGround:
             pyxel.line(x, y, x, world.screen_size.y, col)
 
 class App:
-#    BikesImagePath = 'images/bike.png'
-    BikesImagePath = 'images/Bike02.png'
+    BikesImagePath = 'images/bike.png'
     FacesImagePath = 'images/faces.png'
     
     def __init__(self):

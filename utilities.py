@@ -53,3 +53,15 @@ class Vec2:
             index -= 1
         return index
     
+class Range2:
+    def __init__(self):
+        self.x = None
+        self.y = None
+        self.w = None
+        self.h = None
+
+    def __init__(self, x, y, w, h):
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h

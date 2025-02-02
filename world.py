@@ -12,7 +12,7 @@ class World:
         self.scale = Vec2(BikeSpriteWidth / BikeWorldLen,
                           -BikeSpriteWidth / BikeWorldLen)
         self.screen_size = Vec2(480, 360)
-        self.title = "Motocycle Y-"
+        self.title = "Motocycle Y.-"
         self.bg_index = 0
         self.origin_world = Vec2(0.0, 0.0)
         self.origin_screen = Vec2(self.screen_size.x * 0.2,
