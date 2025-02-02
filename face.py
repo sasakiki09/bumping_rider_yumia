@@ -11,7 +11,7 @@ class FaceIndex(IntEnum):
     Cry = auto()
 
 class Face:
-    Size = Vec2(64, 64)
+    Size = Vec2(85, 85)
     Scale = 2
     
     def __init__(self, image_index, path):
