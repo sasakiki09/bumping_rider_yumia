@@ -20,6 +20,7 @@ class Title:
 
     def reset(self):
         self.tic = 0
+        self.base_y = world.screen_size.y
 
     def fg_color(self):
         return ColorPalette.TitleTextFg
@@ -34,6 +35,8 @@ class Title:
     
     def update(self):
         self.tic += 1
+        if self.base_y > 0:
+            self.base_y -= world.screen_size.y / 15
 
     def sprite_location(self):
         t = self.tic % 20
@@ -51,7 +54,7 @@ class Title:
         
     def show_texts(self):
         x = world.screen_size.x / 8
-        y = world.screen_size.y / 4
+        y = world.screen_size.y / 4 + self.base_y
         self.text(x, y, "Motorcycle", self.font)
         x = world.screen_size.x / 3
         y += 40
@@ -60,7 +63,7 @@ class Title:
         y += 80
         self.text(x, y, "Version {}".format(world.Version), self.small_font)
         x = world.screen_size.x / 9
-        y = world.screen_size.y - 40
+        y = world.screen_size.y - 40 + self.base_y
         self.text(x, y, "Press X to start", self.small_font)
 
     def show_image(self):
@@ -68,7 +71,7 @@ class Title:
         i_h = self.ImageSize.y
         i_s = self.ImageScale
         x = world.screen_size.x - i_w * i_s / 2 - i_w / 2 
-        y = i_h * i_s / 2 - i_h / 2 - 10
+        y = i_h * i_s / 2 - i_h / 2 - 10 + self.base_y
         spr_loc = self.sprite_location()
         if spr_loc:
             pyxel.blt(x, y, self.image_index,
