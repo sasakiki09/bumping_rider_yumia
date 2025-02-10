@@ -20,25 +20,38 @@ class Music:
             pyxel.stop(ch)
 
     def set_music(self):
-        c1_0 = self.sound_index
-        s = pyxel.sounds[c1_0]
-        s.mml("T60V5L16" +
+        index = self.sound_index
+        s = pyxel.sounds[index + 0]
+        s.mml("T70V5L16" +
               "R16O2GGO3CEFDR16" +
               "DR16O2AGEGBB")
-
-        c2_0 = self.sound_index + 1
-        s = pyxel.sounds[c2_0]
-        s.mml("T60V5L16" +
+        s = pyxel.sounds[index + 1]
+        s.mml("T70V5L16" +
               "O4CO3FR16R16O4CR16O3FR16" +
               "O4CO3FR16R16O4CR16O3FF")
-
-        c3_0 = self.sound_index + 2
-        s = pyxel.sounds[c3_0]
-        s.mml("T60V5L16" +
+        s = pyxel.sounds[index + 2]
+        s.mml("T70V5L16" +
               "R16O1GGO2CEFDR16" +
               "DR16O1AGFR16AA")
-        
         pyxel.musics[0].set([],
-                            [c1_0],
-                            [c2_0],
-                            [c3_0])
+                            [index + 0],
+                            [index + 1],
+                            [index + 2])
+        index += 3
+        s = pyxel.sounds[index + 0]
+        s.mml("T70V6L16" +
+              "O0DO4AAO2CO0DO4AAO2C" +
+              "O0DO4AAO2CO0DO4AAO2C")
+        s = pyxel.sounds[index + 1]
+        s.mml("T70V6L16" +
+              "O1FABO2DDDO1EF" +
+              "AAFAO2DEBO3C")
+        s = pyxel.sounds[index + 2]
+        s.mml("T70V6L16" +
+              "O1CCO0AAFFAG" +
+              "FFAR16O1DEAB")
+        pyxel.musics[1].set([],
+                            [index + 0],
+                            [index + 1],
+                            [index + 2])
+              
