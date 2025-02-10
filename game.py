@@ -8,6 +8,7 @@ from background import *
 from input import *
 from face import *
 from status import *
+from title import *
 from result import *
 from sound import *
 from music import *
@@ -15,6 +16,11 @@ from music import *
 class CharaBodyIndex(Enum):
     Normal = auto()
     Succeeded = auto()
+
+class GameState(Enum):
+    GameTitle = auto()
+    GamePlay = auto()
+    GameResult = auto()
 
 class GameBike:
     def __init__(self, image_index, path):
@@ -146,13 +152,18 @@ class GameGround:
 class App:
     BikesImagePath = 'images/bike.png'
     FacesImagePath = 'images/faces.png'
+    TitleImagePath = 'images/title.png'
     
     def __init__(self):
         pyxel.init(world.screen_size.x,
                    world.screen_size.y,
                    world.title)
         self.color_palette = ColorPalette(
-            [self.BikesImagePath, self.FacesImagePath])
+            [self.BikesImagePath,
+             self.FacesImagePath,
+             self.TitleImagePath])
+        self.state = GameState.GameTitle
+        self.title = Title(image_index = 2, path = self.TitleImagePath)
         self.bike = GameBike(image_index = 0, path = self.BikesImagePath)
         self.ground = GameGround()
         world.start()
@@ -214,27 +225,44 @@ class App:
             self.reset()
 
     def update(self):
-        failed = self.bike.failed()
-        if self.goal_distance() <= 0:
-            result_time = world.elapsed_time
+        if self.state == GameState.GameTitle:
+            self.title.update()
+            if self.title.pressed():
+                self.reset()
+                self.state = GameState.GamePlay
+        elif self.state == GameState.GamePlay:
+            failed = self.bike.failed()
+            if self.goal_distance() <= 0:
+                result_time = world.elapsed_time
+            else:
+                result_time = False
+                if failed or result_time:
+                    self.music.stop()
+                    self.update_result(failed, result_time)
+                    self.sound.update(False)
+                else:
+                    self.update_in_game()
+                    self.sound.update(self.bike.bike.speed_ratio())
+        elif self.state == GameState.GameResult:
+            pass
         else:
-            result_time = False
-        if failed or result_time:
-            self.music.stop()
-            self.update_result(failed, result_time)
-            self.sound.update(False)
-        else:
-            self.update_in_game()
-            self.sound.update(self.bike.bike.speed_ratio())
+            raise
 
     def draw(self):
-        self.background.show()
-        self.bike.show()
-        self.ground.show()
-        self.input.show()
-        self.face.show()
-        self.status.show()
-        self.result.show()
+        if self.state == GameState.GameTitle:
+            self.title.show()
+        elif self.state == GameState.GamePlay:
+            self.background.show()
+            self.bike.show()
+            self.ground.show()
+            self.input.show()
+            self.face.show()
+            self.status.show()
+            self.result.show()
+        elif self.state == GameState.GameResult:
+            pass
+        else:
+            raise
 
     def reset(self):
         world.start()

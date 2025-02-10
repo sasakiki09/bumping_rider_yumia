@@ -7,6 +7,8 @@ BikeSpriteWidth = 96 # [pixel]
 BikeSpriteHeight = 64 # [pixel]
 
 class World:
+    Version = "0.8"
+
     def __init__(self):
         self.gravity = Vec2(0.0, -9.8)
         self.scale = Vec2(BikeSpriteWidth / BikeWorldLen,

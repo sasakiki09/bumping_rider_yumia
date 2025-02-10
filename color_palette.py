@@ -3,6 +3,7 @@ from PIL import Image
 
 class ColorPalette:
     MaxColors = 200
+    TitleBg = 0
     DaySky = 0
     NightSky = 0
     StatusBg = 0
@@ -18,6 +19,12 @@ class ColorPalette:
     def __init__(self, paths):
         self.initial_colors = pyxel.colors.to_list()
         colors = pyxel.colors.to_list()
+        ColorPalette.TitleBg = len(colors)
+        colors.append(0x4d65b4)
+        ColorPalette.TitleTextFg = len(colors)
+        colors.append(0xf68181)
+        ColorPalette.TitleTextBg = len(colors)
+        colors.append(0xc32454)
         ColorPalette.DaySky = len(colors)
         colors.append(0x4fefff)
         ColorPalette.NightSky = len(colors)
