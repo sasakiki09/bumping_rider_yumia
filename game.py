@@ -226,6 +226,7 @@ class App:
                 world.stage_index = s_i
                 if s_i == 0:
                     self.state = GameState.GameResult
+                    self.game_result.reset()
             self.reset()
 
     def update(self):
@@ -250,6 +251,7 @@ class App:
         elif self.state == GameState.GameResult:
             self.game_result.update()
             if self.game_result.pressed():
+                self.title.reset()
                 self.state = GameState.GameTitle
         else:
             raise
