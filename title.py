@@ -37,6 +37,8 @@ class Title:
         self.tic += 1
         if self.base_y > 0:
             self.base_y -= world.screen_size.y / 15
+        if self.base_y < 0:
+            self.base_y = 0
 
     def sprite_location(self):
         t = self.tic % 20

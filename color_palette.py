@@ -4,6 +4,8 @@ from PIL import Image
 class ColorPalette:
     MaxColors = 200
     TitleBg = 0
+    TitleTextFg = 0
+    TitleTextBg = 0
     DaySky = 0
     NightSky = 0
     StatusBg = 0
@@ -15,6 +17,9 @@ class ColorPalette:
     NightCloud = 0
     Ground0 = 0
     Ground1 = 0
+    ResultBg = 0
+    ResultTextBg = 0
+    ResultTextFg = 0
     
     def __init__(self, paths):
         self.initial_colors = pyxel.colors.to_list()
@@ -47,6 +52,12 @@ class ColorPalette:
         colors.append(0xc7b272)
         ColorPalette.Ground1 = len(colors)
         colors.append(0x8f7320)
+        ColorPalette.ResultBg = len(colors)
+        colors.append(0x95b2ff)
+        ColorPalette.ResultTextBg = len(colors)
+        colors.append(0x8ff8e2)
+        ColorPalette.ResultTextFg = len(colors)
+        colors.append(0x4d65b4)
         colors.extend(self.from_images(paths))
         pyxel.colors.from_list(colors)
 

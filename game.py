@@ -10,6 +10,7 @@ from face import *
 from status import *
 from title import *
 from result import *
+from game_result import *
 from sound import *
 from music import *
 
@@ -164,6 +165,7 @@ class App:
              self.TitleImagePath])
         self.state = GameState.GameTitle
         self.title = Title(image_index = 2, path = self.TitleImagePath)
+        self.game_result = GameResult(image_index = 2)
         self.bike = GameBike(image_index = 0, path = self.BikesImagePath)
         self.ground = GameGround()
         world.start()
@@ -222,6 +224,8 @@ class App:
                 stages[world.stage_index].update_best_time(result_time)
                 s_i = (world.stage_index + 1) % len(stages)
                 world.stage_index = s_i
+                if s_i == 0:
+                    self.state = GameState.GameResult
             self.reset()
 
     def update(self):
@@ -236,15 +240,17 @@ class App:
                 result_time = world.elapsed_time
             else:
                 result_time = False
-                if failed or result_time:
-                    self.music.stop()
-                    self.update_result(failed, result_time)
-                    self.sound.update(False)
-                else:
-                    self.update_in_game()
-                    self.sound.update(self.bike.bike.speed_ratio())
+            if failed or result_time:
+                self.music.stop()
+                self.update_result(failed, result_time)
+                self.sound.update(False)
+            else:
+                self.update_in_game()
+                self.sound.update(self.bike.bike.speed_ratio())
         elif self.state == GameState.GameResult:
-            pass
+            self.game_result.update()
+            if self.game_result.pressed():
+                self.state = GameState.GameTitle
         else:
             raise
 
@@ -260,7 +266,7 @@ class App:
             self.status.show()
             self.result.show()
         elif self.state == GameState.GameResult:
-            pass
+            self.game_result.show()
         else:
             raise
 

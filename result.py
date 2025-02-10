@@ -46,7 +46,7 @@ class Result:
         self.text(x0, y0, str)
         str = "Press X for Next"
         if world.stage_index + 1 == len(stages):
-            str = "Press X for 1st Stage"
+            str = "Press X for Game Result"
         w = self.w * len(str)
         x0 = self.center.x - w / 2
         y0 += self.h * 2
