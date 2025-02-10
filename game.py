@@ -233,8 +233,8 @@ class App:
         if self.state == GameState.GameTitle:
             self.title.update()
             if self.title.pressed():
-                self.reset()
                 self.state = GameState.GamePlay
+                self.reset()
         elif self.state == GameState.GamePlay:
             failed = self.bike.failed()
             if self.goal_distance() <= 0:
@@ -253,6 +253,7 @@ class App:
             if self.game_result.pressed():
                 self.title.reset()
                 self.state = GameState.GameTitle
+                self.reset()
         else:
             raise
 
@@ -276,6 +277,9 @@ class App:
         world.start()
         self.background = Background()
         self.bike.bike.reset()
-        self.music.play()
+        if self.state == GameState.GamePlay:
+            self.music.play(self.stage().music)
+        else:
+            self.music.play(0)
 
 App()

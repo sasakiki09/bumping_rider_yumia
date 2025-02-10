@@ -45,12 +45,12 @@ class GameResult:
                 pyxel.btn(pyxel.KEY_B) or
                 self.button.pressed())
 
-    def text(self, x, y, str):
-        pyxel.text(x, y - 1, str, self.bg_color(), self.font)
-        pyxel.text(x - 1, y + 1, str, self.bg_color(), self.font)
-        pyxel.text(x + 2, y + 1, str, self.bg_color(), self.font)
-        pyxel.text(x + 1, y + 1, str, self.bg_color(), self.font)
-        pyxel.text(x, y, str, self.fg_color(), self.font)
+    def text(self, x, y, str, font):
+        pyxel.text(x, y - 1, str, self.bg_color(), font)
+        pyxel.text(x - 1, y + 1, str, self.bg_color(), font)
+        pyxel.text(x + 2, y + 1, str, self.bg_color(), font)
+        pyxel.text(x + 1, y + 1, str, self.bg_color(), font)
+        pyxel.text(x, y, str, self.fg_color(), font)
 
 
     def show_image(self):
@@ -68,11 +68,22 @@ class GameResult:
     def show_text(self):
         x0 = 20
         y0 = 20 + self.base_y
+        total_time = 0.0
         for index in range(len(stages)):
             time = stages[index].best_time
+            total_time += time
             self.text(x0, y0,
-                      'Stage {}: {:7.2f}'.format(index + 1, time))
+                      'Stage {}: {:7.2f}'.format(index + 1, time),
+                      self.font)
             y0 += 35
+        y0 += 10
+        self.text(x0, y0,
+                  '  Total: {:7.2f}'.format(total_time),
+                  self.font)
+        x = world.screen_size.x / 8
+        y = world.screen_size.y - 40 + self.base_y
+        self.text(x, y, "Press B", self.small_font)
+
 
     def show(self):
         pyxel.cls(ColorPalette.ResultBg)

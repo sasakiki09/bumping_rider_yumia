@@ -7,9 +7,10 @@ class TimePeriod(Enum):
     Night = auto()
 
 class Stage:
-    def __init__(self, xy_array, time_period, seed):
+    def __init__(self, xy_array, time_period, music, seed):
         self.ground = self.gen_ground(xy_array)
         self.time_period = time_period
+        self.music = music
         self.seed = seed
         self.best_time = None
         
@@ -37,6 +38,7 @@ stages.append(Stage([ -3.0, 0.0,
                       20.0, 0.0,
                       100.0, 1.0],
                     TimePeriod.Day,
+                    1,
                     0))
 
 # stage 2
@@ -47,4 +49,5 @@ stages.append(Stage([ -3, 0,
                       50, 2,
                       100, 2],
                     TimePeriod.Night,
+                    2,
                     1))
