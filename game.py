@@ -280,6 +280,6 @@ class App:
         if self.state == GameState.GamePlay:
             self.music.play(self.stage().music)
         else:
-            self.music.play(0)
+            self.music.play(4)
 
 App()

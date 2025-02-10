@@ -38,7 +38,7 @@ stages.append(Stage([ -3.0, 0.0,
                       20.0, 0.0,
                       100.0, 1.0],
                     TimePeriod.Day,
-                    1,
+                    0,
                     0))
 
 # stage 2
