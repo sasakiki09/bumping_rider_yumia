@@ -2,6 +2,7 @@ import pyxel
 from world import *
 from color_palette import *
 from input import Button
+from stages import *
 
 class GameResult:
     ImageSize = Vec2(64, 128)
@@ -20,7 +21,8 @@ class GameResult:
 
     def reset(self):
         self.tic = 0
-        self.base_y = 0
+        self.base_y = world.screen_size.y
+        self.placed_tic = False
 
     def fg_color(self):
         return ColorPalette.ResultTextFg
@@ -30,15 +32,26 @@ class GameResult:
 
     def update(self):
         self.tic += 1
-        if self.base_y > 0:
+        if self.base_y > 0 and not self.placed_tic:
             self.base_y -= world.screen_size.y / 15
-        if self.base_y < 0:
-            self.base_y = 0
+        if self.base_y <= 0 and not self.placed_tic:
+            self.placed_tic = self.tic
+        if self.placed_tic:
+            phase = (self.tic - self.placed_tic) * math.pi / 15
+            self.base_y = 10 * math.sin(phase)
 
     def pressed(self):
         return (pyxel.btn(pyxel.GAMEPAD1_BUTTON_B) or
                 pyxel.btn(pyxel.KEY_B) or
                 self.button.pressed())
+
+    def text(self, x, y, str):
+        pyxel.text(x, y - 1, str, self.bg_color(), self.font)
+        pyxel.text(x - 1, y + 1, str, self.bg_color(), self.font)
+        pyxel.text(x + 2, y + 1, str, self.bg_color(), self.font)
+        pyxel.text(x + 1, y + 1, str, self.bg_color(), self.font)
+        pyxel.text(x, y, str, self.fg_color(), self.font)
+
 
     def show_image(self):
         i_w = self.ImageSize.x
@@ -53,7 +66,13 @@ class GameResult:
                   world.bg_index, 0, i_s)
 
     def show_text(self):
-        pass
+        x0 = 20
+        y0 = 20 + self.base_y
+        for index in range(len(stages)):
+            time = stages[index].best_time
+            self.text(x0, y0,
+                      'Stage {}: {:7.2f}'.format(index + 1, time))
+            y0 += 35
 
     def show(self):
         pyxel.cls(ColorPalette.ResultBg)
