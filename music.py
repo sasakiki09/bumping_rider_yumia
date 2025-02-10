@@ -13,7 +13,7 @@ class Music:
         self.set_music()
 
     def play(self):
-        pyxel.playm(0, loop=True)
+        pyxel.playm(1, loop=True)
 
     def stop(self):
         for ch in self.channels:
@@ -39,15 +39,15 @@ class Music:
                             [index + 2])
         index += 3
         s = pyxel.sounds[index + 0]
-        s.mml("T70V6L16" +
+        s.mml("T70V3L16@3" +
               "O0DO4AAO2CO0DO4AAO2C" +
               "O0DO4AAO2CO0DO4AAO2C")
         s = pyxel.sounds[index + 1]
-        s.mml("T70V6L16" +
+        s.mml("T70V7L16@1" +
               "O1FABO2DDDO1EF" +
               "AAFAO2DEBO3C")
         s = pyxel.sounds[index + 2]
-        s.mml("T70V6L16" +
+        s.mml("T70V7L16@2" +
               "O1CCO0AAFFAG" +
               "FFAR16O1DEAB")
         pyxel.musics[1].set([],
