@@ -53,7 +53,7 @@ class GameBike:
 
     def screen_xy(self):
         w_loc = self.bike.location
-        s_loc = world.screen_xy(w_loc)
+        s_loc = g_world.screen_xy(w_loc)
         return Vec2(s_loc.x - self.width / 2,
                     s_loc.y - self.height / 2)
 
@@ -84,23 +84,23 @@ class GameBike:
         tire_rot = self.tire_rotation_degree()
         pyxel.blt(f_xy.x, f_xy.y, self.image_index,
                   r.x, r.y, r.w, r.h,
-                  world.bg_index,
+                  g_world.bg_index,
                   tire_rot)
         r_rel = self.rear_tire_center.rotate(-self.bike.rotation)
         r_xy = s_xy + r_rel + self.front_tire_center
         pyxel.blt(r_xy.x, r_xy.y, self.image_index,
                   r.x, r.y, r.w, r.h,
-                  world.bg_index,
+                  g_world.bg_index,
                   tire_rot)
         r = self.bike_body_range
         pyxel.blt(s_xy.x, s_xy.y, self.image_index,
                   r.x, r.y, r.w, r.h,
-                  world.bg_index,
+                  g_world.bg_index,
                   rot)
         r = self.chara_body_range()
         pyxel.blt(s_xy.x, s_xy.y, self.image_index,
                   r.x, r.y, r.w, r.h,
-                  world.bg_index,
+                  g_world.bg_index,
                   rot)
         
     def update(self, ground, btn_a, btn_b):
@@ -116,9 +116,9 @@ class GameBike:
     def face_index(self):
         if abs(math.sin(self.bike.rotation)) > 0.65:
             return FaceIndex.Astonish
-        if world.tic % self.next_blink_tic == 0:
+        if g_world.tic % self.next_blink_tic == 0:
             return FaceIndex.Blink
-        elif world.tic % self.next_blink_tic == 1:
+        elif g_world.tic % self.next_blink_tic == 1:
             self.next_blink_tic = random.randint(10, 30)
             return FaceIndex.Blink
         else:
@@ -126,17 +126,17 @@ class GameBike:
 
 class GameGround:
     def ground(self):
-        return stages[world.stage_index].ground
+        return g_stages[g_world.stage_index].ground
 
     def screen_y(self, screen_x):
-        w_xy = world.world_xy(Vec2(screen_x, 0))
+        w_xy = g_world.world_xy(Vec2(screen_x, 0))
         w_y = self.ground().height(w_xy.x)
         if not w_y: return False
-        s_xy = world.screen_xy(Vec2(w_xy.x, w_y))
+        s_xy = g_world.screen_xy(Vec2(w_xy.x, w_y))
         return s_xy.y
 
     def color_index(self, screen_x):
-        w_x = world.world_xy(Vec2(screen_x, 0)).x
+        w_x = g_world.world_xy(Vec2(screen_x, 0)).x
         x = int(w_x) % 10
         if x < 5:
             return ColorPalette.Ground0
@@ -144,11 +144,11 @@ class GameGround:
             return ColorPalette.Ground1
 
     def show(self):
-        for x in range(world.screen_size.x):
+        for x in range(g_world.screen_size.x):
             y = self.screen_y(x)
             if not y: continue
             col = self.color_index(x)
-            pyxel.line(x, y, x, world.screen_size.y, col)
+            pyxel.line(x, y, x, g_world.screen_size.y, col)
 
 class App:
     BikesImagePath = 'images/bike.png'
@@ -156,9 +156,9 @@ class App:
     TitleImagePath = 'images/title.png'
     
     def __init__(self):
-        pyxel.init(world.screen_size.x,
-                   world.screen_size.y,
-                   world.title)
+        pyxel.init(g_world.screen_size.x,
+                   g_world.screen_size.y,
+                   g_world.title)
         self.color_palette = ColorPalette(
             [self.BikesImagePath,
              self.FacesImagePath,
@@ -168,7 +168,7 @@ class App:
         self.game_result = GameResult(image_index = 2)
         self.bike = GameBike(image_index = 0, path = self.BikesImagePath)
         self.ground = GameGround()
-        world.start()
+        g_world.start()
         self.input = Input()
         self.face = Face(image_index = 1, path = self.FacesImagePath)
         self.status = Status()
@@ -179,13 +179,13 @@ class App:
         pyxel.run(self.update, self.draw)
 
     def stage(self):
-        return stages[world.stage_index]
+        return g_stages[g_world.stage_index]
 
     def bike_x_diff(self):
-        diff_max = world.origin_screen.x
+        diff_max = g_world.origin_screen.x
         v_max = self.bike.bike.max_speed
         v = self.bike.bike.velocity.x
-        return v / v_max * diff_max / world.scale.x
+        return v / v_max * diff_max / g_world.scale.x
 
     def goal_distance(self):
         return self.stage().ground.goal_x() - self.bike.bike.location.x
@@ -200,10 +200,10 @@ class App:
                 self.face.update(FaceIndex.Cry)
 
     def update_in_game(self):
-        self.background.update(world.origin_world.x)
+        self.background.update(g_world.origin_world.x)
         bike = self.bike.bike
         ox = bike.location.x + self.bike_x_diff()
-        world.update(Vec2(ox, 0))
+        g_world.update(Vec2(ox, 0))
         self.input.update(True)
         btn_a = self.input.a_pressed
         btn_b = self.input.b_pressed
@@ -221,9 +221,9 @@ class App:
         self.update_face(False, not failed)
         if self.input.x_pressed:
             if result_time:
-                stages[world.stage_index].update_best_time(result_time)
-                s_i = (world.stage_index + 1) % len(stages)
-                world.stage_index = s_i
+                g_stages[g_world.stage_index].update_best_time(result_time)
+                s_i = (g_world.stage_index + 1) % len(g_stages)
+                g_world.stage_index = s_i
                 if s_i == 0:
                     self.state = GameState.GameResult
                     self.game_result.reset()
@@ -238,7 +238,7 @@ class App:
         elif self.state == GameState.GamePlay:
             failed = self.bike.failed()
             if self.goal_distance() <= 0:
-                result_time = world.elapsed_time
+                result_time = g_world.elapsed_time
             else:
                 result_time = False
             if failed or result_time:
@@ -274,7 +274,7 @@ class App:
             raise
 
     def reset(self):
-        world.start()
+        g_world.start()
         self.background = Background()
         self.bike.bike.reset()
         if self.state == GameState.GamePlay:

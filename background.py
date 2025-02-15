@@ -7,7 +7,7 @@ from color_palette import ColorPalette
 
 class Background:
     def __init__(self):
-        stage = stages[world.stage_index]
+        stage = g_stages[g_world.stage_index]
         self.time_period = stage.time_period
         random.seed(stage.seed)
         self.origin_world_x = 0.0
@@ -99,8 +99,8 @@ class Background:
     def show_stars(self):
         if self.time_period != TimePeriod.Night:
             return
-        s_w = world.screen_size.x
-        s_h = world.screen_size.y
+        s_w = g_world.screen_size.x
+        s_h = g_world.screen_size.y
         color = ColorPalette.Star
         for v in self.stars_xys:
             sx = v.x * s_w
@@ -109,9 +109,9 @@ class Background:
 
     def show_mountains(self):
         scale = self.mountains_scale
-        s_w = world.screen_size.x
-        s_h = world.screen_size.y
-        origin_x = self.origin_world_x * world.scale.x / s_w
+        s_w = g_world.screen_size.x
+        s_h = g_world.screen_size.y
+        origin_x = self.origin_world_x * g_world.scale.x / s_w
         for sx in range(s_w):
             y = self.calc_y(self.mountains_xys,
                             sx / s_w + origin_x / scale,
@@ -122,9 +122,9 @@ class Background:
     def show_clouds(self):
         color = 7
         scale = self.clouds_scale
-        s_w = world.screen_size.x
-        s_h = world.screen_size.y
-        origin_x = self.origin_world_x * world.scale.x / s_w
+        s_w = g_world.screen_size.x
+        s_h = g_world.screen_size.y
+        origin_x = self.origin_world_x * g_world.scale.x / s_w
         speed = 1.0 / 3.0
         for v in self.clouds_xys:
             x = v.x - origin_x

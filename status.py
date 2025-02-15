@@ -20,7 +20,7 @@ class Status:
         return ColorPalette.StatusBg
 
     def update(self, bike, ground):
-        self.time = world.elapsed_time
+        self.time = g_world.elapsed_time
         self.speed = bike.velocity.x
         self.distance = ground.goal_x() - bike.location.x
 
@@ -34,14 +34,14 @@ class Status:
     def show(self):
         x = self.x0
         y = self.y0
-        self.text(x, y, 'STAGE: {:}'.format(world.stage_index + 1))
+        self.text(x, y, 'STAGE: {:}'.format(g_world.stage_index + 1))
         y += self.y_diff * 1.5
         self.text(x, y, '    Time: {:>7.2f}'.format(self.time))
         y += self.y_diff
         self.text(x, y, '   Speed: {:>7.2f}'.format(self.speed))
         y += self.y_diff
         self.text(x, y, 'Distance: {:>7.2f}'.format(self.distance))
-        best_time = stages[world.stage_index].best_time
+        best_time = g_stages[g_world.stage_index].best_time
         if best_time:
             y += self.y_diff * 1.5
             self.text(x, y, 'Best Time: {:7.2f}'.format(best_time))

@@ -15,13 +15,13 @@ class GameResult:
         self.small_font = pyxel.Font("fonts/spleen-8x16.bdf")
         margin = 10
         x = margin
-        y = world.screen_size.y - Button.ButtonSize[1] - margin
+        y = g_world.screen_size.y - Button.ButtonSize[1] - margin
         self.button = Button(x, y, "B")
         self.reset()
 
     def reset(self):
         self.tic = 0
-        self.base_y = world.screen_size.y
+        self.base_y = g_world.screen_size.y
         self.placed_tic = False
 
     def fg_color(self):
@@ -33,7 +33,7 @@ class GameResult:
     def update(self):
         self.tic += 1
         if self.base_y > 0 and not self.placed_tic:
-            self.base_y -= world.screen_size.y / 15
+            self.base_y -= g_world.screen_size.y / 15
         if self.base_y <= 0 and not self.placed_tic:
             self.placed_tic = self.tic
         if self.placed_tic:
@@ -57,20 +57,20 @@ class GameResult:
         i_w = self.ImageSize.x
         i_h = self.ImageSize.y
         i_s = self.ImageScale
-        x = world.screen_size.x - i_w * i_s / 2 - i_w / 2 
+        x = g_world.screen_size.x - i_w * i_s / 2 - i_w / 2 
         y = i_h * i_s / 2 - i_h / 2 - 10 + self.base_y
         spr_loc = self.ImageOffset
         pyxel.blt(x, y, self.image_index,
                   spr_loc.x, spr_loc.y,
                   i_w, i_h,
-                  world.bg_index, 0, i_s)
+                  g_world.bg_index, 0, i_s)
 
     def show_text(self):
         x0 = 20
-        y0 = 20 + self.base_y
+        y0 = 20 + self.base_y / 2
         total_time = 0.0
-        for index in range(len(stages)):
-            time = stages[index].best_time
+        for index in range(len(g_stages)):
+            time = g_stages[index].best_time
             total_time += time
             self.text(x0, y0,
                       'Stage {}: {:7.2f}'.format(index + 1, time),
@@ -80,8 +80,8 @@ class GameResult:
         self.text(x0, y0,
                   '  Total: {:7.2f}'.format(total_time),
                   self.font)
-        x = world.screen_size.x / 8
-        y = world.screen_size.y - 40 + self.base_y
+        x = g_world.screen_size.x / 8
+        y = g_world.screen_size.y - 40
         self.text(x, y, "Press B", self.small_font)
 
 

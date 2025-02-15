@@ -46,4 +46,4 @@ class World:
         w_diff = s_diff / self.scale
         return self.origin_world + w_diff
 
-world = World()
+g_world = World()

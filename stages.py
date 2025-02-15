@@ -30,10 +30,10 @@ class Stage:
         else:
             self.best_time = min(self.best_time, time)
 
-stages = []
+g_stages = []
 
 # stage 1
-stages.append(Stage([ -3.0, 0.0,
+g_stages.append(Stage([ -3.0, 0.0,
                       5.0, 1.0,
                       20.0, 0.0,
                       100.0, 1.0],
@@ -42,7 +42,7 @@ stages.append(Stage([ -3.0, 0.0,
                     0))
 
 # stage 2
-stages.append(Stage([ -3, 0,
+g_stages.append(Stage([ -3, 0,
                       10, 1,
                       20, 5,
                       20.1, 0,

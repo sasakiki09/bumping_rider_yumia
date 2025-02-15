@@ -4,7 +4,7 @@ from stages import *
 
 class Result:
     def __init__(self):
-        self.center = world.screen_size.div(2.0)
+        self.center = g_world.screen_size.div(2.0)
         self.w = 8
         self.h = 16
         self.reset()
@@ -45,7 +45,7 @@ class Result:
         y0 = self.center.y - h / 2
         self.text(x0, y0, str)
         str = "Press X for Next"
-        if world.stage_index + 1 == len(stages):
+        if g_world.stage_index + 1 == len(g_stages):
             str = "Press X for Game Result"
         w = self.w * len(str)
         x0 = self.center.x - w / 2

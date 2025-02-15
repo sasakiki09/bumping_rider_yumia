@@ -41,11 +41,11 @@ class Input:
     def init_buttons(self):
         margin = 10
         x0 = margin
-        y0 = world.screen_size.y - margin - Button.ButtonSize[1]
+        y0 = g_world.screen_size.y - margin - Button.ButtonSize[1]
         self.button_b = Button(x0, y0, "B")
-        x0 = world.screen_size.x - margin - Button.ButtonSize[0]
+        x0 = g_world.screen_size.x - margin - Button.ButtonSize[0]
         self.button_a = Button(x0, y0, "A")
-        x0 = (world.screen_size.x - Button.ButtonSize[0]) / 2
+        x0 = (g_world.screen_size.x - Button.ButtonSize[0]) / 2
         self.button_x = Button(x0, y0, "X")
         
     def update(self, in_game):
