@@ -3,7 +3,7 @@ import json
 from world import *
 
 class Savedata:
-    Directory = "savedata"
+    Directory = "../savedata"
     TagTotal = "total"
     
     def __init__(self):

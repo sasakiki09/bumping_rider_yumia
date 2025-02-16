@@ -275,6 +275,7 @@ class App:
 
     def reset(self):
         g_world.start()
+        self.stage().start()
         self.background = Background()
         self.bike.bike.reset()
         if self.state == GameState.GamePlay:
