@@ -16,8 +16,11 @@ class Savedata:
         if not os.path.isfile(self.filepath):
             self.data = {}
             return
-        with open(self.filepath, 'r') as f:
-            self.data = json.load(f)
+        try:
+            with open(self.filepath, 'r') as f:
+                self.data = json.load(f)
+        except json.JSONDecodeError:
+            self.data = {}
 
     def save(self):
         with open(self.filepath, 'w') as f:
@@ -26,19 +29,12 @@ class Savedata:
     def set_time(self, tag, time):
         if not self.data:
             self.load()
-        if tag == self.TagTotal:
-            self.data[tag] = time
-        else:
-            index = int(tag)
-            self.data[index] = time
+        self.data[str(tag)] = time
         self.save()
 
     def time(self, tag):
         if not self.data:
             self.load()
-        if tag == self.TagTotal:
-            return self.data[tag]
-        else:
-            return self.data[int(tag)]
+        return self.data.get(str(tag), None)
 
 g_savedata = Savedata()

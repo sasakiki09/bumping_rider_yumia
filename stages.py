@@ -1,5 +1,6 @@
 import math
 from world import *
+from savedata import *
 from physics import *
 
 class TimePeriod(Enum):
@@ -24,11 +25,16 @@ class Stage:
             vec2_array.append(Vec2(x, y))
         return Ground(vec2_array)
 
+    def start(self):
+        if self.best_time == None:
+            self.best_time = g_savedata.time(g_world.stage_index)
+
     def update_best_time(self, time):
         if self.best_time == None:
             self.best_time = time
         else:
             self.best_time = min(self.best_time, time)
+        g_savedata.set_time(g_world.stage_index, self.best_time)
 
 g_stages = []
 
