@@ -1,9 +1,10 @@
 import os
 import json
+import pyxel
 from world import *
 
 class Savedata:
-    Directory = "../savedata"
+    Directory = False
     TagTotal = "total"
     
     def __init__(self):
@@ -11,8 +12,11 @@ class Savedata:
         self.data = False
 
     def load(self):
+        if not Savedata.Directory:
+            Savedata.Directory = pyxel.user_data_dir("Sasakiki", "Motorcycle Yumia")
         if not self.filepath:
-            self.filepath = self.Directory + "/" + g_world.Version
+            self.filepath = Savedata.Directory + "savedata_" + g_world.Version
+            print(self.filepath)
         if not os.path.isfile(self.filepath):
             self.data = {}
             return
