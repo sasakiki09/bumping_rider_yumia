@@ -1,5 +1,6 @@
 import pyxel
 from world import *
+from savedata import *
 from color_palette import *
 from input import Button
 from stages import *
@@ -23,6 +24,7 @@ class GameResult:
         self.tic = 0
         self.base_y = g_world.screen_size.y
         self.placed_tic = False
+        self.best_total = None
 
     def fg_color(self):
         return ColorPalette.ResultTextFg
@@ -39,6 +41,19 @@ class GameResult:
         if self.placed_tic:
             phase = (self.tic - self.placed_tic) * math.pi / 15
             self.base_y = 10 * math.sin(phase)
+        if self.best_total == None:
+            total = 0
+            for stage in g_stages:
+                total += stage.best_time
+            self.update_best_total(total)
+
+    def update_best_total(self, total):
+        self.best_total = g_savedata.time(Savedata.TagTotal)
+        if self.best_total == None:
+            self.best_total = total
+        else:
+            self.best_total = min(self.best_total, total)
+        g_savedata.set_time(Savedata.TagTotal, self.best_total)
 
     def pressed(self):
         return (pyxel.btn(pyxel.GAMEPAD1_BUTTON_B) or
@@ -51,7 +66,6 @@ class GameResult:
         pyxel.text(x + 2, y + 1, str, self.bg_color(), font)
         pyxel.text(x + 1, y + 1, str, self.bg_color(), font)
         pyxel.text(x, y, str, self.fg_color(), font)
-
 
     def show_image(self):
         i_w = self.ImageSize.x
@@ -80,6 +94,11 @@ class GameResult:
         self.text(x0, y0,
                   '  Total: {:7.2f}'.format(total_time),
                   self.font)
+        y0 += 45
+        if self.best_total:
+            self.text(x0, y0,
+                      'Best Total: {:7.2f}'.format(self.best_total),
+                      self.font)
         x = g_world.screen_size.x / 8
         y = g_world.screen_size.y - 40
         self.text(x, y, "Press B", self.small_font)
