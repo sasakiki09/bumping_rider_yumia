@@ -44,7 +44,7 @@ class GameResult:
         if self.best_total == None:
             total = 0
             for stage in g_stages:
-                total += stage.best_time
+                total += stage.last_time
             self.update_best_total(total)
 
     def update_best_total(self, total):
@@ -84,7 +84,7 @@ class GameResult:
         y0 = 20 + self.base_y / 2
         total_time = 0.0
         for index in range(len(g_stages)):
-            time = g_stages[index].best_time
+            time = g_stages[index].last_time
             total_time += time
             self.text(x0, y0,
                       'Stage {}: {:7.2f}'.format(index + 1, time),

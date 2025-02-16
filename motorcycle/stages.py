@@ -14,6 +14,7 @@ class Stage:
         self.music = music
         self.seed = seed
         self.best_time = None
+        self.last_time = None
         
     def gen_ground(self, xy_array):
         l = len(xy_array)
@@ -30,6 +31,7 @@ class Stage:
             self.best_time = g_savedata.time(g_world.stage_index)
 
     def update_best_time(self, time):
+        self.last_time = time
         if self.best_time == None:
             self.best_time = time
         else:
