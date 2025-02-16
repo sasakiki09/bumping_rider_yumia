@@ -1,4 +1,5 @@
 import math
+import random
 from world import *
 from savedata import *
 from physics import *
@@ -59,3 +60,35 @@ g_stages.append(Stage([ -3, 0,
                     TimePeriod.Night,
                     2,
                     1))
+
+# stage 3
+random.seed(100)
+xys = [-3, 0]
+x = 0
+y = 0
+while x < 200:
+    x_diff = random.uniform(0.0, 0.2)
+    y_diff = random.uniform(-0.05, 0.05)
+    x += x_diff
+    y += y_diff
+    xys.append(x)
+    xys.append(y)
+g_stages.append(Stage(xys,
+                      TimePeriod.Day,
+                      3,
+                      0))
+
+# stage 4
+g_stages.append(Stage([ -3, 0,
+                        10, 1,
+                        20, 5,
+                        20.1, -5,
+                        25, -5,
+                        25.1, 2,
+                        30, 0,
+                        100, 4,
+                        101, -2,
+                        200, 2],
+                      TimePeriod.Night,
+                      3,
+                      4))
