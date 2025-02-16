@@ -59,13 +59,13 @@ class GameBike:
 
     def rotation_degree(self):
         rotation = self.bike.rotation
-        return 180.0 / math.pi * rotation
+        return -180.0 / math.pi * rotation
 
     def tire_rotation_degree(self):
         r = BikeWorldLen / 6
         l = math.pi * 2 * r
         ratio = (self.bike.location.x % l) / l
-        return -180.0 * ratio
+        return 180.0 * ratio
 
     def chara_body_range(self):
         if self.chara_body_index == CharaBodyIndex.Succeeded:
