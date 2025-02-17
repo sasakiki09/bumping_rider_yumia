@@ -155,7 +155,7 @@ class Ground:
 
     def height(self, x):
         index = Vec2.find_index(self.coords, x, self.last_index)
-        if (x < self.coords[0].x or self.coords[-1].x < x):
+        if (x < self.coords[0].x):
             return False
         if index == len(self.coords) - 1:
             return self.coords[index].y

@@ -130,9 +130,10 @@ class GameGround:
     def screen_y(self, screen_x):
         w_xy = g_world.world_xy(Vec2(screen_x, 0))
         w_y = self.ground().height(w_xy.x)
-        if not w_y: return False
         s_xy = g_world.screen_xy(Vec2(w_xy.x, w_y))
-        return s_xy.y
+        s_y = s_xy.y
+        on_course = (w_xy.x <= self.ground().goal_x())
+        return (s_xy.y, on_course)
 
     def color_index(self, screen_x):
         w_x = g_world.world_xy(Vec2(screen_x, 0)).x
@@ -144,15 +145,12 @@ class GameGround:
 
     def show(self):
         for x in range(g_world.screen_size.x):
-            y = self.screen_y(x)
-            if y:
+            y, on_course = self.screen_y(x)
+            if on_course:
                 col = self.color_index(x)
-                pyxel.line(x, y, x, g_world.screen_size.y, col)
             else:
                 col = ColorPalette.GroundGoal
-                w_y = self.ground().goal_y()
-                s_y = g_world.screen_xy(Vec2(0, w_y)).y
-                pyxel.line(x, s_y, x, g_world.screen_size.y, col)
+            pyxel.line(x, y, x, g_world.screen_size.y, col)
 
 class App:
     BikesImagePath = 'images/bike.png'
