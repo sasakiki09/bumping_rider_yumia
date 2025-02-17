@@ -47,6 +47,7 @@ class Bike:
         self.rotation_velocity = 0.0
         self.touched = False
         self.last_touched = False
+        self.fallen = False
         
     def speed_ratio(self):
         return (self.velocity.x / self.max_speed)
@@ -132,12 +133,15 @@ class Bike:
         h = self.height_from_ground(ground)
         self.location += self.velocity.mul(g_world.delta_time)
         self.rotation += self.rotation_velocity * g_world.delta_time
+        if h < -1.0:
+            self.fallen = True
         if h < 0.0:
             self.location.y += -h
             self.last_touched = True
 
     def failed(self):
-        return (self.touched and math.cos(self.rotation) <= 0)
+        return ((self.touched and math.cos(self.rotation) <= 0) or
+                self.fallen)
     
 class Ground:
     def __init__(self):
