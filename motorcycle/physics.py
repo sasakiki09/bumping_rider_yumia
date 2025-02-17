@@ -135,7 +135,7 @@ class Bike:
         self.rotation += self.rotation_velocity * g_world.delta_time
         if h < -1.0:
             self.fallen = True
-        if h < 0.0:
+        elif h < 0.0:
             self.location.y += -h
             self.last_touched = True
 
