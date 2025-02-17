@@ -171,3 +171,6 @@ class Ground:
 
     def goal_x(self):
         return self.coords[-1].x
+
+    def goal_y(self):
+        return self.coords[-1].y

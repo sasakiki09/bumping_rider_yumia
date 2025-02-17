@@ -33,7 +33,6 @@ class GameBike:
         self.chara_body_index = CharaBodyIndex.Normal
         self.load(path)
         self.set_sprite_ranges()
-        
 
     def load(self, path):
         self.image = pyxel.images[self.image_index]
@@ -146,9 +145,14 @@ class GameGround:
     def show(self):
         for x in range(g_world.screen_size.x):
             y = self.screen_y(x)
-            if not y: continue
-            col = self.color_index(x)
-            pyxel.line(x, y, x, g_world.screen_size.y, col)
+            if y:
+                col = self.color_index(x)
+                pyxel.line(x, y, x, g_world.screen_size.y, col)
+            else:
+                col = ColorPalette.GroundGoal
+                w_y = self.ground().goal_y()
+                s_y = g_world.screen_xy(Vec2(0, w_y)).y
+                pyxel.line(x, s_y, x, g_world.screen_size.y, col)
 
 class App:
     BikesImagePath = 'images/bike.png'
