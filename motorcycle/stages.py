@@ -76,7 +76,7 @@ while x < 200:
 g_stages.append(Stage(xys,
                       TimePeriod.Day,
                       3,
-                      0))
+                      3))
 
 # stage 4
 g_stages.append(Stage([ -3, 0,
