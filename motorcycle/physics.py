@@ -93,7 +93,6 @@ class Bike:
         return min(h_f, h_r)
 
     def update_velocity(self, ground, btn_a, btn_b):
-        self.velocity.x -= self.speed_decay
         f_h = self.wheel_height(Wheel.Front, ground)
         r_h = self.wheel_height(Wheel.Rear, ground)
         f_touch = (f_h <= self.min_height)
@@ -108,9 +107,11 @@ class Bike:
         self.touched = (f_touch or r_touch)
         if (f_touch or r_touch):
             self.velocity.y = self.reflection * abs(self.velocity.y)
+            theta = math.atan(ground.ramp_rate(self.location.x))
+            self.velocity.x += g_world.gravity.y * dt * math.sin(theta) * 0.5
         elif not (f_touch and r_touch):
             self.velocity += g_world.gravity.mul(dt)
-        rot_acc = math.pi / 3
+        rot_acc = math.pi / 6
         if f_touch and not btn_b:
             self.rotation_velocity += rot_acc * dt
         if r_touch and not btn_a:
@@ -125,8 +126,10 @@ class Bike:
                 self.rotation_velocity += rot_acc * dt
             if f_touch or r_touch:
                 self.velocity.x -= self.acceleration * dt
-        self.velocity.x = max(0.0, self.velocity.x)
-        self.velocity.x = min(self.max_speed, self.velocity.x)
+        if self.velocity.x > self.speed_decay:
+            self.velocity.x -= self.speed_decay
+        self.velocity.x = max(-0.5, min(self.max_speed,
+                                        self.velocity.x))
 
     def update(self, ground, btn_a, btn_b):
         self.update_velocity(ground, btn_a, btn_b)
@@ -168,6 +171,14 @@ class Ground:
             raise
         if x0 == x1: raise
         return y0 + (y1 - y0) / (x1 - x0) * (x - x0)
+
+    def ramp_rate(self, x):
+        diff = 0.1 # 10cm
+        x0 = x - diff
+        x1 = x + diff
+        y0 = self.height(x0)
+        y1 = self.height(x1)
+        return (y1 - y0) / (x1 - x0)
 
     def goal_x(self):
         return self.coords[-1].x
