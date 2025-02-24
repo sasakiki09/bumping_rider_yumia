@@ -9,8 +9,21 @@ class TimePeriod(Enum):
     Night = auto()
 
 class Stage:
-    def __init__(self, xy_array, time_period, music, seed):
-        self.ground = self.gen_ground(xy_array)
+    def __init__(self,
+                 xy_array,
+                 time_period,
+                 music,
+                 seed,
+                 x_diff_max = None,
+                 y_diff_max = None):
+        if x_diff_max and y_diff_max:
+            self.ground = self.gen_ground_random(
+                xy_array,
+                x_diff_max,
+                y_diff_max,
+                seed)
+        else:
+            self.ground = self.gen_ground(xy_array)
         self.time_period = time_period
         self.music = music
         self.seed = seed
@@ -25,6 +38,27 @@ class Stage:
             x = xy_array[index * 2 + 0]
             y = xy_array[index * 2 + 1]
             vec2_array.append(Vec2(x, y))
+        return Ground(vec2_array)
+
+    def gen_ground_random(self,
+                          xy_array,
+                          x_diff_max,
+                          y_diff_max,
+                          seed):
+        base_g = self.gen_ground(xy_array)
+        x = xy_array[0]
+        y = xy_array[1]
+        random.seed(seed)
+        last_base_y = y
+        vec2_array = []
+        while x < base_g.goal_x():
+            x_diff = random.uniform(0.0, x_diff_max)
+            y_diff = random.uniform(-y_diff_max, y_diff_max)
+            x += x_diff
+            base_y = base_g.height(x)
+            y += (base_y - last_base_y) + y_diff
+            vec2_array.append(Vec2(x, y))
+            last_base_y = base_y
         return Ground(vec2_array)
 
     def start(self):
@@ -62,21 +96,12 @@ g_stages.append(Stage([ -3, 0,
                     1))
 
 # stage 3
-random.seed(100)
-xys = [-3, 0]
-x = 0
-y = 0
-while x < 200:
-    x_diff = random.uniform(0.0, 0.2)
-    y_diff = random.uniform(-0.05, 0.05)
-    x += x_diff
-    y += y_diff
-    xys.append(x)
-    xys.append(y)
-g_stages.append(Stage(xys,
+g_stages.append(Stage([-3, 0, 200, 0],
                       TimePeriod.Day,
                       3,
-                      3))
+                      100,
+                      0.2,
+                      0.05))
 
 # stage 4
 g_stages.append(Stage([ -3, 0,
