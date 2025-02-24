@@ -76,10 +76,10 @@ class Stage:
 g_stages = []
 
 # stage 1
-g_stages.append(Stage([ -3.0, 0.0,
-                      5.0, 1.0,
-                      20.0, 0.0,
-                      100.0, 1.0],
+g_stages.append(Stage([ -3, 0,
+                      5, 1,
+                      20, 0,
+                      100, 1],
                     TimePeriod.Day,
                     0,
                     0))
@@ -117,3 +117,34 @@ g_stages.append(Stage([ -3, 0,
                       TimePeriod.Night,
                       3,
                       4))
+
+# stage 5
+g_stages.append(Stage([-3, 0,
+                       20, 4,
+                       25, 0,
+                       30, 4,
+                       45, 5,
+                       46, -5,
+                       48, -5,
+                       50, 4,
+                       60, 0,
+                       75, 5,
+                       80, 2,
+                       85, 4.5,
+                       90, 2,
+                       90.1, -5,
+                       92, -5,
+                       93, 2,
+                       120, 2,
+                       121, 0,
+                       122, 2,
+                       123, 4,
+                       124, 4.5,
+                       130, 1,
+                       200, 5],
+                      TimePeriod.Night,
+                      2,
+                      5,
+                      0.2,
+                      0.07))
+
