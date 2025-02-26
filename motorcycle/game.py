@@ -17,6 +17,7 @@ from music import *
 class CharaBodyIndex(Enum):
     Normal = auto()
     Succeeded = auto()
+    Failed = auto()
 
 class GameState(Enum):
     GameTitle = auto()
@@ -45,6 +46,7 @@ class GameBike:
         self.chara_body_range_0 = Range2(w, 0, w, h)
         self.chara_body_range_1 = Range2(w, h, w, h)
         self.chara_body_range_steer = Range2(w, h * 2, w, h)
+        self.chara_body_range_cry = Range2(w, h * 3, w, h)
         r = BikeSpriteHeight / 4
         self.tire_range = Range2(w * 2, 0, r * 2, r * 2)
         self.front_tire_center = Vec2(w / 2 - r, r)
@@ -69,6 +71,8 @@ class GameBike:
     def chara_body_range(self):
         if self.chara_body_index == CharaBodyIndex.Succeeded:
             return self.chara_body_range_steer
+        if self.chara_body_index == CharaBodyIndex.Failed:
+            return self.chara_body_range_cry
         if self.bike.rotation_velocity < 0:
             return self.chara_body_range_0
         else:
@@ -218,7 +222,10 @@ class App:
 
     def update_result(self, failed, result_time):
         self.input.update(False)
-        self.bike.update_chara_body_index(CharaBodyIndex.Succeeded)
+        if failed:
+            self.bike.update_chara_body_index(CharaBodyIndex.Failed)
+        else:
+            self.bike.update_chara_body_index(CharaBodyIndex.Succeeded)
         self.result.update(failed, result_time)
         self.update_face(False, not failed)
         if self.input.x_pressed:
