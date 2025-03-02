@@ -53,16 +53,18 @@ class Title:
         pyxel.text(x + 2, y + 1, str, self.bg_color(), font)
         pyxel.text(x + 1, y + 1, str, self.bg_color(), font)
         pyxel.text(x, y, str, self.fg_color(), font)
-        
+
+    def show_text_image(self):
+        x = g_world.screen_size.x / 7
+        y = g_world.screen_size.y / 4 + self.base_y
+        pyxel.blt(x, y, self.image_index,
+                  0, 128,
+                  128, 128,
+                  g_world.bg_index, 0, 2)
+
     def show_texts(self):
         x = g_world.screen_size.x / 8
-        y = g_world.screen_size.y / 4 + self.base_y
-        self.text(x, y, "Motorcycle", self.font)
-        x = g_world.screen_size.x / 3
-        y += 40
-        self.text(x, y, "Yumia", self.font)
-        x = g_world.screen_size.x / 8
-        y += 80
+        y = g_world.screen_size.y * 2 / 3 + self.base_y
         self.text(x, y, "Version {}".format(g_world.Version), self.small_font)
         x = g_world.screen_size.x / 9
         y = g_world.screen_size.y - 40 + self.base_y
@@ -84,5 +86,6 @@ class Title:
     def show(self):
         pyxel.cls(ColorPalette.TitleBg)
         self.button.show()
+        self.show_text_image()
         self.show_texts()
         self.show_image()
