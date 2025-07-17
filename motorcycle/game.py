@@ -25,18 +25,17 @@ class GameState(Enum):
     GameResult = auto()
 
 class GameBike:
-    def __init__(self, image_index, path):
+    def __init__(self, path):
         self.bike = Bike()
         self.width = BikeSpriteWidth
         self.height = BikeSpriteHeight
-        self.image_index = image_index
         self.next_blink_tic = 20
         self.chara_body_index = CharaBodyIndex.Normal
         self.load(path)
         self.set_sprite_ranges()
 
     def load(self, path):
-        self.image = pyxel.images[self.image_index]
+        self.image = pyxel.Image(256, 256)
         self.image.load(0, 0, path)
 
     def set_sprite_ranges(self):
@@ -85,23 +84,23 @@ class GameBike:
         f_rel = self.front_tire_center.rotate(-self.bike.rotation)
         f_xy = s_xy + f_rel + self.front_tire_center
         tire_rot = self.tire_rotation_degree()
-        pyxel.blt(f_xy.x, f_xy.y, self.image_index,
+        pyxel.blt(f_xy.x, f_xy.y, self.image,
                   r.x, r.y, r.w, r.h,
                   g_world.bg_index,
                   tire_rot)
         r_rel = self.rear_tire_center.rotate(-self.bike.rotation)
         r_xy = s_xy + r_rel + self.front_tire_center
-        pyxel.blt(r_xy.x, r_xy.y, self.image_index,
+        pyxel.blt(r_xy.x, r_xy.y, self.image,
                   r.x, r.y, r.w, r.h,
                   g_world.bg_index,
                   tire_rot)
         r = self.bike_body_range
-        pyxel.blt(s_xy.x, s_xy.y, self.image_index,
+        pyxel.blt(s_xy.x, s_xy.y, self.image,
                   r.x, r.y, r.w, r.h,
                   g_world.bg_index,
                   rot)
         r = self.chara_body_range()
-        pyxel.blt(s_xy.x, s_xy.y, self.image_index,
+        pyxel.blt(s_xy.x, s_xy.y, self.image,
                   r.x, r.y, r.w, r.h,
                   g_world.bg_index,
                   rot)
@@ -172,7 +171,7 @@ class App:
         self.state = GameState.GameTitle
         self.title = Title(image_index = 2, path = self.TitleImagePath)
         self.game_result = GameResult(image_index = 2)
-        self.bike = GameBike(image_index = 0, path = self.BikesImagePath)
+        self.bike = GameBike(path = self.BikesImagePath)
         self.ground = GameGround()
         g_world.start()
         self.input = Input()
