@@ -7,7 +7,7 @@ BikeSpriteWidth = 96 # [pixel]
 BikeSpriteHeight = 64 # [pixel]
 
 class World:
-    Version = "1.00"
+    Version = "1.01"
 
     def __init__(self):
         self.gravity = Vec2(0.0, -9.8)
@@ -15,6 +15,7 @@ class World:
                           -BikeSpriteWidth / BikeWorldLen)
         self.screen_size = Vec2(480, 360)
         self.title = "Bumping Rider"
+        self.fps = 30
         self.bg_index = 0
         self.origin_world = Vec2(0.0, 0.0)
         self.origin_screen = Vec2(self.screen_size.x * 0.2,
@@ -23,17 +24,16 @@ class World:
 
     def start(self):
         self.tic = 0
-        self.start_time = time.time()
+        self.start_time = 0.0
         self.last_time = self.start_time
         self.elapsed_time = 0.0
         self.delta_time = 0.0
 
     def update(self, world_origin):
         self.tic += 1
-        now = time.time()
-        self.delta_time = now - self.last_time
-        self.elapsed_time = now - self.start_time
-        self.last_time = now
+        self.delta_time = 1.0 / self.fps
+        self.elapsed_time = self.tic / self.fps
+        self.last_time = self.elapsed_time - self.start_time
         self.origin_world = world_origin
 
     def screen_xy(self, world_xy):

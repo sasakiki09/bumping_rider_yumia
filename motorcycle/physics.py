@@ -10,7 +10,7 @@ class Coordinate(Enum):
     World = auto()
     Local = auto()
 
-# -x: front, +x: rear
+# -x: forward, +x: backward
 # -y: down,  +y: up
 class Location(Vec2):
     def __init__(self):

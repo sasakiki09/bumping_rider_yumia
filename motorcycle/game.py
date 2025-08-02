@@ -163,7 +163,8 @@ class App:
     def __init__(self):
         pyxel.init(g_world.screen_size.x,
                    g_world.screen_size.y,
-                   g_world.title)
+                   g_world.title,
+                   fps = g_world.fps)
         self.color_palette = ColorPalette(
             [self.BikesImagePath,
              self.FacesImagePath,
