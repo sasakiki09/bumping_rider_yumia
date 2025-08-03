@@ -1,6 +1,8 @@
 import math
 import time
 
+import pdb
+
 class Vec2:
     def __init__(self):
         self.x = False
@@ -38,21 +40,50 @@ class Vec2:
         y1 = sin_a * self.x + cos_a * self.y
         return Vec2(x1, y1)
 
-    # Find minmum index such that xys[index] <= x.
-    @classmethod
-    def find_index(self, xys, x, last_index = False):
-        if last_index:
-            index = last_index
-        else:
-            index = len(xys) // 2
-        while (index < len(xys) - 1 and
-               xys[index].x < x):
+class Vec2Array:
+    def __init__(self, array):
+        self.array = sorted(array, key=lambda c: c.x)
+        if len(self.array) < 2:
+            pdb.set_trace()
+            raise
+        count = len(self.array) - 1
+        x_len = self.array[-1].x - self.array[0].x
+        self.diff_x_avg = x_len / count
+        self.inv_array = self._calc_inv_array()
+
+    # Calculate index s.t.
+    #   array[index] <= floor(diff_x / diff_x_avg).
+    def _calc_inv_array(self):
+        inv_array = []
+        for index in range(len(self.array)):
+            diff_x = self.array[index].x - self.array[0].x
+            while len(inv_array) <= math.floor(diff_x / self.diff_x_avg):
+                inv_array.append(index)
+        return inv_array
+
+    def __str__(self):
+        astr = "array: ["
+        for xy in self.array:
+            astr += str(xy) + ", "
+        astr += "], "
+        astr += "diff_x_ang: " + str(self.diff_x_avg) + ", "
+        astr += "inv_array: " + str(self.inv_array)
+        return astr
+
+    def array(self):
+        return self.array
+
+    # Find minimum index such that xys[index] <= x.
+    def find_index(self, x):
+        n = len(self.array)
+        i = math.floor((x - self.array[0].x) / self.diff_x_avg)
+        if i < 0: return 0
+        if i >= len(self.inv_array): return n - 1
+        index = self.inv_array[i]
+        while index < n and self.array[index].x <= x:
             index += 1
-        while (0 < index and
-               x < xys[index].x):
-            index -= 1
-        return index
-    
+        return index - 1
+
 class Range2:
     def __init__(self):
         self.x = None

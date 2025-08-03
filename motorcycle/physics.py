@@ -2,6 +2,8 @@ from world import *
 import math
 from enum import Enum, auto
 
+import pdb
+
 class Wheel(Enum):
     Front = auto()
     Rear = auto()
@@ -151,26 +153,26 @@ class Bike:
     
 class Ground:
     def __init__(self):
-        self.coords = []
-        self.last_index = False
+        self.coords = Vec2Array([])
 
     def __init__(self, coords):
-        self.coords = sorted(coords, key=lambda c: c.x)
-        if len(self.coords) < 2: raise
-        self.last_index = False
+        self.coords = Vec2Array(coords)
+        if len(self.coords.array) < 2: raise
 
     def height(self, x):
-        index = Vec2.find_index(self.coords, x, self.last_index)
-        if (x < self.coords[0].x):
+        index = self.coords.find_index(x)
+        array = self.coords.array
+        if (x < array[0].x):
             return False
-        if index == len(self.coords) - 1:
-            return self.coords[index].y
-        x0 = self.coords[index].x
-        y0 = self.coords[index].y
-        x1 = self.coords[index + 1].x
-        y1 = self.coords[index + 1].y
+        if index == len(array) - 1:
+            return array[index].y
+        x0 = array[index].x
+        y0 = array[index].y
+        x1 = array[index + 1].x
+        y1 = array[index + 1].y
         if not (x0 <= x and x <= x1):
             print('x0:%f x1:%f x:%f' % (x0, x1, x))
+            pdb.set_trace()
             raise
         if x0 == x1: raise
         return y0 + (y1 - y0) / (x1 - x0) * (x - x0)
@@ -184,7 +186,7 @@ class Ground:
         return (y1 - y0) / (x1 - x0)
 
     def goal_x(self):
-        return self.coords[-1].x
+        return self.coords.array[-1].x
 
     def goal_y(self):
-        return self.coords[-1].y
+        return self.coords.array[-1].y

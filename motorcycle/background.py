@@ -11,7 +11,6 @@ class Background:
         self.time_period = stage.time_period
         random.seed(stage.seed)
         self.origin_world_x = 0.0
-        self.last_index = False
         self.gen_stars()
         self.gen_mountains()
         self.gen_clouds()
@@ -62,7 +61,7 @@ class Background:
             x = last_x + random.random() * max_x_interval
             xys.append(Vec2(x, min_y + y * (max_y - min_y)))
             last_x = x
-        self.mountains_xys = xys
+        self.mountains_xys = Vec2Array(xys)
 
     def gen_clouds(self):
         min_y = 0.7
@@ -86,9 +85,10 @@ class Background:
     def update(self, origin_world_x):
         self.origin_world_x = origin_world_x
 
-    def calc_y(self, xys, x, scale):
+    def calc_y(self, x, scale):
         x = x % scale
-        i0 = Vec2.find_index(xys, x, self.last_index)
+        i0 = self.mountains_xys.find_index(x)
+        xys = self.mountains_xys.array
         i1 = (i0 + 1) % len(xys)
         x0 = xys[i0].x % scale
         y0 = xys[i0].y
@@ -113,8 +113,7 @@ class Background:
         s_h = g_world.screen_size.y
         origin_x = self.origin_world_x * g_world.scale.x / s_w
         for sx in range(s_w):
-            y = self.calc_y(self.mountains_xys,
-                            sx / s_w + origin_x / scale,
+            y = self.calc_y(sx / s_w + origin_x / scale,
                             scale)
             sy = (1 - y) * s_h
             pyxel.line(sx, sy, sx, s_h - 1, self.mountain_color())
