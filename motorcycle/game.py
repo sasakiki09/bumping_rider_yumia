@@ -177,8 +177,8 @@ class App:
         self.color_palette = ColorPalette(
             [self.BikeBodyImagePath,
              self.WheelImagePath,
-             self.CharaBodyImagePath,
-             self.FacesImagePath,
+             self.CharaBodyImagePath],
+            [self.FacesImagePath,
              self.TitleImagePath])
         self.state = GameState.GameTitle
         self.title = Title(image_index = 2, path = self.TitleImagePath)
