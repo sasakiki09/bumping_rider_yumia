@@ -65,13 +65,16 @@ class Stage:
         if self.best_time == None:
             self.best_time = g_savedata.time(g_world.stage_index)
 
-    def update_best_time(self, time):
+    def update_best_time(self, time, play_record):
         self.last_time = time
-        if self.best_time == None:
+        updated = (self.best_time == None or time < self.best_time)
+        if updated:
             self.best_time = time
-        else:
-            self.best_time = min(self.best_time, time)
-        g_savedata.set_time(g_world.stage_index, self.best_time)
+            index = g_world.stage_index
+            g_savedata.set_time(index, self.best_time)
+            g_savedata.set_record_a(index, play_record.str_a())
+            g_savedata.set_record_b(index, play_record.str_b())
+            g_savedata.save()
 
 g_stages = []
 

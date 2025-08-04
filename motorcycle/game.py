@@ -6,6 +6,7 @@ from physics import *
 from stages import *
 from background import *
 from input import *
+from play_record import *
 from face import *
 from status import *
 from title import *
@@ -176,6 +177,7 @@ class App:
         self.ground = GameGround()
         g_world.start()
         self.input = Input()
+        self.play_record = PlayRecord()
         self.face = Face(image_index = 1, path = self.FacesImagePath)
         self.status = Status()
         self.result = Result()
@@ -213,6 +215,7 @@ class App:
         self.input.update(True)
         btn_a = self.input.a_pressed
         btn_b = self.input.b_pressed
+        self.play_record.add(btn_a, btn_b)
         self.bike.update(self.stage().ground, btn_a, btn_b)
         self.status.update(self.bike.bike, self.stage().ground)
         self.update_face(True, False)
@@ -230,7 +233,8 @@ class App:
         self.update_face(False, not failed)
         if self.input.x_pressed:
             if result_time:
-                g_stages[g_world.stage_index].update_best_time(result_time)
+                stage = self.stage()
+                stage.update_best_time(result_time, self.play_record)
                 s_i = (g_world.stage_index + 1) % len(g_stages)
                 g_world.stage_index = s_i
                 if s_i == 0:
@@ -286,6 +290,7 @@ class App:
         g_world.start()
         self.stage().start()
         self.background = Background()
+        self.play_record.reset()
         self.bike.bike.reset()
         if self.state == GameState.GamePlay:
             self.music.play(self.stage().music)

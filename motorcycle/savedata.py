@@ -45,18 +45,42 @@ class Savedata:
             else:
                 with open(self.filepath, 'w') as f:
                     f.write(data_str)
-        except Exception:
-            pass
+        except Exception as e:
+            print(f"Exception {e}")
 
+    def _time_tag(self, tag):
+        return "time_" + str(tag)
+
+    def _record_a_tag(self, tag):
+        return "record_a_" + str(tag)
+
+    def _record_b_tag(self, tag):
+        return "record_b_" + str(tag)
+    
     def set_time(self, tag, time):
         if not self.data:
             self.load()
-        self.data[str(tag)] = time
-        self.save()
+        self.data[self._time_tag(tag)] = time
 
     def time(self, tag):
         if not self.data:
             self.load()
-        return self.data.get(str(tag), None)
+        return self.data.get(self._time_tag(tag), None)
+
+    def set_record_a(self, tag, text):
+        if not self.data:
+            self.load()
+        self.data[self._record_a_tag(tag)] = text
+
+    def set_record_b(self, tag, text):
+        if not self.data:
+            self.load()
+        self.data[self._record_b_tag(tag)] = text
+
+    def record_a(self, tag):
+        return self.data.get(self._record_a_tag(tag), None)
+
+    def record_b(self, tag):
+        return self.data.get(self._record_b_tag(tag), None)
 
 g_savedata = Savedata()

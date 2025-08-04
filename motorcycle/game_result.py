@@ -54,6 +54,7 @@ class GameResult:
         else:
             self.best_total = min(self.best_total, total)
         g_savedata.set_time(Savedata.TagTotal, self.best_total)
+        g_savedata.save()
 
     def pressed(self):
         return (pyxel.btn(pyxel.GAMEPAD1_BUTTON_B) or
