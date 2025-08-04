@@ -25,6 +25,7 @@ class ColorPalette:
     
     def __init__(self, paths):
         self.initial_colors = pyxel.colors.to_list()
+        self.gray_map = {}
         colors = pyxel.colors.to_list()
         ColorPalette.TitleBg = len(colors)
         colors.append(0x4d65b4)
@@ -64,10 +65,10 @@ class ColorPalette:
         colors.append(0x8ff8e2)
         ColorPalette.ResultTextFg = len(colors)
         colors.append(0x4d65b4)
-        colors.extend(self.from_images(paths))
+        colors.extend(self._from_images(paths))
         pyxel.colors.from_list(colors)
 
-    def from_images(self, paths):
+    def _from_images(self, paths):
         cols = []
         for path in paths:
             image = Image.open(path)
@@ -79,3 +80,16 @@ class ColorPalette:
             r, g, b, _ = col[1]
             pal_cols.append(r * 65536 + g * 256 + b)
         return pal_cols
+
+    def _make_gray(self, color):
+        r = color >> 16
+        g = (color & 0xff00) >> 8
+        b = color & 0xff
+        v = max(min(int((r + g + b) / 3), 255), 0)
+        return v * 0x010101
+    
+    def _add_gray_colors(self, colors):
+        grays = []
+        for col in colors:
+            gray = _make_gray(col)
+        #################### working 2025.08.04
