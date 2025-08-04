@@ -70,9 +70,6 @@ class Vec2Array:
         astr += "inv_array: " + str(self.inv_array)
         return astr
 
-    def array(self):
-        return self.array
-
     # Find minimum index such that xys[index] <= x.
     def find_index(self, x):
         n = len(self.array)
