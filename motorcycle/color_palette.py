@@ -75,10 +75,10 @@ class ColorPalette:
             cols.extend(image.getcolors(maxcolors = self.MaxColors))
         cols = set(cols)
         if len(cols) > self.MaxColors: raise
-        pal_cols = []
+        pal_cols = set()
         for col in cols:
             r, g, b, _ = col[1]
-            pal_cols.append(r * 65536 + g * 256 + b)
+            pal_cols.add(r * 65536 + g * 256 + b)
         return pal_cols
 
     def _make_gray(self, color):
