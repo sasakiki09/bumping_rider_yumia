@@ -17,6 +17,7 @@ class ColorPalette:
     NightCloud = 0
     Ground0 = 0
     Ground1 = 0
+    GroundSurface = 0
     GroundGoal = 0
     ResultBg = 0
     ResultTextBg = 0
@@ -53,6 +54,8 @@ class ColorPalette:
         colors.append(0xc7b272)
         ColorPalette.Ground1 = len(colors)
         colors.append(0x8f7320)
+        ColorPalette.GroundSurface = len(colors)
+        colors.append(0xaaca64)
         ColorPalette.GroundGoal = len(colors)
         colors.append(0xffffc0)
         ColorPalette.ResultBg = len(colors)
