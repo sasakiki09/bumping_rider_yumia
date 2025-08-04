@@ -2,7 +2,7 @@ import pyxel
 from PIL import Image
 
 class ColorPalette:
-    MaxColors = 200
+    MaxColors = 100
     TitleBg = 0
     TitleTextFg = 0
     TitleTextBg = 0
@@ -47,10 +47,8 @@ class ColorPalette:
         ColorPalette.ResultBg      = self._add_color(0x95b2ff)
         ColorPalette.ResultTextBg  = self._add_color(0x8ff8e2)
         ColorPalette.ResultTextFg  = self._add_color(0x4d65b4)
-
-        #################### working 2025.08.05
-        self.colors.extend(self._from_images(paths_w_gray))
-        self.colors.extend(self._from_images(paths))
+        self._add_from_images(paths_w_gray)
+        self._add_from_images(paths)
         pyxel.colors.from_list(self.colors)
 
     def _add_color(self, color):
@@ -66,7 +64,7 @@ class ColorPalette:
         v = max(min(int((r + g + b) / 3), 255), 0)
         return v * 0x010101
     
-    def _from_images(self, paths):
+    def _add_from_images(self, paths):
         cols = []
         for path in paths:
             image = Image.open(path)
@@ -77,7 +75,8 @@ class ColorPalette:
         for col in cols:
             r, g, b, _ = col[1]
             pal_cols.add(r * 65536 + g * 256 + b)
-        return pal_cols
+        for col_num in pal_cols:
+            self._add_color(col_num)
 
     def _add_gray_colors(self, colors):
         gmap = []
