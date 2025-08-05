@@ -27,6 +27,8 @@ class ColorPalette:
         self.initial_colors = pyxel.colors.to_list()
         self.colors = []
         self.inv_colors = {}
+        self.color_to_gray = {}
+
         self.colors = pyxel.colors.to_list()
         ColorPalette.TitleBg       = self._add_color(0x4d65b4)
         ColorPalette.TitleTextFg   = self._add_color(0xf68181)
@@ -47,9 +49,17 @@ class ColorPalette:
         ColorPalette.ResultBg      = self._add_color(0x95b2ff)
         ColorPalette.ResultTextBg  = self._add_color(0x8ff8e2)
         ColorPalette.ResultTextFg  = self._add_color(0x4d65b4)
-        self._add_from_images(paths_w_gray)
-        self._add_from_images(paths)
+
+        cols = self._colors_in_images(paths_w_gray)
+        self._add_colors_w_gray(cols)
+
+        cols = self._colors_in_images(paths)
+        self._add_colors(cols)
+
         pyxel.colors.from_list(self.colors)
+
+    def gray_index(self, col_index):
+        return self.color_to_gray[col_index]
 
     def _add_color(self, color):
         index = len(self.colors)
@@ -64,22 +74,25 @@ class ColorPalette:
         v = max(min(int((r + g + b) / 3), 255), 0)
         return v * 0x010101
     
-    def _add_from_images(self, paths):
+    def _colors_in_images(self, paths):
         cols = []
         for path in paths:
             image = Image.open(path)
             cols.extend(image.getcolors(maxcolors = self.MaxColors))
         cols = set(cols)
         if len(cols) > self.MaxColors: raise
-        pal_cols = set()
+        result = set()
         for col in cols:
             r, g, b, _ = col[1]
-            pal_cols.add(r * 65536 + g * 256 + b)
-        for col_num in pal_cols:
-            self._add_color(col_num)
+            result.add(r * 65536 + g * 256 + b)
+        return result
 
-    def _add_gray_colors(self, colors):
-        gmap = []
+    def _add_colors(self, colors):
         for col in colors:
-            gray = _make_gray(col)
-        #################### working 2025.08.04
+            self._add_color(col)
+
+    def _add_colors_w_gray(self, colors):
+        for col in colors:
+            c_index = self._add_color(col)
+            g_index = self._add_color(self._make_gray(col))
+            self.color_to_gray[c_index] = g_index
