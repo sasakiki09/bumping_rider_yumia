@@ -93,3 +93,21 @@ class Range2:
         self.y = y
         self.w = w
         self.h = h
+
+class ImageUtils:
+    def __init__(self, image, range = None):
+        self.image = image
+        if not range:
+            range = Range2(0, 0, image.width, image.height)
+        self.range = range
+
+    def clipped(self, converter = None):
+        image = pyxel.Image(self.range.w, self.range.h)
+        for y in range(self.range.h):
+            for x in range(self.range.w):
+                c = self.image.pget(self.range.x + x, self.range.y + y)
+                if converter:
+                    c = converter(c)
+                image.pset(x, y, c)
+        return image
+
