@@ -1,14 +1,6 @@
 import pyxel
-from enum import IntEnum, auto
+from game_constants import *
 from world import *
-
-class FaceIndex(IntEnum):
-    Empty = -1
-    Normal = 0
-    Blink = auto()
-    Astonish = auto()
-    Smile = auto()
-    Cry = auto()
 
 class Face:
     Size = Vec2(85, 85)

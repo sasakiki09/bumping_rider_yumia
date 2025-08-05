@@ -61,6 +61,9 @@ class ColorPalette:
     def gray_index(self, col_index):
         return self.color_to_gray[col_index]
 
+    def gray_converter(self):
+        return self.gray_index
+
     def _add_color(self, color):
         index = len(self.colors)
         self.colors.append(color)

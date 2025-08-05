@@ -110,4 +110,3 @@ class ImageUtils:
                     c = converter(c)
                 image.pset(x, y, c)
         return image
-
