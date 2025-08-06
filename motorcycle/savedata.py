@@ -33,7 +33,7 @@ class Savedata:
                     return
                 with open(self.filepath, 'r') as f:
                     data_str = f.read()
-            self.data = json.load(data_str)
+            self.data = json.loads(data_str)
         except Exception:
             self.data = {}
 
@@ -58,29 +58,27 @@ class Savedata:
         return "record_b_" + str(tag)
     
     def set_time(self, tag, time):
-        if not self.data:
-            self.load()
+        if not self.data: self.load()
         self.data[self._time_tag(tag)] = time
 
     def time(self, tag):
-        if not self.data:
-            self.load()
+        if not self.data: self.load()
         return self.data.get(self._time_tag(tag), None)
 
     def set_record_a(self, tag, text):
-        if not self.data:
-            self.load()
+        if not self.data: self.load()
         self.data[self._record_a_tag(tag)] = text
 
     def set_record_b(self, tag, text):
-        if not self.data:
-            self.load()
+        if not self.data: self.load()        
         self.data[self._record_b_tag(tag)] = text
 
     def record_a(self, tag):
+        if not self.data: self.load()        
         return self.data.get(self._record_a_tag(tag), None)
 
     def record_b(self, tag):
+        if not self.data: self.load()        
         return self.data.get(self._record_b_tag(tag), None)
 
 g_savedata = Savedata()
