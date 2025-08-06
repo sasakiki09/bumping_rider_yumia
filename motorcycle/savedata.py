@@ -17,20 +17,20 @@ class Savedata:
         self.filepath = False
         self.storage_item = False
         self.data = False
-
+        
     def load(self):
         try:
             if IsWeb:
-                self.storage_item = "bumping_rinder_savedata_" + g.world.Version
+                self.storage_item = "bumping_rinder_savedata_" + g_world.Version
                 data_str = window.localStorage.getItem(self.storage_item)
             else:
-                dir = pyxel.user_data_dir("Sasakiki", "Bumping Rider")
                 if not self.filepath:
+                    dir = pyxel.user_data_dir("Sasakiki", "Bumping Rider")        
                     self.filepath = dir + "savedata_" + g_world.Version
                     print(self.filepath)
-                    if not os.path.isfile(self.filepath):
-                        self.data = {}
-                        return
+                if not os.path.isfile(self.filepath):
+                    self.data = {}
+                    return
                 with open(self.filepath, 'r') as f:
                     data_str = f.read()
             self.data = json.load(data_str)
