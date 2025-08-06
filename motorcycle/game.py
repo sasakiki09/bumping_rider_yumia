@@ -73,6 +73,10 @@ class App:
         self.bike = GameBike(
             self.BikeBodyImagePath,
             self.WheelImagePath,
+            self.CharaBodyImagePath)
+        self.bike_rival = GameBike(
+            self.BikeBodyImagePath,
+            self.WheelImagePath,
             self.CharaBodyImagePath,
             self.color_palette.gray_converter())
         self.ground = GameGround()
