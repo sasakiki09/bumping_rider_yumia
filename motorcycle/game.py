@@ -73,7 +73,8 @@ class App:
         self.bike = GameBike(
             self.BikeBodyImagePath,
             self.WheelImagePath,
-            self.CharaBodyImagePath)
+            self.CharaBodyImagePath,
+            self.color_palette.gray_converter())
         self.ground = GameGround()
         g_world.start()
         self.input = Input()

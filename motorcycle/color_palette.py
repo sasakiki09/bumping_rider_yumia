@@ -59,7 +59,10 @@ class ColorPalette:
         pyxel.colors.from_list(self.colors)
 
     def gray_index(self, col_index):
-        return self.color_to_gray[col_index]
+        if col_index in self.color_to_gray:
+            return self.color_to_gray[col_index]
+        else:
+            return col_index
 
     def gray_converter(self):
         return self.gray_index

@@ -6,21 +6,22 @@ from physics import *
 from utilities import *
 
 class GameBike:
-    def __init__(self, bike_body_path, tire_path, chara_body_path):
+    def __init__(self, bike_body_path, tire_path, chara_body_path, gray_converter):
         self.bike = Bike()
         self.width = BikeSpriteWidth
         self.height = BikeSpriteHeight
         self.next_blink_tic = 20
         self.chara_body_index = CharaBodyIndex.Normal
+        self.gray_converter = gray_converter
         self.set_sprite_ranges()
 
-        self.bike_body_image = self.clip_image(
+        self.bike_body_images = self.clip_image(
             self.load(bike_body_path),
             self.bike_body_range)
-        self.tire_image = self.clip_image(
+        self.tire_images = self.clip_image(
             self.load(tire_path),
             self.tire_range)
-        self.chara_body_image = self.load(chara_body_path)
+        self.chara_body_images = self.clip_image(self.load(chara_body_path))
 
     def load(self, path):
         image = pyxel.Image(256, 256)
@@ -40,9 +41,11 @@ class GameBike:
         self.front_tire_center = Vec2(w / 2 - r, r)
         self.rear_tire_center = Vec2(-w / 2 + r, r)
 
-    def clip_image(self, image, range):
+    def clip_image(self, image, range = None):
         util = ImageUtils(image, range)
-        return util.clipped()
+        image = util.clipped()
+        gray_image = util.clipped(self.gray_converter)
+        return [image, gray_image]
 
     def screen_xy(self):
         w_loc = self.bike.location
@@ -77,23 +80,23 @@ class GameBike:
         f_rel = self.front_tire_center.rotate(-self.bike.rotation)
         f_xy = s_xy + f_rel + self.front_tire_center
         tire_rot = self.tire_rotation_degree()
-        pyxel.blt(f_xy.x, f_xy.y, self.tire_image,
+        pyxel.blt(f_xy.x, f_xy.y, self.tire_images[0],
                   0, 0, r.w, r.h,
                   g_world.bg_index,
                   tire_rot)
         r_rel = self.rear_tire_center.rotate(-self.bike.rotation)
         r_xy = s_xy + r_rel + self.front_tire_center
-        pyxel.blt(r_xy.x, r_xy.y, self.tire_image,
+        pyxel.blt(r_xy.x, r_xy.y, self.tire_images[0],
                   0, 0, r.w, r.h,
                   g_world.bg_index,
                   tire_rot)
         r = self.bike_body_range
-        pyxel.blt(s_xy.x, s_xy.y, self.bike_body_image,
+        pyxel.blt(s_xy.x, s_xy.y, self.bike_body_images[0],
                   0, 0, r.w, r.h,
                   g_world.bg_index,
                   rot)
         r = self.chara_body_range()
-        pyxel.blt(s_xy.x, s_xy.y, self.chara_body_image,
+        pyxel.blt(s_xy.x, s_xy.y, self.chara_body_images[0],
                   r.x, r.y, r.w, r.h,
                   g_world.bg_index,
                   rot)
