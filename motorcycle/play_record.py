@@ -4,8 +4,12 @@ import base64
 from world import *
 
 class PlayRecord:
-    def __init__(self):
-        self.reset()
+    def __init__(self, str_a = None, str_b = None):
+        if str_a and str_b:
+            self.set_str_a(str_a)
+            self.set_str_b(str_b)
+        else:
+            self.reset()
 
     def reset(self):
         self.record_a = bitarray(endian='big')
@@ -31,11 +35,17 @@ class PlayRecord:
 
     def set_str_a(self, text):
         byte_data = base64.b64decode(text.encode('utf-8'))
-        self.record_a = bitarray()
+        self.record_a = bitarray(endian='big')
         self.record_a.frombytes(byte_data)
 
     def set_str_b(self, text):
         byte_data = base64.b64decode(text.encode('utf-8'))
-        self.record_b = bitarray()
+        self.record_b = bitarray(endian='big')
         self.record_b.frombytes(byte_data)
         
+    def recorded_buttons(self):
+        tic = g_world.tic
+        if tic >= len(self.record_a):
+            return [False, False]
+        else:
+            return [self.record_a[tic], self.record_b[tic]]

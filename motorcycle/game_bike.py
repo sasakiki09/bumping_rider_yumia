@@ -12,6 +12,10 @@ class GameBike:
         self.bike = Bike()
         self.width = BikeSpriteWidth
         self.height = BikeSpriteHeight
+        if gray_converter:
+            self.y_diff = g_world.rival_diff
+        else:
+            self.y_diff = 0
         self.next_blink_tic = 20
         self.chara_body_index = CharaBodyIndex.Normal
         self.gray_converter = gray_converter
@@ -74,29 +78,30 @@ class GameBike:
             return self.chara_body_range_1
         
     def show(self):
+        y_d = self.y_diff
         s_xy = self.screen_xy()
         rot = self.rotation_degree()
         r = self.tire_range
         f_rel = self.front_tire_center.rotate(-self.bike.rotation)
         f_xy = s_xy + f_rel + self.front_tire_center
         tire_rot = self.tire_rotation_degree()
-        pyxel.blt(f_xy.x, f_xy.y, self.tire_image,
+        pyxel.blt(f_xy.x, f_xy.y + y_d, self.tire_image,
                   0, 0, r.w, r.h,
                   g_world.bg_index,
                   tire_rot)
         r_rel = self.rear_tire_center.rotate(-self.bike.rotation)
         r_xy = s_xy + r_rel + self.front_tire_center
-        pyxel.blt(r_xy.x, r_xy.y, self.tire_image,
+        pyxel.blt(r_xy.x, r_xy.y + y_d, self.tire_image,
                   0, 0, r.w, r.h,
                   g_world.bg_index,
                   tire_rot)
         r = self.bike_body_range
-        pyxel.blt(s_xy.x, s_xy.y, self.bike_body_image,
+        pyxel.blt(s_xy.x, s_xy.y + y_d, self.bike_body_image,
                   0, 0, r.w, r.h,
                   g_world.bg_index,
                   rot)
         r = self.chara_body_range()
-        pyxel.blt(s_xy.x, s_xy.y, self.chara_body_image,
+        pyxel.blt(s_xy.x, s_xy.y + y_d, self.chara_body_image,
                   r.x, r.y, r.w, r.h,
                   g_world.bg_index,
                   rot)

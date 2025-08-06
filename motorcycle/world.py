@@ -20,6 +20,7 @@ class World:
         self.origin_world = Vec2(0.0, 0.0)
         self.origin_screen = Vec2(self.screen_size.x * 0.2,
                                   self.screen_size.y * 0.9)
+        self.rival_diff = -30
         self.stage_index = 0
 
     def start(self):

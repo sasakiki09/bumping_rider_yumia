@@ -18,8 +18,6 @@ from music import *
 from game_bike import GameBike
 
 class GameGround:
-    SurfaceDiff = 30
-    
     def ground(self):
         return g_stages[g_world.stage_index].ground
 
@@ -47,7 +45,7 @@ class GameGround:
             else:
                 col = ColorPalette.GroundGoal
             pyxel.line(x, y, x, g_world.screen_size.y, col)
-            pyxel.line(x, y - GameGround.SurfaceDiff, x, y, ColorPalette.GroundSurface)
+            pyxel.line(x, y + g_world.rival_diff, x, y, ColorPalette.GroundSurface)
 
 class App:
     BikeBodyImagePath = 'images/bike_body.png'
@@ -83,6 +81,7 @@ class App:
         g_world.start()
         self.input = Input()
         self.play_record = PlayRecord()
+        self.play_record_rival = None
         self.face = Face(image_index = 1, path = self.FacesImagePath)
         self.status = Status()
         self.result = Result()
@@ -122,6 +121,9 @@ class App:
         btn_b = self.input.b_pressed
         self.play_record.add(btn_a, btn_b)
         self.bike.update(self.stage().ground, btn_a, btn_b)
+        if self.play_record_rival:
+            btn_r = self.play_record_rival.recorded_buttons()
+            self.bike_rival.update(self.stage().ground, btn_r[0], btn_r[1])
         self.status.update(self.bike.bike, self.stage().ground)
         self.update_face(True, False)
         self.result.update(False, False)
@@ -181,6 +183,8 @@ class App:
         elif self.state == GameState.GamePlay:
             self.background.show()
             self.ground.show()
+            if self.play_record_rival:
+                self.bike_rival.show()
             self.bike.show()
             self.input.show()
             self.face.show()
@@ -193,10 +197,18 @@ class App:
 
     def reset(self):
         g_world.start()
+        index = g_world.stage_index
         self.stage().start()
         self.background = Background()
         self.play_record.reset()
+        if g_savedata.record_a(index):
+            rec_a = g_savedata.record_a(index)
+            rec_b = g_savedata.record_b(index)
+            self.play_record_rival = PlayRecord(rec_a, rec_b)
+        else:
+            self.play_record_rival = None
         self.bike.bike.reset()
+        self.bike_rival.bike.reset()
         if self.state == GameState.GamePlay:
             self.music.play(self.stage().music)
         else:
