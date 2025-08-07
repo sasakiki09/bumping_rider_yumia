@@ -21,7 +21,7 @@ class Status:
 
     def update(self, bike, ground):
         self.time = g_world.elapsed_time
-        self.speed = bike.velocity.x
+        self.speed = bike.velocity.x * 60 * 60 / 1000 # km/h
         self.distance = ground.goal_x() - bike.location.x
 
     def text(self, x, y, str):
