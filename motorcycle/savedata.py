@@ -17,6 +17,9 @@ class Savedata:
         self.filepath = False
         self.storage_item = False
         self.data = False
+
+    def clear(self):
+        self.data = {}
         
     def load(self):
         try:

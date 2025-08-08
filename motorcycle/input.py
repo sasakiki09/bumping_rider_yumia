@@ -37,6 +37,7 @@ class Input:
         self.b_pressed = False
         self.x_pressed = False
         self.reset_pressed = False
+        self.init_pressed = False
 
     def init_buttons(self):
         margin = 10
@@ -54,6 +55,7 @@ class Input:
         self.b_pressed = False
         self.x_pressed = False
         self.reset_pressed = False
+        self.init_pressed = False
         if (pyxel.btn(pyxel.GAMEPAD1_BUTTON_A) or
             pyxel.btn(pyxel.KEY_A)):
             self.a_pressed = True
@@ -68,10 +70,12 @@ class Input:
         if self.button_b.pressed():
             self.b_pressed = True
         if self.button_x.pressed():
-            self.x_pressed = True
+            self.x_pressed = True2
         if (pyxel.btn(pyxel.GAMEPAD1_BUTTON_START) or
             pyxel.btn(pyxel.KEY_R)):
             self.reset_pressed = True
+        if (pyxel.btn(pyxel.KEY_I)):
+            self.init_pressed = True
 
     def show(self):
         if self.in_game:

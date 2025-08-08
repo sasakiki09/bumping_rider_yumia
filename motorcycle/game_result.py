@@ -49,7 +49,7 @@ class GameResult:
 
     def update_best_total(self, total):
         self.best_total = g_savedata.time(Savedata.TagTotal)
-        if self.best_total == None:
+        if not self.best_total:
             self.best_total = total
         else:
             self.best_total = min(self.best_total, total)

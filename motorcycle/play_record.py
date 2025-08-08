@@ -24,6 +24,9 @@ class PlayRecord:
             self.record_b.append(1)
         else:
             self.record_b.append(0)
+        tic = g_world.tic
+        if len(self.record_a) != tic: raise
+        if len(self.record_b) != tic: raise        
 
     def str_a(self):
         byte_data = self.record_a.tobytes()
@@ -43,8 +46,7 @@ class PlayRecord:
         self.record_b = bitarray(endian='big')
         self.record_b.frombytes(byte_data)
         
-    def recorded_buttons(self):
-        tic = g_world.tic
+    def recorded_buttons(self, tic):
         if tic >= len(self.record_a):
             return [False, False]
         else:

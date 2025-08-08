@@ -115,6 +115,7 @@ class App:
         self.background.update(g_world.origin_world.x)
         bike = self.bike.bike
         ox = bike.location.x + self.bike_x_diff()
+        tic = g_world.tic
         g_world.update(Vec2(ox, 0))
         self.input.update(True)
         btn_a = self.input.a_pressed
@@ -122,13 +123,19 @@ class App:
         self.play_record.add(btn_a, btn_b)
         self.bike.update(self.stage().ground, btn_a, btn_b)
         if self.play_record_rival:
-            btn_r = self.play_record_rival.recorded_buttons()
+            btn_r = self.play_record_rival.recorded_buttons(tic)
             self.bike_rival.update(self.stage().ground, btn_r[0], btn_r[1])
         self.status.update(self.bike.bike, self.stage().ground)
         self.update_face(True, False)
         self.result.update(False, False)
         if self.input.reset_pressed:
             self.reset()
+        if self.input.init_pressed:
+            g_savedata.clear()
+            g_savedata.save()
+            for stage in g_stages:
+                stage.best_time = None
+            self.to_title()
 
     def update_result(self, failed, result_time):
         self.input.update(False)
@@ -141,8 +148,9 @@ class App:
         if self.input.x_pressed:
             if result_time:
                 stage = self.stage()
-                stage.update_best_time(result_time, self.play_record)
-                s_i = (g_world.stage_index + 1) % len(g_stages)
+                stage_index = g_world.stage_index
+                stage.update_best_time(stage_index, result_time, self.play_record)
+                s_i = (stage_index + 1) % len(g_stages)
                 g_world.stage_index = s_i
                 if s_i == 0:
                     self.state = GameState.GameResult
@@ -171,9 +179,7 @@ class App:
         elif self.state == GameState.GameResult:
             self.game_result.update()
             if self.game_result.pressed():
-                self.title.reset()
-                self.state = GameState.GameTitle
-                self.reset()
+                self.to_title()
         else:
             raise
 
@@ -214,4 +220,9 @@ class App:
         else:
             self.music.play(4)
 
+    def to_title(self):
+        self.title.reset()
+        self.state = GameState.GameTitle
+        self.reset()
+        
 App()
