@@ -49,7 +49,7 @@ class GameGround:
 
 class App:
     BikeBodyImagePath = 'images/bike_body.png'
-    WheelImagePath = 'images/wheel.png'
+    TireImagePath = 'images/tire.png'
     CharaBodyImagePath = 'images/chara_body.png'
     FacesImagePath = 'images/faces.png'
     TitleImagePath = 'images/title.png'
@@ -61,7 +61,7 @@ class App:
                    fps = g_world.fps)
         self.color_palette = ColorPalette(
             [self.BikeBodyImagePath,
-             self.WheelImagePath,
+             self.TireImagePath,
              self.CharaBodyImagePath],
             [self.FacesImagePath,
              self.TitleImagePath])
@@ -70,11 +70,11 @@ class App:
         self.game_result = GameResult(image_index = 2)
         self.bike = GameBike(
             self.BikeBodyImagePath,
-            self.WheelImagePath,
+            self.TireImagePath,
             self.CharaBodyImagePath)
         self.bike_rival = GameBike(
             self.BikeBodyImagePath,
-            self.WheelImagePath,
+            self.TireImagePath,
             self.CharaBodyImagePath,
             self.color_palette.gray_converter())
         self.ground = GameGround()

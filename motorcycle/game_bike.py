@@ -30,7 +30,7 @@ class GameBike:
         self.chara_body_image = self.clip_image(self.load(chara_body_path))
 
     def load(self, path):
-        image = pyxel.Image(256, 256)
+        image = pyxel.Image(256, 320)
         image.load(0, 0, path)
         return image
 
@@ -42,10 +42,10 @@ class GameBike:
         self.chara_body_range_1 = Range2(0, h, w, h)
         self.chara_body_range_steer = Range2(0, h * 2, w, h)
         self.chara_body_range_cry = Range2(0, h * 3, w, h)
-        r = BikeSpriteHeight // 4
-        self.tire_range = Range2(0, r * 2, r * 2, r * 2)
-        self.front_tire_center = Vec2(w / 2 - r, r)
-        self.rear_tire_center = Vec2(-w / 2 + r, r)
+        r = BikeSpriteWidth // 6
+        self.tire_range = Range2(0, r * 3, r * 2, r * 2)
+        self.front_tire_center = Vec2(w / 2 - r, r * 1.5)
+        self.rear_tire_center = Vec2(-w / 2 + r, r * 1.5)
 
     def clip_image(self, image, range = None):
         util = ImageUtils(image, range)

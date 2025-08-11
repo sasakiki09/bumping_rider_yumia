@@ -4,7 +4,7 @@ from utilities import *
 
 BikeWorldLen = 1.5 # [m]
 BikeSpriteWidth = 96 # [pixel]
-BikeSpriteHeight = 64 # [pixel]
+BikeSpriteHeight = 80 # [pixel]
 
 class World:
     Version = "1.01"
@@ -18,7 +18,7 @@ class World:
         self.fps = 30
         self.bg_index = 0
         self.origin_world = Vec2(0.0, 0.0)
-        self.origin_screen = Vec2(self.screen_size.x * 0.4,
+        self.origin_screen = Vec2(self.screen_size.x * 0.3,
                                   self.screen_size.y * 0.9)
         self.rival_diff = -30
         self.stage_index = 0
