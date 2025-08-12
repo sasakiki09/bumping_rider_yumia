@@ -88,12 +88,13 @@ class GameResult:
         phase = (self.tic - self.placed_tic) % period
         max_h = g_world.screen_size.y - self.SpriteSize.y * self.ImageScale
         h = ((phase / period * 2 - 1)**2) * max_h
-        self.chara_base_y = g_world.screen_size.y - h - 5
         if h < 5:
+            self.chara_base_y = g_world.screen_size.y - 10
             self.chara_stat.base = 1
             self.chara_stat.tits = 1
             self.chara_stat.larm = 1
         else:
+            self.chara_base_y = g_world.screen_size.y - h - 5
             self.chara_stat.base = 0
             if phase % 15 < 7:
                 self.chara_stat.tits = 1
@@ -121,26 +122,26 @@ class GameResult:
         i_w = self.SpriteSize.x
         i_h = self.SpriteSize.y
         i_s = self.ImageScale
-        x = g_world.screen_size.x - i_w * i_s / 2 - i_w / 2 
+        cx = g_world.screen_size.x - i_w * i_s / 2
         i_h2 = self.max_y[self.chara_stat.base]
-        y = self.chara_base_y + (i_h - i_h2) * i_s - i_h * i_s / 2 - i_h / 2
+        cy = self.chara_base_y + (i_h - i_h2) * i_s - i_h * i_s / 2
         spr_loc = self.base_offsets[self.chara_stat.base]
-        pyxel.blt(x, y, self.image,
+        blt_center(cx, cy, self.image,
                   spr_loc.x, spr_loc.y,
                   i_w, i_h,
                   g_world.bg_index, 0, i_s)
         spr_loc = self.tits_offsets[self.chara_stat.tits]
-        pyxel.blt(x, y, self.image,
+        blt_center(cx, cy, self.image,
                   spr_loc.x, spr_loc.y,
                   i_w, i_h,
                   g_world.bg_index, 0, i_s)
         spr_loc = self.head_offsets[self.chara_stat.head]
-        pyxel.blt(x, y, self.image,
+        blt_center(cx, cy, self.image,
                   spr_loc.x, spr_loc.y,
                   i_w, i_h,
                   g_world.bg_index, 0, i_s)
         spr_loc = self.larm_offsets[self.chara_stat.larm]
-        pyxel.blt(x, y, self.image,
+        blt_center(cx, cy, self.image,
                   spr_loc.x, spr_loc.y,
                   i_w, i_h,
                   g_world.bg_index, 0, i_s)

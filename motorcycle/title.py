@@ -79,11 +79,11 @@ class Title:
         i_w = self.ImageSize.x
         i_h = self.ImageSize.y
         i_s = self.ImageScale
-        x = g_world.screen_size.x - i_w * i_s / 2 - i_w / 2 
-        y = i_h * i_s / 2 - i_h / 2 - 10 + self.base_y
+        cx = g_world.screen_size.x - i_w * i_s / 2
+        cy = self.base_y + i_h * i_s / 2 - 10
         spr_loc = self.sprite_location()
         if spr_loc:
-            pyxel.blt(x, y, self.chara_image,
+            blt_center(cx, cy, self.chara_image,
                       spr_loc.x, spr_loc.y,
                       i_w, i_h,
                       g_world.bg_index, 0, i_s)
