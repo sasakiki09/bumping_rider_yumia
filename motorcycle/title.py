@@ -1,4 +1,5 @@
 import pyxel
+import random
 from world import *
 from color_palette import *
 from input import Button
@@ -7,10 +8,11 @@ class Title:
     ImageSize = Vec2(64, 128)
     ImageScale = 3
     
-    def __init__(self, image_index, path):
-        self.image_index = image_index
-        self.image = pyxel.images[image_index]
-        self.image.load(0, 0, path)
+    def __init__(self, chara_path, text_path):
+        self.chara_image = pyxel.Image(128, 128)
+        self.chara_image.load(0, 0, chara_path)
+        self.text_image = pyxel.Image(128, 128)
+        self.text_image.load(0, 0, text_path)
         self.font = pyxel.Font("fonts/spleen-16x32.bdf")
         self.small_font = pyxel.Font("fonts/spleen-8x16.bdf")
         x = g_world.screen_size.x / 2 - Button.ButtonSize[0] / 2
@@ -21,6 +23,7 @@ class Title:
     def reset(self):
         self.tic = 0
         self.base_y = g_world.screen_size.y
+        self.next_blink_tic = 20
 
     def fg_color(self):
         return ColorPalette.TitleTextFg
@@ -41,11 +44,13 @@ class Title:
             self.base_y = 0
 
     def sprite_location(self):
-        t = self.tic % 20
-        if t < 15:
-            return Vec2(0, 0)
-        else:
+        if self.tic % self.next_blink_tic == 0:
             return Vec2(64, 0)
+        elif self.tic % self.next_blink_tic == 1:
+            self.next_blink_tic = random.randint(30, 90)
+            return Vec2(64, 0)
+        else:
+            return Vec2(0, 0)            
 
     def text(self, x, y, str, font):
         pyxel.text(x, y - 1, str, self.bg_color(), font)
@@ -57,8 +62,8 @@ class Title:
     def show_text_image(self):
         x = g_world.screen_size.x / 7
         y = g_world.screen_size.y / 4 + self.base_y
-        pyxel.blt(x, y, self.image_index,
-                  0, 128,
+        pyxel.blt(x, y, self.text_image,
+                  0, 0,
                   128, 128,
                   g_world.bg_index, 0, 2)
 
@@ -78,7 +83,7 @@ class Title:
         y = i_h * i_s / 2 - i_h / 2 - 10 + self.base_y
         spr_loc = self.sprite_location()
         if spr_loc:
-            pyxel.blt(x, y, self.image_index,
+            pyxel.blt(x, y, self.chara_image,
                       spr_loc.x, spr_loc.y,
                       i_w, i_h,
                       g_world.bg_index, 0, i_s)

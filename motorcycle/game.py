@@ -52,7 +52,8 @@ class App:
     TireImagePath = 'images/tire.png'
     CharaBodyImagePath = 'images/chara_body.png'
     FacesImagePath = 'images/faces.png'
-    TitleImagePath = 'images/title.png'
+    TitleCharaImagePath = 'images/title_chara.png'
+    TitleTextImagePath = 'images/title_text.png'    
     
     def __init__(self):
         pyxel.init(g_world.screen_size.x,
@@ -64,9 +65,12 @@ class App:
              self.TireImagePath,
              self.CharaBodyImagePath],
             [self.FacesImagePath,
-             self.TitleImagePath])
+             self.TitleCharaImagePath,
+             self.TitleTextImagePath])
         self.state = GameState.GameTitle
-        self.title = Title(image_index = 2, path = self.TitleImagePath)
+        self.title = Title(
+            self.TitleCharaImagePath,
+            self.TitleTextImagePath)
         self.game_result = GameResult(image_index = 2)
         self.bike = GameBike(
             self.BikeBodyImagePath,
