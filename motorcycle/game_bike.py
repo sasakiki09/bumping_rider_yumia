@@ -51,11 +51,9 @@ class GameBike:
         util = ImageUtils(image, range)
         return util.clipped(self.gray_converter)
 
-    def screen_xy(self):
+    def screen_center_xy(self):
         w_loc = self.bike.location
-        s_loc = g_world.screen_xy(w_loc)
-        return Vec2(s_loc.x - self.width / 2,
-                    s_loc.y - self.height / 2)
+        return g_world.screen_xy(w_loc)
 
     def rotation_degree(self):
         rotation = self.bike.rotation
@@ -79,29 +77,29 @@ class GameBike:
         
     def show(self):
         y_d = self.y_diff
-        s_xy = self.screen_xy()
+        s_c_xy = self.screen_center_xy()
         rot = self.rotation_degree()
         r = self.tire_range
         f_rel = self.front_tire_center.rotate(-self.bike.rotation)
-        f_xy = s_xy + f_rel + self.front_tire_center
+        f_c_xy = s_c_xy + f_rel
         tire_rot = self.tire_rotation_degree()
-        pyxel.blt(f_xy.x, f_xy.y + y_d, self.tire_image,
+        blt_center(f_c_xy.x, f_c_xy.y + y_d, self.tire_image,
                   0, 0, r.w, r.h,
                   g_world.bg_index,
                   tire_rot)
         r_rel = self.rear_tire_center.rotate(-self.bike.rotation)
-        r_xy = s_xy + r_rel + self.front_tire_center
-        pyxel.blt(r_xy.x, r_xy.y + y_d, self.tire_image,
+        r_c_xy = s_c_xy + r_rel
+        blt_center(r_c_xy.x, r_c_xy.y + y_d, self.tire_image,
                   0, 0, r.w, r.h,
                   g_world.bg_index,
                   tire_rot)
         r = self.bike_body_range
-        pyxel.blt(s_xy.x, s_xy.y + y_d, self.bike_body_image,
+        blt_center(s_c_xy.x, s_c_xy.y + y_d, self.bike_body_image,
                   0, 0, r.w, r.h,
                   g_world.bg_index,
                   rot)
         r = self.chara_body_range()
-        pyxel.blt(s_xy.x, s_xy.y + y_d, self.chara_body_image,
+        blt_center(s_c_xy.x, s_c_xy.y + y_d, self.chara_body_image,
                   r.x, r.y, r.w, r.h,
                   g_world.bg_index,
                   rot)
