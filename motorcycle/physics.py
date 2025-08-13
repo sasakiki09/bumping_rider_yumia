@@ -37,10 +37,11 @@ class Bike:
         self.max_speed = 28.0 # m/s
         self.speed_decay = 0.02
         self.reflection = 0.3
-        l = self.length
-        self.front_wheel_center = Vec2(l * 3 / 8, -l / 8)
-        self.rear_wheel_center = Vec2(-l * 3 / 8, -l / 8)
-        self.wheel_radius = l / 5
+        w = self.length
+        h = w * BikeSpriteHeight / BikeSpriteWidth
+        self.front_wheel_center = Vec2(w * 2 / 6, -h * 3 / 10)
+        self.rear_wheel_center = Vec2(-w * 2 / 6, -h * 3 / 10)
+        self.wheel_radius = w / 6
 
     def reset(self):
         self.location = Vec2(0.0, 2.0)

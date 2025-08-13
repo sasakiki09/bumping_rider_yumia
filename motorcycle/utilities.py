@@ -4,7 +4,7 @@ import time
 
 import pdb
 
-def blt_center(cx, cy, img, u, v, w, h, colkey, rotate = 0, scale = 1):
+def blt_center(cx, cy, img, u, v, w, h, colkey = None, rotate = 0, scale = 1):
     x = cx - w / 2
     y = cy - h / 2
     pyxel.blt(x, y, img, u, v, w, h, colkey, rotate, scale)
