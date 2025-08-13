@@ -30,7 +30,7 @@ class Location(Vec2):
 
 class Bike:
     def __init__(self):
-        self.length = BikeWorldLen
+        self.length = BikeWorldLen * BikeSpriteScale
         self.min_height = 0.02
         self.reset()
         self.acceleration = 8.0 # m/s^2

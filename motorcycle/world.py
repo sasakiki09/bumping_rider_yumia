@@ -5,6 +5,7 @@ from utilities import *
 BikeWorldLen = 1.5 # [m]
 BikeSpriteWidth = 96 # [pixel]
 BikeSpriteHeight = 80 # [pixel]
+BikeSpriteScale = 1.2
 
 class World:
     Version = "1.01"

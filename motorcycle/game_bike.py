@@ -42,7 +42,7 @@ class GameBike:
         self.chara_body_range_1 = Range2(0, h, w, h)
         self.chara_body_range_steer = Range2(0, h * 2, w, h)
         self.chara_body_range_cry = Range2(0, h * 3, w, h)
-        r = BikeSpriteWidth // 6
+        r = w // 6
         self.tire_range = Range2(0, r * 3, r * 2, r * 2)
         self.front_tire_center = Vec2(w / 2 - r, r * 1.5)
         self.rear_tire_center = Vec2(-w / 2 + r, r * 1.5)
@@ -76,33 +76,34 @@ class GameBike:
             return self.chara_body_range_1
         
     def show(self):
+        scale = BikeSpriteScale
         y_d = self.y_diff
         s_c_xy = self.screen_center_xy()
         rot = self.rotation_degree()
         r = self.tire_range
-        f_rel = self.front_tire_center.rotate(-self.bike.rotation)
+        f_rel = self.front_tire_center.rotate(-self.bike.rotation).mul(scale)
         f_c_xy = s_c_xy + f_rel
         tire_rot = self.tire_rotation_degree()
         blt_center(f_c_xy.x, f_c_xy.y + y_d, self.tire_image,
-                  0, 0, r.w, r.h,
-                  g_world.bg_index,
-                  tire_rot)
-        r_rel = self.rear_tire_center.rotate(-self.bike.rotation)
+                   0, 0, r.w, r.h,
+                   g_world.bg_index,
+                   tire_rot, scale)
+        r_rel = self.rear_tire_center.rotate(-self.bike.rotation).mul(scale)
         r_c_xy = s_c_xy + r_rel
         blt_center(r_c_xy.x, r_c_xy.y + y_d, self.tire_image,
-                  0, 0, r.w, r.h,
-                  g_world.bg_index,
-                  tire_rot)
+                   0, 0, r.w, r.h,
+                   g_world.bg_index,
+                   tire_rot, scale)
         r = self.bike_body_range
         blt_center(s_c_xy.x, s_c_xy.y + y_d, self.bike_body_image,
-                  0, 0, r.w, r.h,
-                  g_world.bg_index,
-                  rot)
+                   0, 0, r.w, r.h,
+                   g_world.bg_index,
+                   rot, scale)
         r = self.chara_body_range()
         blt_center(s_c_xy.x, s_c_xy.y + y_d, self.chara_body_image,
-                  r.x, r.y, r.w, r.h,
-                  g_world.bg_index,
-                  rot)
+                   r.x, r.y, r.w, r.h,
+                   g_world.bg_index,
+                   rot, scale)
         
     def update(self, ground, btn_a, btn_b):
         self.bike.update(ground, btn_a, btn_b)
