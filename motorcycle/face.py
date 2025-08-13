@@ -4,7 +4,7 @@ from world import *
 
 class Face:
     Size = Vec2(85, 85)
-    Scale = 3
+    Scale = 2.5
     
     def __init__(self, image_index, path):
         self.image_index = image_index
