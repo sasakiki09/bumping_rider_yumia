@@ -70,7 +70,7 @@ class Input:
         if self.button_b.pressed():
             self.b_pressed = True
         if self.button_x.pressed():
-            self.x_pressed = True2
+            self.x_pressed = True
         if (pyxel.btn(pyxel.GAMEPAD1_BUTTON_START) or
             pyxel.btn(pyxel.KEY_R)):
             self.reset_pressed = True
