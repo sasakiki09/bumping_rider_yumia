@@ -134,14 +134,8 @@ class App:
         self.status.update(self.bike.bike, self.stage().ground)
         self.update_face(True, False)
         self.result.update(False, False)
-        if self.input.reset_pressed:
+        if self.input.x_pressed:
             self.reset()
-        if self.input.init_pressed:
-            g_savedata.clear()
-            g_savedata.save()
-            for stage in g_stages:
-                stage.best_time = None
-            self.to_title()
 
     def update_result(self, failed, result_time):
         self.input.update(False)
@@ -166,7 +160,7 @@ class App:
     def update(self):
         if self.state == GameState.GameTitle:
             self.title.update()
-            if self.title.pressed():
+            if self.title.start_pressed():
                 self.state = GameState.GamePlay
                 self.reset()
         elif self.state == GameState.GamePlay:
