@@ -51,6 +51,7 @@ class App:
     BikeBodyImagePath = 'images/bike_body.png'
     TireImagePath = 'images/tire.png'
     CharaBodyImagePath = 'images/chara_body.png'
+    CharaSymbolImagePath = 'images/chara_symbol.png'
     FacesImagePath = 'images/faces.png'
     TitleCharaImagePath = 'images/title_chara.png'
     TitleTextImagePath = 'images/title_text.png'
@@ -64,7 +65,8 @@ class App:
         self.color_palette = ColorPalette(
             [self.BikeBodyImagePath,
              self.TireImagePath,
-             self.CharaBodyImagePath],
+             self.CharaBodyImagePath,
+             self.CharaSymbolImagePath],
             [self.FacesImagePath,
              self.TitleCharaImagePath,
              self.TitleTextImagePath,
@@ -77,11 +79,13 @@ class App:
         self.bike = GameBike(
             self.BikeBodyImagePath,
             self.TireImagePath,
-            self.CharaBodyImagePath)
+            self.CharaBodyImagePath,
+            self.CharaSymbolImagePath)
         self.bike_rival = GameBike(
             self.BikeBodyImagePath,
             self.TireImagePath,
             self.CharaBodyImagePath,
+            self.CharaSymbolImagePath,
             self.color_palette.gray_converter())
         self.ground = GameGround()
         g_world.start()

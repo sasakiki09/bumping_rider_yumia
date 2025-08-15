@@ -56,6 +56,7 @@ class ColorPalette:
         cols = self._colors_in_images(paths)
         self._add_colors(cols)
 
+        print("ColorPalette color count: ", len(self.colors))
         pyxel.colors.from_list(self.colors)
 
     def gray_index(self, col_index):

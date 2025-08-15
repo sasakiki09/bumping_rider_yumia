@@ -7,7 +7,10 @@ from utilities import *
 
 class GameBike:
     def __init__(self,
-                 bike_body_path, tire_path, chara_body_path,
+                 bike_body_path,
+                 tire_path,
+                 chara_body_path,
+                 chara_symbol_path,
                  gray_converter = None):
         self.bike = Bike()
         self.width = BikeSpriteWidth
@@ -28,6 +31,7 @@ class GameBike:
             self.load(tire_path),
             self.tire_range)
         self.chara_body_image = self.clip_image(self.load(chara_body_path))
+        self.chara_symbol_image = self.clip_image(self.load(chara_symbol_path))
 
     def load(self, path):
         image = pyxel.Image(256, 320)
@@ -104,6 +108,10 @@ class GameBike:
                    r.x, r.y, r.w, r.h,
                    g_world.bg_index,
                    rot, scale)
+        blt_center(s_c_xy.x, s_c_xy.y + y_d - 20, self.chara_symbol_image,
+                   r.x, r.y, r.w, r.h,
+                   g_world.bg_index,
+                   0, scale)
         
     def update(self, ground, btn_a, btn_b):
         self.bike.update(ground, btn_a, btn_b)
