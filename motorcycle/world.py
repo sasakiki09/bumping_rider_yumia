@@ -3,12 +3,12 @@ import time
 from utilities import *
 
 BikeWorldLen = 1.5 # [m]
-BikeSpriteWidth = 96 # [pixel]
-BikeSpriteHeight = 80 # [pixel]
-BikeSpriteScale = 1.2
+BikeSpriteWidth = 128 # [pixel]
+BikeSpriteHeight = 96 # [pixel]
+BikeSpriteScale = 1
 
 class World:
-    Version = "1.02"
+    Version = "1.03"
 
     def __init__(self):
         self.gravity = Vec2(0.0, -9.8)
