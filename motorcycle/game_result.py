@@ -87,8 +87,8 @@ class GameResult:
         period = 30
         phase = (self.tic - self.placed_tic) % period
         max_h = g_world.screen_size.y - self.SpriteSize.y * self.ImageScale
-        h = ((phase / period * 2 - 1)**2) * max_h
-        if h < 5:
+        h = (1 - ((phase / period * 2 - 1)**2)) * max_h
+        if h < 10:
             self.chara_base_y = g_world.screen_size.y - 10
             self.chara_stat.base = 1
             self.chara_stat.tits = 1
